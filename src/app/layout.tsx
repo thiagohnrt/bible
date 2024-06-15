@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import { cn } from "@/lib/utils";
+import BottomNavigator from "@/components/BottomNavigator";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={cn(inter.className, "dark")}>
         <Header />
-        <main className="px-3 pt-3">{children}</main>
+        <main className="px-4 pt-3 pb-24">{children}</main>
       </body>
     </html>
   );
