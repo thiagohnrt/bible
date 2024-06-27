@@ -11,7 +11,7 @@ export function Chapters({ total }: ChaptersProps) {
         .map((n, i) => (
           <div
             style={{ aspectRatio: "1 / 1" }}
-            className="bg-slate-800 aspect-square flex items-center justify-center rounded-sm"
+            className="bg-zinc-800 aspect-square flex items-center justify-center rounded-sm"
             key={i}
           >
             {i + 1}
