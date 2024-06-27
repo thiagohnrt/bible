@@ -1,3 +1,5 @@
+import Books from "@/components/Books";
+
 export default function Home() {
-  return <div>Version</div>;
+  return <Books />;
 }
