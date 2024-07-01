@@ -21,7 +21,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={cn(inter.className, "dark")}>
         <Header />
-        <main className="px-4 pt-3 pb-24">{children}</main>
+        <main className="px-4 pt-3 pb-24 relative">{children}</main>
+        <BottomNavigator />
       </body>
     </html>
   );

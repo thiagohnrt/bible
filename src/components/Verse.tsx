@@ -1,12 +1,20 @@
+import { cn } from "@/lib/utils";
+import { Merriweather } from "next/font/google";
+
+const font = Merriweather({ subsets: ["latin"], weight: "300" });
+
 interface VerseProps {
-  number: number;
   text: string;
+  number?: number;
+  className?: string;
 }
 
-export default function Verse({ number, text }: VerseProps) {
+export default function Verse({ number, text, className }: VerseProps) {
   return (
-    <div>
-      <small className="pr-1 align-top opacity-70">{number}</small>
+    <div className={cn(font.className, className)}>
+      <small className={cn("pr-1 align-top opacity-70", number ?? "hidden")}>
+        {number}
+      </small>
       {text}
     </div>
   );

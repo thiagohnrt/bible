@@ -1,5 +1,5 @@
-import Books from "@/components/Books";
+import Home from "@/components/Home";
 
-export default function Home() {
-  return <Books />;
+export default function HomePage() {
+  return <Home />;
 }

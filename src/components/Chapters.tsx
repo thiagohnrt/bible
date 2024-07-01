@@ -1,21 +1,26 @@
+import Link from "next/link";
+
 interface ChaptersProps {
+  version: string;
+  book: string;
   total: number;
 }
 
-export function Chapters({ total }: ChaptersProps) {
+export function Chapters({ version, book, total }: ChaptersProps) {
   return (
     <div className="grid grid-cols-6 gap-4">
       {"."
         .repeat(total - 1)
         .split(".")
         .map((n, i) => (
-          <div
+          <Link
+            href={`/${version}/${book}/${i + 1}`}
             style={{ aspectRatio: "1 / 1" }}
             className="bg-zinc-800 aspect-square flex items-center justify-center rounded-sm"
             key={i}
           >
             {i + 1}
-          </div>
+          </Link>
         ))}
     </div>
   );
