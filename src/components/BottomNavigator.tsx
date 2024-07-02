@@ -1,18 +1,41 @@
-import { HomeIcon, ReaderIcon, HamburgerMenuIcon } from "@radix-ui/react-icons";
+"use client";
+
+import {
+  RiHome5Fill,
+  RiHome5Line,
+  RiBookFill,
+  RiBookLine,
+  RiMenuFill,
+  RiMenuLine,
+} from "react-icons/ri";
 import Link from "next/link";
 import { ReactNode } from "react";
+import { usePathname } from "next/navigation";
 
 export default function BottomNavigator() {
+  const pathname = usePathname();
   return (
-    <footer className="h-12 z-10 dark:bg-neutral-950 bg-neutral-50 fixed left-0 bottom-0 right-0 border-t flex items-center justify-between">
+    <footer className="h-[60px] z-10 dark:bg-neutral-950 bg-neutral-50 fixed left-0 bottom-0 right-0 border-t flex items-center justify-between">
       <MenuItem url="/" label="Início">
-        <HomeIcon />
+        {pathname === "/" ? (
+          <RiHome5Fill size={20} />
+        ) : (
+          <RiHome5Line size={20} />
+        )}
       </MenuItem>
       <MenuItem url="/nvi" label="Bíblia">
-        <ReaderIcon />
+        {["/", "/more"].includes(pathname) ? (
+          <RiBookLine size={20} />
+        ) : (
+          <RiBookFill size={20} />
+        )}
       </MenuItem>
-      <MenuItem url="/" label="Mais">
-        <HamburgerMenuIcon />
+      <MenuItem url="/more" label="Mais">
+        {pathname === "/more" ? (
+          <RiMenuFill size={20} />
+        ) : (
+          <RiMenuLine size={20} />
+        )}
       </MenuItem>
     </footer>
   );
@@ -26,9 +49,12 @@ interface MenuItemProps {
 
 function MenuItem({ label, url, children }: MenuItemProps) {
   return (
-    <Link href={url} className="flex flex-col flex-auto items-center">
+    <Link
+      href={url}
+      className="flex flex-col flex-auto items-center self-stretch justify-center"
+    >
       {children}
-      <label className="text-xs">{label}</label>
+      <label className="text-xs pt-1">{label}</label>
     </Link>
   );
 }

@@ -1,6 +1,6 @@
 import Verse from "@/components/Verse";
 import { api } from "@/services/api";
-import { CaretLeftIcon, CaretRightIcon } from "@radix-ui/react-icons";
+import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
 import Link from "next/link";
 
 export default async function ChapterPage({
@@ -19,21 +19,34 @@ export default async function ChapterPage({
           <Verse number={verse.number} text={verse.text} key={i} />
         ))}
       </div>
-      <div className="h-12 z-20 dark:bg-neutral-950 bg-neutral-50 fixed left-0 bottom-11 right-0 border-t flex justify-between items-center">
+      <div className="h-12 z-20 dark:bg-neutral-950 bg-neutral-50 fixed left-0 bottom-[59px] right-0 border-t flex justify-between items-center">
         <Link
           href={`/`}
-          className="h-full w-12 flex items-center justify-center"
+          className="self-stretch w-12 flex items-center justify-end"
         >
-          <CaretLeftIcon />
+          <div className="bg-neutral-800 rounded-l-full h-8 w-8">
+            <div className="rounded-full h-full w-full flex items-center justify-center">
+              <RiArrowLeftSLine size={18} />
+            </div>
+          </div>
         </Link>
-        <Link href={`/${version}/${book}`}>
-          {data.book.name} {data.chapter.number}
+        <Link
+          className="self-stretch flex-auto flex items-center"
+          href={`/${version}/${book}`}
+        >
+          <div className="w-full h-8 text-center leading-8 bg-neutral-800 text-sm">
+            {data.book.name} {data.chapter.number}
+          </div>
         </Link>
         <Link
           href={`/`}
-          className="h-full w-12 flex items-center justify-center"
+          className="self-stretch w-12 flex items-center justify-start"
         >
-          <CaretRightIcon />
+          <div className="bg-neutral-800 rounded-r-full h-8 w-8">
+            <div className="rounded-full h-full w-full flex items-center justify-center">
+              <RiArrowRightSLine size={18} />
+            </div>
+          </div>
         </Link>
       </div>
     </>
