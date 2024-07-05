@@ -9,7 +9,7 @@ export default async function BookPage({
   const data = await api.getBook(book);
   return (
     <>
-      <h1 className="text-2xl pb-4">{data.name}</h1>
+      <h1 className="text-3xl pb-4">{data.name}</h1>
       <Chapters version={version} book={book} total={data.chapters} />
     </>
   );

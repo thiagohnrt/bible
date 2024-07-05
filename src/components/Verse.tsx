@@ -11,7 +11,7 @@ interface VerseProps {
 
 export default function Verse({ number, text, className }: VerseProps) {
   return (
-    <div className={cn(font.className, className)}>
+    <div className={cn(font.className, "text-lg", className)}>
       <small className={cn("pr-1 align-top opacity-70", number ?? "hidden")}>
         {number}
       </small>

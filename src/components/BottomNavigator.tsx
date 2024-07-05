@@ -24,10 +24,10 @@ export default function BottomNavigator() {
         )}
       </MenuItem>
       <MenuItem url="/bible/nvi" label="Bíblia">
-        {["/", "/more"].includes(pathname) ? (
-          <RiBookLine size={20} />
-        ) : (
+        {pathname.startsWith("/bible") ? (
           <RiBookFill size={20} />
+        ) : (
+          <RiBookLine size={20} />
         )}
       </MenuItem>
       <MenuItem url="/more" label="Mais">

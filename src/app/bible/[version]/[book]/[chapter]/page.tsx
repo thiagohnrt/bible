@@ -8,10 +8,10 @@ export default async function ChapterPage({
   const data = await api.getChapter(version, book, chapter);
   return (
     <>
-      <h1 className="text-2xl pb-4">
+      <h1 className="text-3xl pb-8">
         {data.book.name} {data.chapter.number}
       </h1>
-      <div className="pb-8">
+      <div className="pb-20">
         {data.verses.map((verse, i) => (
           <Verse number={verse.number} text={verse.text} key={i} />
         ))}
