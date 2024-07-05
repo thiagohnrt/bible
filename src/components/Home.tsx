@@ -14,10 +14,10 @@ export default async function Home({ version = "nvi" }: HomeProps) {
       <div className="text-right">Hebreus 4:12</div>
       <div>
         <h1 className="text-2xl py-3">Versões</h1>
-        <Link href="/nvi" className="block py-1">
+        <Link href="/bible/nvi" className="block py-1">
           Nova Versão Internacional
         </Link>
-        <Link href="/acf" className="block py-1">
+        <Link href="/bible/acf" className="block py-1">
           Almeida Corrigida Fiel
         </Link>
       </div>

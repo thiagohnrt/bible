@@ -32,7 +32,7 @@ export default async function ChapterPage({
         </Link>
         <Link
           className="self-stretch flex-auto flex items-center"
-          href={`/${version}/${book}`}
+          href={`/bible/${version}/${book}`}
         >
           <div className="w-full h-8 text-center leading-8 bg-neutral-800 text-sm">
             {data.book.name} {data.chapter.number}

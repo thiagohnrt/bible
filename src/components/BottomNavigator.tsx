@@ -23,7 +23,7 @@ export default function BottomNavigator() {
           <RiHome5Line size={20} />
         )}
       </MenuItem>
-      <MenuItem url="/nvi" label="Bíblia">
+      <MenuItem url="/bible/nvi" label="Bíblia">
         {["/", "/more"].includes(pathname) ? (
           <RiBookLine size={20} />
         ) : (
