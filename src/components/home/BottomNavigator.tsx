@@ -9,10 +9,12 @@ import {
   RiMenuLine,
 } from "react-icons/ri";
 import Link from "next/link";
-import { ReactNode } from "react";
+import { ReactNode, useContext } from "react";
 import { usePathname } from "next/navigation";
+import { BibleContext } from "@/contexts/bibleContext";
 
 export default function BottomNavigator() {
+  const { version } = useContext(BibleContext);
   const pathname = usePathname();
   return (
     <footer className="h-[60px] z-10 dark:bg-neutral-950 bg-neutral-50 fixed left-0 bottom-0 right-0 border-t flex items-center justify-between">
@@ -23,7 +25,7 @@ export default function BottomNavigator() {
           <RiHome5Line size={20} />
         )}
       </MenuItem>
-      <MenuItem url="/bible/nvi" label="Bíblia">
+      <MenuItem url={`/bible/${version}`} label="Bíblia">
         {pathname.startsWith("/bible") ? (
           <RiBookFill size={20} />
         ) : (

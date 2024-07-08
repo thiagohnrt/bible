@@ -1,6 +1,6 @@
-import Verse from "@/components/Verse";
 import { api } from "@/services/api";
 import { ChapterProps } from "./layout";
+import Verse from "@/components/chapter/Verse";
 
 export default async function ChapterPage({
   params: { version, book, chapter },

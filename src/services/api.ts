@@ -1,4 +1,9 @@
-interface Book {
+export interface Version {
+  short: string;
+  name: string;
+}
+
+export interface Book {
   abbrev: {
     pt: string;
     en: string;
@@ -10,7 +15,7 @@ interface Book {
   testament: string;
 }
 
-interface Chapter {
+export interface Chapter {
   book: {
     abbrev: {
       pt: string;
@@ -33,7 +38,7 @@ interface Chapter {
   ];
 }
 
-interface Verse {
+export interface Verse {
   book: {
     abbrev: {
       pt: string;
@@ -64,6 +69,13 @@ async function request<T = any>(url: string): Promise<T> {
   throw new Error(response.statusText);
 }
 
+async function getVersions(): Promise<Version[]> {
+  return [
+    { short: "nvi", name: "Nova Versão Internacional" },
+    { short: "acf", name: "Almeida Corrigida Fiel" },
+  ];
+}
+
 async function getBooks() {
   return await request<Book[]>("books");
 }
@@ -87,6 +99,7 @@ async function getVerse(
 }
 
 export const api = {
+  getVersions,
   getBooks,
   getBook,
   getChapter,

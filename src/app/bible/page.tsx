@@ -1,5 +1,10 @@
+"use client";
+
+import { useContext } from "react";
 import VersionPage from "./[version]/page";
+import { BibleContext } from "@/contexts/bibleContext";
 
 export default function BiblePage() {
-  return <VersionPage params={{ version: "nvi" }} />;
+  const { version } = useContext(BibleContext);
+  return <VersionPage params={{ version }} />;
 }

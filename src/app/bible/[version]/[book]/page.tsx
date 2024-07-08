@@ -1,4 +1,4 @@
-import { Chapters } from "@/components/Chapters";
+import { Chapters } from "@/components/chapter/Chapters";
 import { api } from "@/services/api";
 
 export default async function BookPage({

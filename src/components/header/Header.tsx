@@ -4,6 +4,7 @@ import { BibleContext } from "@/contexts/bibleContext";
 import Link from "next/link";
 import { useContext } from "react";
 import { PiLeafFill } from "react-icons/pi";
+import { VersionChange } from "./VersionChange";
 
 export default function Header() {
   const { version } = useContext(BibleContext);
@@ -16,9 +17,11 @@ export default function Header() {
         </Link>
       </div>
       <div className="content-right">
-        <div className="border border-neutral-600 rounded-full active:bg-neutral-900 transition-colors px-3 py-1 text-sm uppercase">
-          {version}
-        </div>
+        <VersionChange>
+          <div className="border border-neutral-600 rounded-full active:bg-neutral-900 transition-colors px-3 py-1 text-sm uppercase">
+            {version}
+          </div>
+        </VersionChange>
       </div>
     </header>
   );
