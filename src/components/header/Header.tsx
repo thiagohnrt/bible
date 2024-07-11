@@ -1,13 +1,20 @@
 "use client";
 
-import { BibleContext } from "@/contexts/bibleContext";
 import Link from "next/link";
-import { useContext } from "react";
+import { useEffect, useState } from "react";
 import { PiLeafFill } from "react-icons/pi";
 import { VersionChange } from "./VersionChange";
+import { usePathname } from "next/navigation";
+import { getVersion } from "@/lib/utils";
 
 export default function Header() {
-  const { version } = useContext(BibleContext);
+  const path = usePathname();
+  const [version, setVersion] = useState("");
+
+  useEffect(() => {
+    setVersion(getVersion(path));
+  }, [path]);
+
   return (
     <header className="px-4 h-[60px] border-b flex items-center justify-between">
       <div className="content-left">
@@ -17,7 +24,7 @@ export default function Header() {
         </Link>
       </div>
       <div className="content-right">
-        <VersionChange>
+        <VersionChange className={version || "hidden"}>
           <div className="border border-neutral-600 rounded-full active:bg-neutral-900 transition-colors px-3 py-1 text-sm uppercase">
             {version}
           </div>

@@ -10,17 +10,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import { useCallback, useContext, useEffect, useState } from "react";
-import { BibleContext } from "@/contexts/bibleContext";
+import { useCallback, useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { getVersion } from "@/lib/utils";
 
 interface Props {
   children: React.ReactNode;
+  className?: string;
 }
 
-export function VersionChange({ children }: Props) {
+export function VersionChange({ children, className }: Props) {
   const [versions, setVersions] = useState<Version[]>([]);
-  const { version: versionCurrent, setVersion } = useContext(BibleContext);
   const path = usePathname();
   const router = useRouter();
 
@@ -34,13 +34,15 @@ export function VersionChange({ children }: Props) {
   }, [fetchVersions]);
 
   const onVersionSelected = (version: Version) => {
-    setVersion(version.short);
+    const versionCurrent = getVersion(path);
     router.push(path.replace(versionCurrent, version.short));
   };
 
   return (
     <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogTrigger asChild className={className}>
+        {children}
+      </DialogTrigger>
       <DialogContent className="flex flex-col h-lvh w-lvw">
         <DialogHeader>
           <DialogTitle>Versões</DialogTitle>
