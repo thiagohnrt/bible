@@ -10,6 +10,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Bíblia",
   description: "Bíblia",
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({
