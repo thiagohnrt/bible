@@ -10,22 +10,22 @@ export const runtime = "edge";
 
 export default function icon() {
   return new ImageResponse(
-    <PiLeafFill size={36} />,
-    // <div
-    //   style={{
-    //     fontSize: 24,
-    //     background: "black",
-    //     width: "100%",
-    //     height: "100%",
-    //     display: "flex",
-    //     alignItems: "center",
-    //     justifyContent: "center",
-    //     color: "white",
-    //     borderRadius: "5px",
-    //   }}
-    // >
-    //   B
-    // </div>
+    (
+      <div
+        style={{
+          fontSize: 28,
+          background: "white",
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          borderRadius: "5px",
+        }}
+      >
+        <PiLeafFill />
+      </div>
+    ),
     size
   );
 }
