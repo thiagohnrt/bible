@@ -1,18 +1,20 @@
 "use client";
 
-import { api, Version } from "@/services/api";
+import { api, Language, Translation } from "@/services/api";
 import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
 import { useCallback, useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { getVersion } from "@/lib/utils";
+import { getTranslation } from "@/lib/utils";
+import { IoLanguage } from "react-icons/io5";
+import { MdOutlineFilterList } from "react-icons/md";
+import { LanguageChange } from "./LanguageChange";
 
 interface Props {
   children: React.ReactNode;
@@ -20,22 +22,42 @@ interface Props {
 }
 
 export function VersionChange({ children, className }: Props) {
-  const [versions, setVersions] = useState<Version[]>([]);
+  const [language, setLanguage] = useState<Language | undefined>(
+    {} as Language
+  );
+  const [languages, setLanguages] = useState<Language[]>([]);
   const path = usePathname();
   const router = useRouter();
 
-  const fetchVersions = useCallback(async () => {
-    const data = await api.getVersions();
-    setVersions(data);
-  }, []);
+  const setLanguageCurrent = useCallback(
+    (languages: Language[]) => {
+      const translationCurrent = getTranslation(path);
+
+      const languageCurrent = languages.find(
+        (lang) =>
+          lang.translations.findIndex(
+            (translation) => translation.short_name === translationCurrent
+          ) > -1
+      );
+
+      setLanguage(languageCurrent);
+    },
+    [path]
+  );
+
+  const fetchLanguages = useCallback(async () => {
+    const data = await api.getLanguages();
+    setLanguages(data);
+    setLanguageCurrent(data);
+  }, [setLanguageCurrent]);
 
   useEffect(() => {
-    fetchVersions();
-  }, [fetchVersions]);
+    fetchLanguages();
+  }, [fetchLanguages]);
 
-  const onVersionSelected = (version: Version) => {
-    const versionCurrent = getVersion(path);
-    router.push(path.replace(versionCurrent, version.short));
+  const onTranslationSelected = (translation: Translation) => {
+    const translationCurrent = getTranslation(path);
+    router.push(path.replace(translationCurrent, translation.short_name));
   };
 
   return (
@@ -43,26 +65,47 @@ export function VersionChange({ children, className }: Props) {
       <DialogTrigger asChild className={className}>
         {children}
       </DialogTrigger>
-      <DialogContent className="flex flex-col h-lvh w-lvw">
-        <DialogHeader>
+      <DialogContent className="flex flex-col h-lvh w-lvw p-0">
+        <DialogHeader className="p-6 pb-3">
           <DialogTitle>Versões</DialogTitle>
-          <DialogDescription></DialogDescription>
+          <LanguageChange
+            languages={languages}
+            onLanguageSelected={setLanguage}
+          >
+            <div className="pt-4">
+              <div className="bg-primary/25 rounded-full flex justify-between gap-4 px-4 py-2 items-center">
+                <IoLanguage />
+                <label className="flex-auto">{language?.language}</label>
+                <MdOutlineFilterList />
+              </div>
+            </div>
+          </LanguageChange>
         </DialogHeader>
-        <div className="pt-3">
-          {versions.map((version, i) => {
-            return (
-              <DialogClose asChild key={i}>
-                <button
-                  type="button"
-                  onClick={() => onVersionSelected(version)}
-                  className="py-1 mb-1 flex justify-between gap-2 w-full outline-none"
-                >
-                  <span>{version.name}</span>
-                  <span className="uppercase opacity-50">{version.short}</span>
-                </button>
-              </DialogClose>
-            );
-          })}
+        <div className="p-6 pt-0 overflow-y-auto">
+          {languages
+            .filter((lang) => lang.language === language?.language)
+            .map((language, l) => {
+              return (
+                <div key={l}>
+                  {language.translations.map((translation, t) => {
+                    return (
+                      <DialogClose asChild key={t}>
+                        <button
+                          type="button"
+                          onClick={() => onTranslationSelected(translation)}
+                          className="py-1 mb-1 flex flex-col w-full text-left outline-none"
+                        >
+                          <span className="opacity-50">
+                            {translation.short_name}
+                          </span>
+                          <small>{translation.full_name}</small>
+                        </button>
+                      </DialogClose>
+                    );
+                  })}
+                </div>
+              );
+            })}
         </div>
       </DialogContent>
     </Dialog>

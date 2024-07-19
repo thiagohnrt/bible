@@ -9,7 +9,7 @@ interface Props {
 export default function VersionPage({ params: { version } }: Props) {
   return (
     <Suspense fallback={<Loading />}>
-      <Books version={version} />;
+      <Books version={version} />
     </Suspense>
   );
 }

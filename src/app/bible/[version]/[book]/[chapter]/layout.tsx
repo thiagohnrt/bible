@@ -3,7 +3,7 @@ import { api } from "@/services/api";
 import Link from "next/link";
 
 export interface ChapterProps {
-  params: { version: string; book: string; chapter: number };
+  params: { version: string; book: number; chapter: number };
 }
 
 interface Props extends ChapterProps {
@@ -14,11 +14,11 @@ export default async function ChapterLayout({
   children,
   params: { version, book, chapter },
 }: Props) {
-  const data = await api.getChapter(version, book, chapter);
+  const bookData = await api.getBook(version, book);
   return (
     <>
       {children}
-      <ChapterNavigation chapter={data} />
+      <ChapterNavigation version={version} book={bookData} chapter={chapter} />
     </>
   );
 }

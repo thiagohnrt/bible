@@ -12,21 +12,20 @@ interface Props {
 }
 
 export async function Books({ version }: Props) {
-  const books = await api.getBooks();
+  const books = await api.getBooks(version);
+
   return (
     <Accordion type="single" collapsible className="w-full">
-      {books.map((book, index) => {
+      {books.map((book, i) => {
         return (
-          <AccordionItem
-            value={"item-" + index}
-            key={index}
-            className="border-none"
-          >
-            <AccordionTrigger>{book.name}</AccordionTrigger>
+          <AccordionItem value={"item-" + i} key={i} className="border-none">
+            <AccordionTrigger className="text-left">
+              {book.name}
+            </AccordionTrigger>
             <AccordionContent>
               <Chapters
                 version={version}
-                book={book.abbrev.pt}
+                book={book.bookid}
                 total={book.chapters}
               />
             </AccordionContent>

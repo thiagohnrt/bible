@@ -1,107 +1,104 @@
-export interface Version {
-  short: string;
-  name: string;
+export interface Translation {
+  short_name: string;
+  full_name: string;
+  dir?: "rlt";
+}
+
+export interface Language {
+  language: string;
+  translations: Translation[];
+}
+
+export interface VersionBook {
+  [version: string]: Book[];
 }
 
 export interface Book {
-  abbrev: {
-    pt: string;
-    en: string;
-  };
-  author: string;
-  chapters: number;
-  group: string;
+  bookid: number;
   name: string;
-  testament: string;
-}
-
-export interface Chapter {
-  book: {
-    abbrev: {
-      pt: string;
-      en: string;
-    };
-    name: string;
-    author: string;
-    group: string;
-    version: string;
-  };
-  chapter: {
-    number: number;
-    verses: number;
-  };
-  verses: [
-    {
-      number: number;
-      text: string;
-    }
-  ];
+  chronorder: number;
+  chapters: number;
+  bookPrev?: Book;
+  bookNext?: Book;
 }
 
 export interface Verse {
-  book: {
-    abbrev: {
-      pt: string;
-      en: string;
-    };
-    name: string;
-    author: string;
-    group: string;
-    version: string;
-  };
-  chapter: number;
-  number: number;
+  pk: number;
+  verse: number;
   text: string;
+  comment?: string;
 }
 
-const baseUrl = "https://www.abibliadigital.com.br/api";
-
-async function request<T = any>(url: string): Promise<T> {
-  const response = await fetch(`${baseUrl}/${url}`, {
-    headers: {
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdHIiOiJXZWQgSnVuIDA1IDIwMjQgMjA6NTg6MjQgR01UKzAwMDAudGhpYWdvaGJob25vcmF0b0BnbWFpbC5jb20iLCJpYXQiOjE3MTc2MjExMDR9.VQmOzeIEbSRGOivhzw3yKyv5YlMrLkjv4lQanXxHeFc",
-    },
-  });
+async function apiBollsLife<T = any>(url: string): Promise<T> {
+  const response = await fetch(`https://bolls.life${url}`);
   if (response.status === 200) {
     return await response.json();
   }
   throw new Error(response.statusText);
 }
 
-async function getVersions(): Promise<Version[]> {
-  return [
-    { short: "nvi", name: "Nova Versão Internacional" },
-    { short: "acf", name: "Almeida Corrigida Fiel" },
-  ];
+async function getLanguages() {
+  return await apiBollsLife<Language[]>(
+    "/static/bolls/app/views/languages.json"
+  );
 }
 
-async function getBooks() {
-  return await request<Book[]>("books");
+async function getTranslation(version: string): Promise<Translation> {
+  const languages = await getLanguages();
+  let translation: Translation;
+  languages.some((language) => {
+    return language.translations.some((trltn) => {
+      translation = trltn;
+      return trltn.short_name === version;
+    });
+  });
+  return translation!;
 }
 
-async function getBook(abbrev: string) {
-  return await request<Book>(`books/${abbrev}`);
+async function getBooks(version: string) {
+  const versionBook = await apiBollsLife<VersionBook>(
+    `/static/bolls/app/views/translations_books.json`
+  );
+  return versionBook[version];
 }
 
-async function getChapter(version: string, abbrev: string, chapter: number) {
-  return await request<Chapter>(`verses/${version}/${abbrev}/${chapter}`);
+async function getBook(version: string, bookid: number): Promise<Book> {
+  const books = await getBooks(version);
+
+  const getById = (id: number) => {
+    return books.find((b) => b.bookid == id);
+  };
+
+  const book = getById(bookid)!;
+
+  return {
+    ...book,
+    bookPrev: getById(+bookid - 1),
+    bookNext: getById(+bookid + 1),
+  };
+}
+
+async function getVerses(version: string, bookid: number, chapter: number) {
+  return await apiBollsLife<Verse[]>(
+    `/get-chapter/${version}/${bookid}/${chapter}`
+  );
 }
 async function getVerse(
   version: string,
-  abbrev: string,
+  bookid: number,
   chapter: number,
   verse: number
 ) {
-  return await request<Verse>(
-    `verses/${version}/${abbrev}/${chapter}/${verse}`
+  return await apiBollsLife<Verse>(
+    `/get-verse/${version}/${bookid}/${chapter}/${verse}`
   );
 }
 
 export const api = {
-  getVersions,
+  getLanguages,
+  getTranslation,
   getBooks,
   getBook,
-  getChapter,
+  getVerses,
   getVerse,
 };

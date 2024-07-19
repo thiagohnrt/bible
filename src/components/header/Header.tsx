@@ -5,14 +5,14 @@ import { useEffect, useState } from "react";
 import { PiLeafFill } from "react-icons/pi";
 import { VersionChange } from "./VersionChange";
 import { usePathname } from "next/navigation";
-import { getVersion } from "@/lib/utils";
+import { getTranslation } from "@/lib/utils";
 
 export default function Header() {
   const path = usePathname();
   const [version, setVersion] = useState("");
 
   useEffect(() => {
-    setVersion(getVersion(path));
+    setVersion(getTranslation(path));
   }, [path]);
 
   return (
@@ -25,7 +25,7 @@ export default function Header() {
       </div>
       <div className="content-right">
         <VersionChange className={version || "hidden"}>
-          <div className="border border-neutral-600 rounded-full active:bg-neutral-900 transition-colors px-3 py-1 text-sm uppercase">
+          <div className="border border-neutral-600 rounded-full active:bg-neutral-900 transition-colors px-3 py-1 text-sm">
             {version}
           </div>
         </VersionChange>

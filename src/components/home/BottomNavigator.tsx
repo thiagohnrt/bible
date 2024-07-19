@@ -11,14 +11,14 @@ import {
 import Link from "next/link";
 import { ReactNode, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { getVersion } from "@/lib/utils";
+import { getTranslation } from "@/lib/utils";
 
 export default function BottomNavigator() {
   const pathname = usePathname();
-  const [version, setVersion] = useState("nvi");
+  const [version, setVersion] = useState("NVIPT");
 
   useEffect(() => {
-    setVersion(getVersion(pathname) || "nvi");
+    setVersion(getTranslation(pathname) || "NVIPT");
   }, [pathname]);
 
   return (

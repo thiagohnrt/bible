@@ -5,10 +5,10 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function getVersion(pathname: string): string {
+export function getTranslation(pathname: string): string {
   if (pathname.startsWith("/bible")) {
-    const version = pathname.substring(1).split("/")[1];
-    return version ?? "";
+    const translation = pathname.substring(1).split("/")[1];
+    return translation ?? "";
   }
   return "";
 }

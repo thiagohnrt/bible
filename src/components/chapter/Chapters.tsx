@@ -2,7 +2,7 @@ import Link from "next/link";
 
 interface ChaptersProps {
   version: string;
-  book: string;
+  book: number;
   total: number;
 }
 

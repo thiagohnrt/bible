@@ -1,14 +1,14 @@
-import { Version } from "@/services/api";
+import { Translation } from "@/services/api";
 import Link from "next/link";
 
 interface Props {
-  version: Version;
+  translation: Translation;
 }
 
-export function VersionLink({ version }: Props) {
+export function TranslationLink({ translation }: Props) {
   return (
-    <Link href={`/bible/${version.short}`} className="block py-1">
-      {version.name}
+    <Link href={`/bible/${translation.short_name}`} className="block py-1">
+      {translation.full_name}
     </Link>
   );
 }
