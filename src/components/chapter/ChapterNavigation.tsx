@@ -11,7 +11,10 @@ interface Props {
 
 export function ChapterNavigation({ version, book, chapter }: Props) {
   return (
-    <div className="h-[60px] px-2 z-20 dark:bg-neutral-950 bg-neutral-50 fixed left-0 bottom-[59px] right-0 border-t flex justify-between items-center">
+    <div
+      className="h-16 px-2 z-20 dark:bg-neutral-950 bg-neutral-50 fixed left-0 right-0 border-t flex justify-between items-center"
+      style={{ bottom: "calc(4rem - 1px)" }}
+    >
       <ChapterPrev version={version} book={book} chapter={chapter} />
       <ChapterBook version={version} book={book} chapter={chapter} />
       <ChapterNext version={version} book={book} chapter={chapter} />
@@ -26,8 +29,8 @@ function ChapterBook({ version, book, chapter }: Props) {
       href={`/bible/${version}/${book.bookid}`}
     >
       <div
-        className="w-full h-[45px] text-center bg-neutral-800 text-sm overflow-hidden"
-        style={{ lineHeight: "45px" }}
+        className="w-full h-14 text-center bg-neutral-800 text-sm overflow-hidden"
+        style={{ lineHeight: "3.5rem" }}
       >
         {book.name} {chapter}
       </div>
@@ -49,7 +52,7 @@ function ChapterPrev({ version, book, chapter }: Props) {
       href={linkPrev}
       className={cn("self-stretch flex items-center justify-end")}
     >
-      <div className="bg-neutral-800 rounded-l-full h-[45px] w-[45px]">
+      <div className="bg-neutral-800 rounded-l-full h-14 w-14">
         <div className="rounded-full h-full w-full flex items-center justify-center">
           <RiArrowLeftSLine
             size={18}
@@ -76,7 +79,7 @@ function ChapterNext({ version, book, chapter }: Props) {
       href={linkNext}
       className="self-stretch flex items-center justify-start"
     >
-      <div className="bg-neutral-800 rounded-r-full h-[45px] w-[45px]">
+      <div className="bg-neutral-800 rounded-r-full h-14 w-14">
         <div className="rounded-full h-full w-full flex items-center justify-center">
           <RiArrowRightSLine
             size={18}

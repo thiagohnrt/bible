@@ -16,16 +16,16 @@ export default function Header() {
   }, [path]);
 
   return (
-    <header className="px-4 h-[60px] border-b flex items-center justify-between">
+    <header className="px-4 h-16 border-b flex items-center justify-between">
       <div className="content-left">
         <Link href="/" className="flex flex-nowrap items-center gap-1">
           <PiLeafFill size={18} />
-          <h1>Bíblia</h1>
+          <h1 className="text-lg">Bíblia</h1>
         </Link>
       </div>
       <div className="content-right">
         <VersionChange className={version || "hidden"}>
-          <div className="border border-neutral-600 rounded-full active:bg-neutral-900 transition-colors px-3 py-1 text-sm">
+          <div className="border border-neutral-600 rounded-full active:bg-neutral-900 transition-colors px-3 py-1">
             {version}
           </div>
         </VersionChange>

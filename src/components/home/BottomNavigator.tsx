@@ -22,7 +22,7 @@ export default function BottomNavigator() {
   }, [pathname]);
 
   return (
-    <footer className="h-[60px] z-10 dark:bg-neutral-950 bg-neutral-50 fixed left-0 bottom-0 right-0 border-t flex items-center justify-between">
+    <footer className="h-16 z-10 dark:bg-neutral-950 bg-neutral-50 fixed left-0 bottom-0 right-0 border-t flex items-center justify-between">
       <MenuItem url="/" label="Início">
         {pathname === "/" ? (
           <RiHome5Fill size={20} />

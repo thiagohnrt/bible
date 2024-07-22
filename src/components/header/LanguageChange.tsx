@@ -39,7 +39,7 @@ export function LanguageChange({
               <DialogClose asChild key={i}>
                 <button
                   type="button"
-                  className="py-2 w-full text-left outline-none"
+                  className="py-3 w-full text-left outline-none"
                   onClick={() => onLanguageSelected(language)}
                 >
                   {language.language}
