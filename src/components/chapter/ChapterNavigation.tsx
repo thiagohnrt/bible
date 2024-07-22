@@ -29,7 +29,7 @@ function ChapterBook({ version, book, chapter }: Props) {
       href={`/bible/${version}/${book.bookid}`}
     >
       <div
-        className="w-full h-14 text-center bg-neutral-800 text-sm overflow-hidden"
+        className="w-full h-14 text-center bg-primary/15 text-sm overflow-hidden active:bg-primary/30 transition-colors"
         style={{ lineHeight: "3.5rem" }}
       >
         {book.name} {chapter}
@@ -52,8 +52,8 @@ function ChapterPrev({ version, book, chapter }: Props) {
       href={linkPrev}
       className={cn("self-stretch flex items-center justify-end")}
     >
-      <div className="bg-neutral-800 rounded-l-full h-14 w-14">
-        <div className="rounded-full h-full w-full flex items-center justify-center">
+      <div className="bg-primary/15 rounded-l-full h-14 w-14" style={{padding: 2}}>
+        <div className="rounded-full h-full w-full flex items-center justify-center active:bg-primary/30 transition-colors">
           <RiArrowLeftSLine
             size={18}
             className={linkPrev === "#" ? "hidden" : ""}
@@ -79,8 +79,8 @@ function ChapterNext({ version, book, chapter }: Props) {
       href={linkNext}
       className="self-stretch flex items-center justify-start"
     >
-      <div className="bg-neutral-800 rounded-r-full h-14 w-14">
-        <div className="rounded-full h-full w-full flex items-center justify-center">
+      <div className="bg-primary/15 rounded-r-full h-14 w-14" style={{padding: 2}}>
+        <div className="rounded-full h-full w-full flex items-center justify-center active:bg-primary/30 transition-colors">
           <RiArrowRightSLine
             size={18}
             className={linkNext === "#" ? "hidden" : ""}

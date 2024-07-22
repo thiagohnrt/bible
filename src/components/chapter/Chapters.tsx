@@ -16,7 +16,7 @@ export function Chapters({ version, book, total }: ChaptersProps) {
           <Link
             href={`/bible/${version}/${book}/${i + 1}`}
             style={{ aspectRatio: "1 / 1" }}
-            className="bg-zinc-800 aspect-square flex items-center justify-center rounded-sm"
+            className="bg-zinc-800 aspect-square flex items-center justify-center rounded-sm active:bg-primary/30 transition-colors"
             key={i}
           >
             {i + 1}
