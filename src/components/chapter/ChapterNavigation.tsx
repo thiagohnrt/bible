@@ -12,7 +12,7 @@ interface Props {
 export function ChapterNavigation({ version, book, chapter }: Props) {
   return (
     <div
-      className="h-16 px-2 z-20 dark:bg-neutral-950 bg-neutral-50 fixed left-0 right-0 border-t flex justify-between items-center"
+      className="h-20 px-2 z-20 dark:bg-neutral-950 bg-neutral-50 fixed left-0 right-0 border-t flex justify-between items-center"
       style={{ bottom: "calc(4rem - 1px)" }}
     >
       <ChapterPrev version={version} book={book} chapter={chapter} />
@@ -29,7 +29,7 @@ function ChapterBook({ version, book, chapter }: Props) {
       href={`/bible/${version}/${book.bookid}`}
     >
       <div
-        className="w-full h-14 text-center bg-primary/15 text-sm overflow-hidden active:bg-primary/30 transition-colors"
+        className="w-full h-14 text-center bg-primary/15 text-sm font-bold overflow-hidden active:bg-primary/30 transition-colors"
         style={{ lineHeight: "3.5rem" }}
       >
         {book.name} {chapter}
@@ -52,10 +52,13 @@ function ChapterPrev({ version, book, chapter }: Props) {
       href={linkPrev}
       className={cn("self-stretch flex items-center justify-end")}
     >
-      <div className="bg-primary/15 rounded-l-full h-14 w-14" style={{padding: 2}}>
+      <div
+        className="bg-primary/15 rounded-l-full h-14 w-14"
+        style={{ padding: 2 }}
+      >
         <div className="rounded-full h-full w-full flex items-center justify-center active:bg-primary/30 transition-colors">
           <RiArrowLeftSLine
-            size={18}
+            size={24}
             className={linkPrev === "#" ? "hidden" : ""}
           />
         </div>
@@ -79,10 +82,13 @@ function ChapterNext({ version, book, chapter }: Props) {
       href={linkNext}
       className="self-stretch flex items-center justify-start"
     >
-      <div className="bg-primary/15 rounded-r-full h-14 w-14" style={{padding: 2}}>
+      <div
+        className="bg-primary/15 rounded-r-full h-14 w-14"
+        style={{ padding: 2 }}
+      >
         <div className="rounded-full h-full w-full flex items-center justify-center active:bg-primary/30 transition-colors">
           <RiArrowRightSLine
-            size={18}
+            size={24}
             className={linkNext === "#" ? "hidden" : ""}
           />
         </div>
