@@ -12,13 +12,26 @@ import Link from "next/link";
 import { ReactNode, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { getTranslation } from "@/lib/utils";
+import { BIBLE_HISTORY } from "../header/Header";
 
 export default function BottomNavigator() {
   const pathname = usePathname();
   const [version, setVersion] = useState("NVIPT");
+  const [bibleLink, setBibleLink] = useState("");
 
   useEffect(() => {
     setVersion(getTranslation(pathname) || "NVIPT");
+  }, [pathname]);
+
+  useEffect(() => {
+    const history = localStorage.getItem(BIBLE_HISTORY);
+    const books = `/bible/${version}`;
+
+    if (history === pathname) {
+      setBibleLink(books);
+    } else {
+      setBibleLink(history || books);
+    }
   }, [pathname]);
 
   return (
@@ -30,7 +43,7 @@ export default function BottomNavigator() {
           <RiHome5Line size={20} />
         )}
       </MenuItem>
-      <MenuItem url={`/bible/${version}`} label="Bíblia">
+      <MenuItem url={bibleLink} label="Bíblia">
         {pathname.startsWith("/bible") ? (
           <RiBookFill size={20} />
         ) : (
@@ -58,6 +71,7 @@ function MenuItem({ label, url, children }: MenuItemProps) {
   return (
     <Link
       href={url}
+      title={url}
       className="flex flex-col flex-auto items-center self-stretch justify-center"
     >
       {children}

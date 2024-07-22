@@ -7,13 +7,18 @@ import { VersionChange } from "./VersionChange";
 import { usePathname } from "next/navigation";
 import { getTranslation } from "@/lib/utils";
 
+export const BIBLE_HISTORY = "bible_history";
+
 export default function Header() {
-  const path = usePathname();
+  const pathname = usePathname();
   const [version, setVersion] = useState("");
 
   useEffect(() => {
-    setVersion(getTranslation(path));
-  }, [path]);
+    setVersion(getTranslation(pathname));
+    if (pathname.startsWith("/bible")) {
+      localStorage.setItem(BIBLE_HISTORY, pathname);
+    }
+  }, [pathname]);
 
   return (
     <header className="px-6 h-16 border-b flex items-center justify-between">
