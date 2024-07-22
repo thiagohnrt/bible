@@ -73,7 +73,7 @@ export function VersionChange({ children, className }: Props) {
             onLanguageSelected={setLanguage}
           >
             <div className="pt-4">
-              <div className="bg-primary/25 rounded-full flex justify-between gap-4 px-4 py-2 items-center">
+              <div className="bg-primary/25 rounded-full flex justify-between gap-4 px-4 py-3 items-center">
                 <IoLanguage />
                 <label className="flex-auto">{language?.language}</label>
                 <MdOutlineFilterList />
@@ -93,12 +93,12 @@ export function VersionChange({ children, className }: Props) {
                         <button
                           type="button"
                           onClick={() => onTranslationSelected(translation)}
-                          className="py-1 mb-1 flex flex-col w-full text-left outline-none"
+                          className="py-2 mb-1 flex flex-col w-full text-left outline-none"
                         >
-                          <span className="opacity-50">
-                            {translation.short_name}
-                          </span>
-                          <small>{translation.full_name}</small>
+                          <span>{translation.short_name}</span>
+                          <small className="opacity-50">
+                            {translation.full_name}
+                          </small>
                         </button>
                       </DialogClose>
                     );
