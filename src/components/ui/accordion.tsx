@@ -20,6 +20,25 @@ const AccordionItem = React.forwardRef<
 ));
 AccordionItem.displayName = "AccordionItem";
 
+const AccordionItemFocus = React.forwardRef<
+  React.ElementRef<typeof AccordionItem>,
+  React.ComponentPropsWithoutRef<typeof AccordionItem>
+>(({ className, ...props }, ref) => {
+  const localRef = React.useRef<HTMLDivElement | null>(null);
+
+  const focus = () => {
+    const element = localRef.current;
+    if (element) {
+      setTimeout(() => {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+        element.focus();
+      }, 250);
+    }
+  };
+  return <AccordionItem ref={localRef} onClick={focus} {...props} />;
+});
+AccordionItemFocus.displayName = "AccordionItemFocus";
+
 const AccordionTrigger = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>
@@ -54,4 +73,10 @@ const AccordionContent = React.forwardRef<
 ));
 AccordionContent.displayName = AccordionPrimitive.Content.displayName;
 
-export { Accordion, AccordionItem, AccordionTrigger, AccordionContent };
+export {
+  Accordion,
+  AccordionItem,
+  AccordionItemFocus,
+  AccordionTrigger,
+  AccordionContent,
+};

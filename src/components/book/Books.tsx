@@ -2,7 +2,7 @@ import { api } from "@/services/api";
 import {
   Accordion,
   AccordionContent,
-  AccordionItem,
+  AccordionItemFocus,
   AccordionTrigger,
 } from "../ui/accordion";
 import { Chapters } from "../chapter/Chapters";
@@ -18,7 +18,11 @@ export async function Books({ version }: Props) {
     <Accordion type="single" collapsible className="w-full">
       {books.map((book, i) => {
         return (
-          <AccordionItem value={"item-" + i} key={i} className="border-none">
+          <AccordionItemFocus
+            value={"item-" + i}
+            key={i}
+            className="border-none"
+          >
             <AccordionTrigger className="text-left">
               {book.name}
             </AccordionTrigger>
@@ -29,7 +33,7 @@ export async function Books({ version }: Props) {
                 total={book.chapters}
               />
             </AccordionContent>
-          </AccordionItem>
+          </AccordionItemFocus>
         );
       })}
     </Accordion>
