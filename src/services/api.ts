@@ -29,6 +29,14 @@ export interface Verse {
   comment?: string;
 }
 
+async function apiNext<T = any>(path: string): Promise<T> {
+  const response = await fetch(`/api/bible?path=${path}`);
+  if (response.status === 200) {
+    return await response.json();
+  }
+  throw new Error(response.statusText);
+}
+
 async function apiBollsLife<T = any>(url: string): Promise<T> {
   const response = await fetch(`https://bolls.life${url}`);
   if (response.status === 200) {
@@ -38,9 +46,7 @@ async function apiBollsLife<T = any>(url: string): Promise<T> {
 }
 
 async function getLanguages() {
-  return await apiBollsLife<Language[]>(
-    "/static/bolls/app/views/languages.json"
-  );
+  return await apiBollsLife<Language[]>("/static/bolls/app/views/languages.json");
 }
 
 async function getTranslation(version: string): Promise<Translation> {
@@ -56,9 +62,7 @@ async function getTranslation(version: string): Promise<Translation> {
 }
 
 async function getBooks(version: string) {
-  const versionBook = await apiBollsLife<VersionBook>(
-    `/static/bolls/app/views/translations_books.json`
-  );
+  const versionBook = await apiBollsLife<VersionBook>(`/static/bolls/app/views/translations_books.json`);
   return versionBook[version];
 }
 
@@ -79,19 +83,10 @@ async function getBook(version: string, bookid: number): Promise<Book> {
 }
 
 async function getVerses(version: string, bookid: number, chapter: number) {
-  return await apiBollsLife<Verse[]>(
-    `/get-chapter/${version}/${bookid}/${chapter}`
-  );
+  return await apiNext<Verse[]>(`get-chapter/${version}/${bookid}/${chapter}`);
 }
-async function getVerse(
-  version: string,
-  bookid: number,
-  chapter: number,
-  verse: number
-) {
-  return await apiBollsLife<Verse>(
-    `/get-verse/${version}/${bookid}/${chapter}/${verse}`
-  );
+async function getVerse(version: string, bookid: number, chapter: number, verse: number) {
+  return await apiBollsLife<Verse>(`/get-verse/${version}/${bookid}/${chapter}/${verse}`);
 }
 
 export const api = {
