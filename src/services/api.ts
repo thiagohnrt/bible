@@ -61,6 +61,10 @@ async function getTranslation(version: string): Promise<Translation> {
   return translation!;
 }
 
+async function getTranslationData(version: string): Promise<Verse[]> {
+  return await apiBollsLife<Verse[]>(`/static/translations/${version}.json`);
+}
+
 async function getBooks(version: string) {
   const versionBook = await apiBollsLife<VersionBook>(`/static/bolls/app/views/translations_books.json`);
   return versionBook[version];
@@ -92,6 +96,7 @@ async function getVerse(version: string, bookid: number, chapter: number, verse:
 export const api = {
   getLanguages,
   getTranslation,
+  getTranslationData,
   getBooks,
   getBook,
   getVerses,

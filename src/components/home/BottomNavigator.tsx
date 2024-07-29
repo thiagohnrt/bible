@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  RiHome5Fill,
-  RiHome5Line,
-  RiBookFill,
-  RiBookLine,
-  RiMenuFill,
-  RiMenuLine,
-} from "react-icons/ri";
+import { RiHome5Fill, RiHome5Line, RiBookFill, RiBookLine, RiMenuFill, RiMenuLine } from "react-icons/ri";
 import Link from "next/link";
 import { ReactNode, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
@@ -32,30 +25,19 @@ export default function BottomNavigator() {
     } else {
       setBibleLink(history || books);
     }
-  }, [pathname]);
+  }, [pathname, version]);
 
   return (
-    <footer className="h-16 z-10 dark:bg-neutral-950 bg-neutral-50 fixed left-0 bottom-0 right-0 border-t flex items-center justify-between">
+    // dark:bg-neutral-950 bg-neutral-50
+    <footer className="h-16 z-10 bg-background fixed left-0 bottom-0 right-0 border-t flex items-center justify-between">
       <MenuItem url="/" label="Início">
-        {pathname === "/" ? (
-          <RiHome5Fill size={20} />
-        ) : (
-          <RiHome5Line size={20} />
-        )}
+        {pathname === "/" ? <RiHome5Fill size={20} /> : <RiHome5Line size={20} />}
       </MenuItem>
       <MenuItem url={bibleLink} label="Bíblia">
-        {pathname.startsWith("/bible") ? (
-          <RiBookFill size={20} />
-        ) : (
-          <RiBookLine size={20} />
-        )}
+        {pathname.startsWith("/bible") ? <RiBookFill size={20} /> : <RiBookLine size={20} />}
       </MenuItem>
       <MenuItem url="/more" label="Mais">
-        {pathname === "/more" ? (
-          <RiMenuFill size={20} />
-        ) : (
-          <RiMenuLine size={20} />
-        )}
+        {pathname === "/more" ? <RiMenuFill size={20} /> : <RiMenuLine size={20} />}
       </MenuItem>
     </footer>
   );
@@ -69,11 +51,7 @@ interface MenuItemProps {
 
 function MenuItem({ label, url, children }: MenuItemProps) {
   return (
-    <Link
-      href={url}
-      title={url}
-      className="flex flex-col flex-auto items-center self-stretch justify-center"
-    >
+    <Link href={url} title={url} className="flex flex-col flex-auto items-center self-stretch justify-center">
       {children}
       <label className="text-xs pt-1">{label}</label>
     </Link>

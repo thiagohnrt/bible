@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/header/Header";
 import { cn } from "@/lib/utils";
 import BottomNavigator from "@/components/home/BottomNavigator";
+import { BibleProvider } from "@/providers/bibleProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,9 +22,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn(inter.className, "dark")}>
-        <Header />
-        <main className="px-6 pt-3 pb-24 relative">{children}</main>
-        <BottomNavigator />
+        <BibleProvider>
+          <Header />
+          <main className="px-6 pt-3 pb-24 relative">{children}</main>
+          <BottomNavigator />
+        </BibleProvider>
       </body>
     </html>
   );
