@@ -1,3 +1,5 @@
+import { db } from "@/database/bibleDB";
+
 export interface Translation {
   short_name: string;
   full_name: string;
@@ -14,7 +16,8 @@ export interface VersionBook {
 }
 
 export interface Book {
-  bookid: number;
+  translation: string;
+  book: number;
   name: string;
   chronorder: number;
   chapters: number;
@@ -46,7 +49,11 @@ async function apiBollsLife<T = any>(url: string): Promise<T> {
 }
 
 async function getLanguages() {
-  return await apiBollsLife<Language[]>("/static/bolls/app/views/languages.json");
+  if (db.util.hasLanguagesSaved()) {
+    return await db.getLanguages();
+  } else {
+    return await apiBollsLife<Language[]>("/static/bolls/app/views/languages.json");
+  }
 }
 
 async function getTranslation(version: string): Promise<Translation> {
@@ -65,32 +72,40 @@ async function getTranslationData(version: string): Promise<Verse[]> {
   return await apiBollsLife<Verse[]>(`/static/translations/${version}.json`);
 }
 
-async function getBooks(version: string) {
-  const versionBook = await apiBollsLife<VersionBook>(`/static/bolls/app/views/translations_books.json`);
-  return versionBook[version];
+async function getBooks(translation: string): Promise<Book[]> {
+  if (db.util.hasTranslationSaved(translation)) {
+    return await db.getBooks(translation);
+  } else {
+    const versionBook = await apiBollsLife<VersionBook>(`/static/bolls/app/views/translations_books.json`);
+    return versionBook[translation].map<Book>((bookData: any) => ({ ...bookData, book: bookData.bookid, translation }));
+  }
 }
 
-async function getBook(version: string, bookid: number): Promise<Book> {
+async function getBook(version: string, book: number): Promise<Book> {
   const books = await getBooks(version);
 
   const getById = (id: number) => {
-    return books.find((b) => b.bookid == id);
+    return books.find((b) => b.book == id);
   };
 
-  const book = getById(bookid)!;
+  const bookData = getById(book)!;
 
   return {
-    ...book,
-    bookPrev: getById(+bookid - 1),
-    bookNext: getById(+bookid + 1),
+    ...bookData,
+    bookPrev: getById(+book - 1),
+    bookNext: getById(+book + 1),
   };
 }
 
-async function getVerses(version: string, bookid: number, chapter: number) {
-  return await apiNext<Verse[]>(`get-chapter/${version}/${bookid}/${chapter}`);
+async function getVerses(translation: string, book: number, chapter: number) {
+  if (db.util.hasTranslationSaved(translation)) {
+    return await db.getVerses(translation, +book, +chapter);
+  } else {
+    return await apiNext<Verse[]>(`get-chapter/${translation}/${book}/${chapter}`);
+  }
 }
-async function getVerse(version: string, bookid: number, chapter: number, verse: number) {
-  return await apiBollsLife<Verse>(`/get-verse/${version}/${bookid}/${chapter}/${verse}`);
+async function getVerse(version: string, book: number, chapter: number, verse: number) {
+  return await apiBollsLife<Verse>(`/get-verse/${version}/${book}/${chapter}/${verse}`);
 }
 
 export const api = {

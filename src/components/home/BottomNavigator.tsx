@@ -6,14 +6,15 @@ import { ReactNode, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { getTranslation } from "@/lib/utils";
 import { BIBLE_HISTORY } from "../header/Header";
+import { TRANSLATIONS_DEFAULT } from "@/constants/bible";
 
 export default function BottomNavigator() {
   const pathname = usePathname();
-  const [version, setVersion] = useState("NVIPT");
+  const [version, setVersion] = useState(TRANSLATIONS_DEFAULT);
   const [bibleLink, setBibleLink] = useState("");
 
   useEffect(() => {
-    setVersion(getTranslation(pathname) || "NVIPT");
+    setVersion(getTranslation(pathname) || TRANSLATIONS_DEFAULT);
   }, [pathname]);
 
   useEffect(() => {

@@ -43,7 +43,7 @@ export function Books({ version }: Props) {
           <AccordionItemFocus value={"item-" + i} key={i} className="border-none">
             <AccordionTrigger className="text-left">{book.name}</AccordionTrigger>
             <AccordionContent>
-              <Chapters version={version} book={book.bookid} total={book.chapters} />
+              <Chapters version={version} book={book.book} total={book.chapters} />
             </AccordionContent>
           </AccordionItemFocus>
         );

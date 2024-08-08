@@ -37,7 +37,7 @@ interface PropsChildren extends Props {
 
 function ChapterBook({ version, bookData: book, chapter }: PropsChildren) {
   return (
-    <Link className="self-stretch flex-auto flex items-center" href={`/bible/${version}/${book.bookid}`}>
+    <Link className="self-stretch flex-auto flex items-center" href={`/bible/${version}/${book.book}`}>
       <div
         className="w-full h-14 text-center bg-primary/15 text-sm font-bold overflow-hidden active:bg-primary/30 transition-colors"
         style={{ lineHeight: "3.5rem" }}
@@ -49,10 +49,10 @@ function ChapterBook({ version, bookData: book, chapter }: PropsChildren) {
 }
 
 function ChapterPrev({ version, bookData: book, chapter }: PropsChildren) {
-  let linkPrev = `/bible/${version}/${book.bookid}/${+chapter - 1}`;
+  let linkPrev = `/bible/${version}/${book.book}/${+chapter - 1}`;
   if (chapter == 1) {
     if (book.bookPrev) {
-      linkPrev = `/bible/${version}/${book.bookPrev.bookid}/${book.bookPrev.chapters}`;
+      linkPrev = `/bible/${version}/${book.bookPrev.book}/${book.bookPrev.chapters}`;
     } else {
       linkPrev = "#";
     }
@@ -69,10 +69,10 @@ function ChapterPrev({ version, bookData: book, chapter }: PropsChildren) {
 }
 
 function ChapterNext({ version, bookData: book, chapter }: PropsChildren) {
-  let linkNext = `/bible/${version}/${book.bookid}/${+chapter + 1}`;
+  let linkNext = `/bible/${version}/${book.book}/${+chapter + 1}`;
   if (book.chapters == chapter) {
     if (book.bookNext) {
-      linkNext = `/bible/${version}/${book.bookNext.bookid}/1`;
+      linkNext = `/bible/${version}/${book.bookNext.book}/1`;
     } else {
       linkNext = "#";
     }
