@@ -24,7 +24,7 @@ export default function RootLayout({
       <body className={cn(inter.className, "dark")}>
         <BibleProvider>
           <Header />
-          <main className="px-6 pt-3 pb-24 relative">{children}</main>
+          <main className="px-6 pt-6 pb-24 relative">{children}</main>
           <BottomNavigator />
         </BibleProvider>
       </body>

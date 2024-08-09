@@ -11,8 +11,6 @@ import { BibleContext } from "@/providers/bibleProvider";
 import { TRANSLATIONS_DEFAULT } from "@/constants/bible";
 import { db } from "@/database/bibleDB";
 
-export const BIBLE_HISTORY = "bible_history";
-
 export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
@@ -21,9 +19,6 @@ export default function Header() {
 
   useEffect(() => {
     setVersion(getTranslation(pathname));
-    if (pathname.startsWith("/bible")) {
-      localStorage.setItem(BIBLE_HISTORY, pathname);
-    }
   }, [pathname]);
 
   const onTranslationSelected = async (translation: Translation) => {

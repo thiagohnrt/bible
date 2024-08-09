@@ -5,8 +5,8 @@ import Link from "next/link";
 import { ReactNode, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { getTranslation } from "@/lib/utils";
-import { BIBLE_HISTORY } from "../header/Header";
-import { TRANSLATIONS_DEFAULT } from "@/constants/bible";
+import { BIBLE_HISTORY, TRANSLATIONS_DEFAULT } from "@/constants/bible";
+import { BibleHistory } from "@/app/bible/[version]/[book]/[chapter]/page";
 
 export default function BottomNavigator() {
   const pathname = usePathname();
@@ -18,13 +18,13 @@ export default function BottomNavigator() {
   }, [pathname]);
 
   useEffect(() => {
-    const history = localStorage.getItem(BIBLE_HISTORY);
+    const history: BibleHistory = JSON.parse(localStorage.getItem(BIBLE_HISTORY) ?? "{}");
     const books = `/bible/${version}`;
 
-    if (history === pathname) {
+    if (history.url === pathname) {
       setBibleLink(books);
     } else {
-      setBibleLink(history || books);
+      setBibleLink(history.url || books);
     }
   }, [pathname, version]);
 
