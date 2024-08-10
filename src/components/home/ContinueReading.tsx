@@ -29,13 +29,13 @@ export function ContinueReading({ className }: Props) {
     >
       <div className="flex justify-between">
         <p>Continue a leitura</p>
-        <p className="text-blue-700">Ver mais</p>
+        <p className="text-sm leading-6 font-bold">Ver mais</p>
       </div>
       <div className="pt-4">
-        <p>
+        <p className="text-lg font-bold pb-3">
           {bibleHistory.book} {bibleHistory.chapter}
         </p>
-        <Verse text={bibleHistory.firstVerse} className=" line-clamp-2" />
+        <Verse text={bibleHistory.firstVerse} className=" line-clamp-2 text-base leading-7" />
       </div>
     </Link>
   );
