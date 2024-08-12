@@ -21,7 +21,7 @@ export function ChapterNavigation({ version, book: bookId, chapter }: Props) {
 
   return (
     <div
-      className="h-20 px-2 z-20 dark:bg-neutral-950 bg-neutral-50 fixed left-0 right-0 border-t flex justify-between items-center"
+      className="h-20 px-2 z-20 bg-background fixed left-0 right-0 border-t flex justify-between items-center"
       style={{ bottom: "calc(4rem - 1px)" }}
     >
       <ChapterPrev version={version} book={bookId} bookData={book} chapter={chapter} />
@@ -39,7 +39,7 @@ function ChapterBook({ version, bookData: book, chapter }: PropsChildren) {
   return (
     <Link className="self-stretch flex-auto flex items-center" href={`/bible/${version}#${book.book}`}>
       <div
-        className="w-full h-14 text-center bg-primary/15 text-sm font-bold overflow-hidden active:bg-primary/30 transition-colors"
+        className="w-full h-14 text-center text-sm font-bold overflow-hidden bg-highlight-active"
         style={{ lineHeight: "3.5rem" }}
       >
         {book.name ? `${book.name} ${chapter}` : ""}
@@ -59,8 +59,8 @@ function ChapterPrev({ version, bookData: book, chapter }: PropsChildren) {
   }
   return (
     <Link href={linkPrev} className={cn("self-stretch flex items-center justify-end")}>
-      <div className="bg-primary/15 rounded-l-full h-14 w-14" style={{ padding: 2 }}>
-        <div className="rounded-full h-full w-full flex items-center justify-center active:bg-primary/30 transition-colors">
+      <div className="bg-highlight rounded-l-full h-14 w-14" style={{ padding: 2 }}>
+        <div className="rounded-full h-full w-full flex items-center justify-center bg-highlight-active">
           <RiArrowLeftSLine size={24} className={linkPrev === "#" ? "hidden" : ""} />
         </div>
       </div>
@@ -80,8 +80,8 @@ function ChapterNext({ version, bookData: book, chapter }: PropsChildren) {
   }
   return (
     <Link href={linkNext} className="self-stretch flex items-center justify-start">
-      <div className="bg-primary/15 rounded-r-full h-14 w-14" style={{ padding: 2 }}>
-        <div className="rounded-full h-full w-full flex items-center justify-center active:bg-primary/30 transition-colors">
+      <div className="bg-highlight rounded-r-full h-14 w-14" style={{ padding: 2 }}>
+        <div className="rounded-full h-full w-full flex items-center justify-center bg-highlight-active">
           <RiArrowRightSLine size={24} className={linkNext === "#" ? "hidden" : ""} />
         </div>
       </div>

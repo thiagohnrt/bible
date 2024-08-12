@@ -74,3 +74,10 @@
     @apply bg-background text-foreground;
   }
 }
+
+.bg-highlight {
+  @apply bg-neutral-100 dark:bg-neutral-900;
+}
+.bg-highlight-active {
+  @apply bg-neutral-100 active:bg-neutral-200 dark:bg-neutral-900 dark:active:bg-neutral-800 transition-colors;
+}

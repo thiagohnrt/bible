@@ -22,10 +22,7 @@ export function ContinueReading({ className }: Props) {
   }
 
   return (
-    <Link
-      href={bibleHistory.url}
-      className={cn("block bg-secondary/50 rounded-md p-4 active:bg-secondary/70 transition-colors", className)}
-    >
+    <Link href={bibleHistory.url} className={cn("block rounded-md p-4 bg-highlight-active", className)}>
       <div className="flex justify-between">
         <p>Continue a leitura</p>
         <p className="text-sm leading-6 font-bold">Ver mais</p>

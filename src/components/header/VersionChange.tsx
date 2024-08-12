@@ -53,7 +53,7 @@ export function VersionChange({ children, className, onTranslationSelected }: Pr
           <DialogTitle>Versões</DialogTitle>
           <LanguageChange languages={languages} onLanguageSelected={setLanguage}>
             <div className="pt-4">
-              <div className="bg-primary/25 rounded-full flex justify-between gap-4 px-4 py-3 items-center">
+              <div className="rounded-full flex justify-between gap-4 px-4 py-3 items-center bg-highlight-active">
                 <IoLanguage />
                 <label className="flex-auto">{language?.language}</label>
                 <MdOutlineFilterList />

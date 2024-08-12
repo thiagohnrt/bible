@@ -2,7 +2,7 @@
 
 import { api, Book, Translation, Verse as IVerse } from "@/services/api";
 import { ChapterProps } from "./layout";
-import { cn, getBibleHistory, setBibleHistory } from "@/lib/utils";
+import { cn, getBibleHistory, repeat, setBibleHistory } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import Verse from "@/components/chapter/Verse";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -64,8 +64,15 @@ export default function ChapterPage({ params: { version, book: bookId, chapter }
   if (!book) {
     return (
       <>
-        <Skeleton className="w-1/2 h-10" />
-        <Skeleton className="h-svh mt-10" />
+        <Skeleton className="w-1/2 h-10 mb-8 bg-highlight" />
+        {repeat(10, (i) => {
+          return (
+            <>
+              <Skeleton className="mt-2 h-28 bg-highlight" />
+              <Skeleton className="w-2/3 h-7 bg-highlight" />
+            </>
+          );
+        })}
       </>
     );
   }

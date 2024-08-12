@@ -6,6 +6,7 @@ import { Chapters } from "../chapter/Chapters";
 import { useEffect, useRef, useState } from "react";
 import { Skeleton } from "../ui/skeleton";
 import { usePathname } from "next/navigation";
+import { repeat } from "@/lib/utils";
 
 interface Props {
   version: string;
@@ -42,16 +43,13 @@ export function Books({ version }: Props) {
   if (!books.length) {
     return (
       <>
-        {"."
-          .repeat(66)
-          .split(".")
-          .map((v, i) => {
-            return (
-              <div className="py-4" key={i}>
-                <Skeleton className="h-6" />
-              </div>
-            );
-          })}
+        {repeat(66, (i) => {
+          return (
+            <div className="py-4" key={i}>
+              <Skeleton className="h-6 bg-highlight" />
+            </div>
+          );
+        })}
       </>
     );
   }

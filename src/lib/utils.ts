@@ -22,3 +22,10 @@ export const setBibleHistory = (data: BibleHistory): void => {
 export const getBibleHistory = (): BibleHistory => {
   return JSON.parse(localStorage.getItem(BIBLE_HISTORY) ?? "{}");
 };
+
+export const repeat = (count: number, callbackfn: (index: number) => void) => {
+  return "."
+    .repeat(count - 1)
+    .split(".")
+    .map((v, i) => callbackfn(i));
+};
