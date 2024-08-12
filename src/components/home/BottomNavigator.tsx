@@ -4,32 +4,32 @@ import { RiHome5Fill, RiHome5Line, RiBookFill, RiBookLine, RiMenuFill, RiMenuLin
 import Link from "next/link";
 import { ReactNode, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { getTranslation } from "@/lib/utils";
-import { BIBLE_HISTORY, TRANSLATIONS_DEFAULT } from "@/constants/bible";
-import { BibleHistory } from "@/app/bible/[version]/[book]/[chapter]/page";
+import { getBibleHistory, getTranslation } from "@/lib/utils";
+import { BIBLE_HISTORY_EVENT, TRANSLATIONS_DEFAULT } from "@/constants/bible";
 
 export default function BottomNavigator() {
   const pathname = usePathname();
-  const [version, setVersion] = useState(TRANSLATIONS_DEFAULT);
-  const [bibleLink, setBibleLink] = useState("");
+  const [bibleLink, setBibleLink] = useState(`/bible/${TRANSLATIONS_DEFAULT}`);
 
   useEffect(() => {
-    setVersion(getTranslation(pathname) || TRANSLATIONS_DEFAULT);
+    const translation = getTranslation(pathname) || TRANSLATIONS_DEFAULT;
+    const onChangeStorage = (event: Event) => {
+      const history = getBibleHistory();
+      let book = "";
+      if (history.book?.id) {
+        book = "#" + history.book.id;
+      }
+      setBibleLink(`/bible/${translation}${book}`);
+    };
+
+    window.addEventListener(BIBLE_HISTORY_EVENT, onChangeStorage);
+
+    return () => {
+      window.removeEventListener(BIBLE_HISTORY_EVENT, onChangeStorage);
+    };
   }, [pathname]);
 
-  useEffect(() => {
-    const history: BibleHistory = JSON.parse(localStorage.getItem(BIBLE_HISTORY) ?? "{}");
-    const books = `/bible/${version}`;
-
-    if (history.url === pathname) {
-      setBibleLink(books);
-    } else {
-      setBibleLink(history.url || books);
-    }
-  }, [pathname, version]);
-
   return (
-    // dark:bg-neutral-950 bg-neutral-50
     <footer className="h-16 z-10 bg-background fixed left-0 bottom-0 right-0 border-t flex items-center justify-between">
       <MenuItem url="/" label="Início">
         {pathname === "/" ? <RiHome5Fill size={20} /> : <RiHome5Line size={20} />}
@@ -52,7 +52,7 @@ interface MenuItemProps {
 
 function MenuItem({ label, url, children }: MenuItemProps) {
   return (
-    <Link href={url} title={url} className="flex flex-col flex-auto items-center self-stretch justify-center">
+    <Link href={url} className="flex flex-col flex-auto items-center self-stretch justify-center">
       {children}
       <label className="text-xs pt-1">{label}</label>
     </Link>

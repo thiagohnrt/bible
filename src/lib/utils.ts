@@ -1,3 +1,5 @@
+import { BibleHistory } from "@/app/bible/[version]/[book]/[chapter]/page";
+import { BIBLE_HISTORY, BIBLE_HISTORY_EVENT } from "@/constants/bible";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -12,3 +14,11 @@ export function getTranslation(pathname: string): string {
   }
   return "";
 }
+
+export const setBibleHistory = (data: BibleHistory): void => {
+  localStorage.setItem(BIBLE_HISTORY, JSON.stringify(data));
+  window.dispatchEvent(new Event(BIBLE_HISTORY_EVENT));
+};
+export const getBibleHistory = (): BibleHistory => {
+  return JSON.parse(localStorage.getItem(BIBLE_HISTORY) ?? "{}");
+};

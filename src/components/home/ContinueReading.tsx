@@ -1,10 +1,9 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn, getBibleHistory } from "@/lib/utils";
 import Verse from "../chapter/Verse";
 import { BibleHistory } from "@/app/bible/[version]/[book]/[chapter]/page";
 import Link from "next/link";
-import { BIBLE_HISTORY } from "@/constants/bible";
 import { useEffect, useState } from "react";
 
 interface Props {
@@ -15,7 +14,7 @@ export function ContinueReading({ className }: Props) {
   const [bibleHistory, setBibleHistory] = useState<BibleHistory>({} as BibleHistory);
 
   useEffect(() => {
-    setBibleHistory(JSON.parse(localStorage.getItem(BIBLE_HISTORY) ?? "{}"));
+    setBibleHistory(getBibleHistory());
   }, []);
 
   if (!bibleHistory.url) {
@@ -33,7 +32,7 @@ export function ContinueReading({ className }: Props) {
       </div>
       <div className="pt-4">
         <p className="text-lg font-bold pb-3">
-          {bibleHistory.book} {bibleHistory.chapter}
+          {bibleHistory.book.name} {bibleHistory.chapter}
         </p>
         <Verse text={bibleHistory.firstVerse} className=" line-clamp-2 text-base leading-7" />
       </div>

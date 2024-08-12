@@ -2,12 +2,11 @@
 
 import { api, Book, Translation, Verse as IVerse } from "@/services/api";
 import { ChapterProps } from "./layout";
-import { cn } from "@/lib/utils";
+import { cn, getBibleHistory, setBibleHistory } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import Verse from "@/components/chapter/Verse";
 import { Skeleton } from "@/components/ui/skeleton";
 import { usePathname } from "next/navigation";
-import { BIBLE_HISTORY } from "@/constants/bible";
 
 interface Data {
   translation: Translation;
@@ -30,7 +29,10 @@ async function getData(version: string, bookId: number, chapter: number): Promis
 
 export interface BibleHistory {
   url: string;
-  book: string;
+  book: {
+    id: number;
+    name: string;
+  };
   chapter: number;
   firstVerse: string;
 }
@@ -40,14 +42,18 @@ export default function ChapterPage({ params: { version, book: bookId, chapter }
   const [{ translation, book, verses }, setData] = useState<Data>({} as Data);
 
   useEffect(() => {
-    if (book) {
+    const history = getBibleHistory();
+    if (book && history.url !== pathname) {
       const data: BibleHistory = {
         url: pathname,
-        book: book.name,
+        book: {
+          id: book.book,
+          name: book.name,
+        },
         chapter,
         firstVerse: verses[0].text,
       };
-      localStorage.setItem(BIBLE_HISTORY, JSON.stringify(data));
+      setBibleHistory(data);
     }
   }, [pathname, book, chapter, verses]);
 

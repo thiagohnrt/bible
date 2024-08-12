@@ -3,8 +3,9 @@
 import { api, Book } from "@/services/api";
 import { Accordion, AccordionContent, AccordionItemFocus, AccordionTrigger } from "../ui/accordion";
 import { Chapters } from "../chapter/Chapters";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Skeleton } from "../ui/skeleton";
+import { usePathname } from "next/navigation";
 
 interface Props {
   version: string;
@@ -12,12 +13,31 @@ interface Props {
 
 export function Books({ version }: Props) {
   const [books, setBooks] = useState<Book[]>([]);
+  const [bookId, setBookId] = useState("");
+  const itemRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const pathname = usePathname();
 
   useEffect(() => {
     if (!books.length) {
       api.getBooks(version).then((data) => setBooks(data));
     }
   }, [books, version]);
+
+  useEffect(() => {
+    if (books.length) {
+      const bookId = location.hash.substring(1);
+      if (itemRefs.current[`${bookId}`]) {
+        setTimeout(
+          (ref) => {
+            setBookId(bookId);
+            ref?.click();
+          },
+          250,
+          itemRefs.current[`${bookId}`]
+        );
+      }
+    }
+  }, [books, pathname]);
 
   if (!books.length) {
     return (
@@ -37,10 +57,17 @@ export function Books({ version }: Props) {
   }
 
   return (
-    <Accordion type="single" collapsible className="w-full">
+    <Accordion type="single" collapsible className="w-full" value={bookId} onValueChange={setBookId}>
       {books.map((book, i) => {
         return (
-          <AccordionItemFocus value={"item-" + i} key={i} className="border-none">
+          <AccordionItemFocus
+            ref={(el) => {
+              itemRefs.current[`${book.book}`] = el;
+            }}
+            value={`${book.book}`}
+            key={i}
+            className="border-none"
+          >
             <AccordionTrigger className="text-left">{book.name}</AccordionTrigger>
             <AccordionContent>
               <Chapters version={version} book={book.book} total={book.chapters} />

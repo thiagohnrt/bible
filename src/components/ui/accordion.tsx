@@ -22,6 +22,15 @@ const AccordionItemFocus = React.forwardRef<
 >(({ ...props }, ref) => {
   const localRef = React.useRef<HTMLDivElement | null>(null);
 
+  const setRef = (el: HTMLDivElement | null) => {
+    localRef.current = el;
+    if (typeof ref === "function") {
+      ref(el);
+    } else if (ref) {
+      (ref as React.MutableRefObject<HTMLDivElement | null>).current = el;
+    }
+  };
+
   const focus = () => {
     const element = localRef.current;
     if (element) {
@@ -31,7 +40,8 @@ const AccordionItemFocus = React.forwardRef<
       }, 250);
     }
   };
-  return <AccordionItem ref={localRef} onClick={focus} {...props} />;
+
+  return <AccordionItem ref={setRef} onClick={focus} {...props} />;
 });
 AccordionItemFocus.displayName = "AccordionItemFocus";
 
