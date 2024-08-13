@@ -25,7 +25,7 @@ export function LanguageChange({ children, languages, onLanguageSelected, classN
       </DialogTrigger>
       <DialogContent className="flex flex-col h-svh w-lvw p-0">
         <DialogHeader className="p-6">
-          <DialogTitle>Linguages</DialogTitle>
+          <DialogTitle>Linguagens</DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>
         <div className="p-6 pt-0 overflow-y-auto">
