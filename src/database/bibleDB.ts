@@ -96,6 +96,7 @@ export const db = {
   getVerses,
   getBooks,
   getLanguages,
+  getTranslationsSaved: getTranslations,
   util: {
     hasTranslationSaved,
     hasLanguagesSaved,

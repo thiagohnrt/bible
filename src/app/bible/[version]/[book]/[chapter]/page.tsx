@@ -67,10 +67,10 @@ export default function ChapterPage({ params: { version, book: bookId, chapter }
         <Skeleton className="w-1/2 h-10 mb-8 bg-highlight" />
         {repeat(10, (i) => {
           return (
-            <>
+            <div key={i}>
               <Skeleton className="mt-2 h-28 bg-highlight" />
               <Skeleton className="w-2/3 h-7 bg-highlight" />
-            </>
+            </div>
           );
         })}
       </>
