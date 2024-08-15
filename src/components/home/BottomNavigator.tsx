@@ -52,7 +52,10 @@ interface MenuItemProps {
 
 function MenuItem({ label, url, children }: MenuItemProps) {
   return (
-    <Link href={url} className="flex flex-col flex-auto items-center self-stretch justify-center">
+    <Link
+      href={url}
+      className="flex flex-col flex-1 items-center self-stretch justify-center active:bg-neutral-200 dark:active:bg-neutral-800 transition-colors"
+    >
       {children}
       <label className="text-xs pt-1">{label}</label>
     </Link>
