@@ -19,7 +19,7 @@ interface Props {
 
 export function LanguageChange({ children, languages, onLanguageSelected, className }: Props) {
   return (
-    <Dialog>
+    <Dialog id="languages">
       <DialogTrigger asChild className={className}>
         {children}
       </DialogTrigger>

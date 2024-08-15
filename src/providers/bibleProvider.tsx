@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, ReactNode, Dispatch, SetStateAction, useContext, useState } from "react";
+import { createContext, ReactNode, Dispatch, SetStateAction, useState } from "react";
 
 export const BibleContext = createContext<{
   isLoading: boolean;

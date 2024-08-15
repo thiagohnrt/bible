@@ -11,13 +11,14 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { useCallback, useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
-import { getTranslation } from "@/lib/utils";
+import { usePathname, useRouter } from "next/navigation";
+import { cn, getTranslation } from "@/lib/utils";
 import { IoLanguage } from "react-icons/io5";
 import { MdOutlineFilterList } from "react-icons/md";
 import { LanguageChange } from "./LanguageChange";
-import { HiDownload } from "react-icons/hi";
+import { HiCheck, HiDownload } from "react-icons/hi";
 import { db } from "@/database/bibleDB";
+import { TRANSLATIONS_DEFAULT } from "@/constants/bible";
 
 interface Props {
   children: React.ReactNode;
@@ -25,15 +26,20 @@ interface Props {
   onTranslationSelected: (translation: Translation) => void;
 }
 
-interface Languages {
+interface Data {
+  translationCurrent: string;
   downloaded: Translation[];
   languages: Language[];
 }
 
 export function VersionChange({ children, className, onTranslationSelected }: Props) {
-  const [language, setLanguage] = useState<Language | undefined>({} as Language);
-  const [languages, setLanguages] = useState<Languages>({ downloaded: [], languages: [] });
   const pathname = usePathname();
+  const [language, setLanguage] = useState<Language | undefined>({} as Language);
+  const [data, setData] = useState<Data>({
+    translationCurrent: TRANSLATIONS_DEFAULT,
+    downloaded: [],
+    languages: [],
+  });
 
   const setLanguageCurrent = useCallback(
     (languages: Language[]) => {
@@ -49,8 +55,10 @@ export function VersionChange({ children, className, onTranslationSelected }: Pr
   );
 
   const fetchLanguages = useCallback(async () => {
+    const translationCurrent = getTranslation(pathname);
     const languages = await api.getLanguages();
     const saved = db.getTranslationsSaved();
+
     const downloaded = languages
       .map((language) =>
         language.translations
@@ -58,12 +66,14 @@ export function VersionChange({ children, className, onTranslationSelected }: Pr
           .filter((translation) => translation != null)
       )
       .flat();
-    setLanguages({
+
+    setData({
+      translationCurrent,
       downloaded,
       languages,
     });
     setLanguageCurrent(languages);
-  }, [setLanguageCurrent]);
+  }, [pathname, setLanguageCurrent]);
 
   useEffect(() => {
     fetchLanguages();
@@ -72,11 +82,8 @@ export function VersionChange({ children, className, onTranslationSelected }: Pr
   const sortTranslations = (translations: Translation[]) =>
     translations.sort((a, b) => a.short_name.localeCompare(b.short_name));
 
-  const checkTranslationDownloaded = (translation: string): string =>
-    db.util.hasTranslationSaved(translation) ? "hidden" : "";
-
   return (
-    <Dialog>
+    <Dialog id="translations">
       <DialogTrigger asChild className={className}>
         {children}
       </DialogTrigger>
@@ -84,7 +91,7 @@ export function VersionChange({ children, className, onTranslationSelected }: Pr
         <DialogHeader className="p-6 pb-3">
           <DialogTitle>Versões</DialogTitle>
           <DialogDescription></DialogDescription>
-          <LanguageChange languages={languages.languages} onLanguageSelected={setLanguage}>
+          <LanguageChange languages={data.languages} onLanguageSelected={setLanguage}>
             <div className="pt-4">
               <div className="rounded-full flex justify-between gap-4 px-4 py-3 items-center bg-highlight-active">
                 <IoLanguage />
@@ -95,10 +102,10 @@ export function VersionChange({ children, className, onTranslationSelected }: Pr
           </LanguageChange>
         </DialogHeader>
         <div className="p-6 pt-0 overflow-y-auto">
-          {languages.downloaded.length ? (
+          {data.downloaded.length ? (
             <>
-              <h2 className="text-lg font-bold mb-2">Minhas versões ({languages.downloaded.length})</h2>
-              {sortTranslations(languages.downloaded).map((translation, t) => {
+              <h2 className="text-lg font-bold mb-2">Minhas versões ({data.downloaded.length})</h2>
+              {sortTranslations(data.downloaded).map((translation, t) => {
                 return (
                   <DialogClose asChild key={t}>
                     <button
@@ -108,7 +115,7 @@ export function VersionChange({ children, className, onTranslationSelected }: Pr
                     >
                       <div className="w-full flex justify-between items-end">
                         <span>{translation.short_name}</span>
-                        <HiDownload className={checkTranslationDownloaded(translation.short_name)} />
+                        {translation.short_name === data.translationCurrent ? <HiCheck /> : <></>}
                       </div>
                       <small className="opacity-50">{translation.full_name}</small>
                     </button>
@@ -119,7 +126,7 @@ export function VersionChange({ children, className, onTranslationSelected }: Pr
           ) : (
             <></>
           )}
-          {languages.languages
+          {data.languages
             .filter((lang) => lang.language === language?.language)
             .map((language, l) => {
               return (
@@ -136,7 +143,7 @@ export function VersionChange({ children, className, onTranslationSelected }: Pr
                           >
                             <div className="w-full flex justify-between items-end">
                               <span>{translation.short_name}</span>
-                              <HiDownload className={checkTranslationDownloaded(translation.short_name)} />
+                              {!db.util.hasTranslationSaved(translation.short_name) ? <HiDownload /> : <></>}
                             </div>
                             <small className="opacity-50">{translation.full_name}</small>
                           </button>
