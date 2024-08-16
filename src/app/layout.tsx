@@ -6,6 +6,8 @@ import { cn } from "@/lib/utils";
 import BottomNavigator from "@/components/home/BottomNavigator";
 import { BibleProvider } from "@/providers/bibleProvider";
 import { DialogProvider } from "@/providers/dialogProvider";
+import { CookieConsent } from "@/components/home/CookieConsent";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,6 +32,8 @@ export default function RootLayout({
             <BottomNavigator />
           </DialogProvider>
         </BibleProvider>
+        <Toaster />
+        <CookieConsent />
       </body>
     </html>
   );
