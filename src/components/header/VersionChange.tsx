@@ -27,37 +27,37 @@ interface Props {
 }
 
 interface Data {
-  translationCurrent: string;
+  current: {
+    language: Language | undefined;
+    translation: string;
+  };
   downloaded: Translation[];
   languages: Language[];
 }
 
 export function VersionChange({ children, className, onTranslationSelected }: Props) {
   const pathname = usePathname();
-  const [language, setLanguage] = useState<Language | undefined>({} as Language);
   const [data, setData] = useState<Data>({
-    translationCurrent: TRANSLATIONS_DEFAULT,
+    current: {
+      language: {} as Language,
+      translation: "",
+    },
     downloaded: [],
     languages: [],
   });
 
-  const setLanguageCurrent = useCallback(
-    (languages: Language[]) => {
-      const translationCurrent = getTranslation(pathname);
-
-      const languageCurrent = languages.find(
-        (lang) => lang.translations.findIndex((translation) => translation.short_name === translationCurrent) > -1
-      );
-
-      setLanguage(languageCurrent);
-    },
-    [pathname]
-  );
-
   const fetchLanguages = useCallback(async () => {
     const translationCurrent = getTranslation(pathname);
+    if (!translationCurrent) {
+      return;
+    }
+
     const languages = await api.getLanguages();
     const saved = db.getTranslationsSaved();
+
+    const languageCurrent = languages.find(
+      (lang) => lang.translations.findIndex((translation) => translation.short_name === translationCurrent) > -1
+    );
 
     const downloaded = languages
       .map((language) =>
@@ -68,16 +68,22 @@ export function VersionChange({ children, className, onTranslationSelected }: Pr
       .flat();
 
     setData({
-      translationCurrent,
+      current: {
+        language: languageCurrent,
+        translation: translationCurrent,
+      },
       downloaded,
       languages,
     });
-    setLanguageCurrent(languages);
-  }, [pathname, setLanguageCurrent]);
+  }, [pathname]);
 
   useEffect(() => {
     fetchLanguages();
   }, [fetchLanguages]);
+
+  const setLanguage = (language: Language) => {
+    setData({ ...data, current: { ...data.current, language } });
+  };
 
   const sortTranslations = (translations: Translation[]) =>
     translations.sort((a, b) => a.short_name.localeCompare(b.short_name));
@@ -91,11 +97,11 @@ export function VersionChange({ children, className, onTranslationSelected }: Pr
         <DialogHeader className="p-6 pb-3">
           <DialogTitle>Versões</DialogTitle>
           <DialogDescription></DialogDescription>
-          <LanguageChange languages={data.languages} onLanguageSelected={setLanguage}>
+          <LanguageChange languages={data.languages} current={data.current.language} onLanguageSelected={setLanguage}>
             <div className="pt-4">
               <div className="rounded-full flex justify-between gap-4 px-4 py-3 items-center bg-highlight-active">
                 <IoLanguage />
-                <label className="flex-auto">{language?.language}</label>
+                <label className="flex-auto">{data.current.language?.language}</label>
                 <MdOutlineFilterList />
               </div>
             </div>
@@ -115,7 +121,7 @@ export function VersionChange({ children, className, onTranslationSelected }: Pr
                     >
                       <div className="w-full flex justify-between items-end">
                         <span>{translation.short_name}</span>
-                        {translation.short_name === data.translationCurrent ? <HiCheck /> : <></>}
+                        {translation.short_name === data.current.translation ? <HiCheck /> : <></>}
                       </div>
                       <small className="opacity-50">{translation.full_name}</small>
                     </button>
@@ -127,7 +133,7 @@ export function VersionChange({ children, className, onTranslationSelected }: Pr
             <></>
           )}
           {data.languages
-            .filter((lang) => lang.language === language?.language)
+            .filter((lang) => lang.language === data.current.language?.language)
             .map((language, l) => {
               return (
                 <div key={l}>

@@ -8,16 +8,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import { Dispatch, SetStateAction } from "react";
+import { HiCheck } from "react-icons/hi";
 
 interface Props {
   children: React.ReactNode;
   languages: Language[];
-  onLanguageSelected: Dispatch<SetStateAction<Language | undefined>> | (() => void);
+  current: Language | undefined;
+  onLanguageSelected: (language: Language) => void;
   className?: string;
 }
 
-export function LanguageChange({ children, languages, onLanguageSelected, className }: Props) {
+export function LanguageChange({ children, languages, current, onLanguageSelected, className }: Props) {
   return (
     <Dialog id="languages">
       <DialogTrigger asChild className={className}>
@@ -29,19 +30,25 @@ export function LanguageChange({ children, languages, onLanguageSelected, classN
           <DialogDescription></DialogDescription>
         </DialogHeader>
         <div className="p-6 pt-0 overflow-y-auto">
-          {languages.map((language, i) => {
-            return (
-              <DialogClose asChild key={i}>
-                <button
-                  type="button"
-                  className="py-3 w-full text-left outline-none"
-                  onClick={() => onLanguageSelected(language)}
-                >
-                  {language.language}
-                </button>
-              </DialogClose>
-            );
-          })}
+          {languages
+            .sort((a, b) => a.language.localeCompare(b.language))
+            .sort((a, b) => (a.language === current?.language ? -1 : 1))
+            .map((language, i) => {
+              return (
+                <DialogClose asChild key={i}>
+                  <button
+                    type="button"
+                    className="py-3 w-full text-left outline-none"
+                    onClick={() => onLanguageSelected(language)}
+                  >
+                    <div className="w-full flex justify-between items-center">
+                      <span>{language.language}</span>
+                      {language.language === current?.language ? <HiCheck /> : <></>}
+                    </div>
+                  </button>
+                </DialogClose>
+              );
+            })}
         </div>
       </DialogContent>
     </Dialog>
