@@ -32,16 +32,8 @@ export interface Verse {
   comment?: string;
 }
 
-async function apiNext<T = any>(path: string): Promise<T> {
+async function apiBible<T = any>(path: string): Promise<T> {
   const response = await fetch(`/api/bible?path=${path}`);
-  if (response.status === 200) {
-    return await response.json();
-  }
-  throw new Error(response.statusText);
-}
-
-async function apiBollsLife<T = any>(url: string): Promise<T> {
-  const response = await fetch(`https://bolls.life${url}`);
   if (response.status === 200) {
     return await response.json();
   }
@@ -52,7 +44,7 @@ async function getLanguages() {
   if (db.util.hasLanguagesSaved()) {
     return await db.getLanguages();
   } else {
-    return await apiBollsLife<Language[]>("/static/bolls/app/views/languages.json");
+    return await apiBible<Language[]>("/static/bolls/app/views/languages.json");
   }
 }
 
@@ -69,14 +61,14 @@ async function getTranslation(version: string): Promise<Translation> {
 }
 
 async function getTranslationData(version: string): Promise<Verse[]> {
-  return await apiBollsLife<Verse[]>(`/static/translations/${version}.json`);
+  return await apiBible<Verse[]>(`/static/translations/${version}.json`);
 }
 
 async function getBooks(translation: string): Promise<Book[]> {
   if (db.util.hasTranslationSaved(translation)) {
     return await db.getBooks(translation);
   } else {
-    const versionBook = await apiBollsLife<VersionBook>(`/static/bolls/app/views/translations_books.json`);
+    const versionBook = await apiBible<VersionBook>(`/static/bolls/app/views/translations_books.json`);
     return versionBook[translation].map<Book>((bookData: any) => ({ ...bookData, book: bookData.bookid, translation }));
   }
 }
@@ -101,11 +93,11 @@ async function getVerses(translation: string, book: number, chapter: number) {
   if (db.util.hasTranslationSaved(translation)) {
     return await db.getVerses(translation, +book, +chapter);
   } else {
-    return await apiNext<Verse[]>(`get-chapter/${translation}/${book}/${chapter}`);
+    return await apiBible<Verse[]>(`/get-chapter/${translation}/${book}/${chapter}`);
   }
 }
 async function getVerse(version: string, book: number, chapter: number, verse: number) {
-  return await apiBollsLife<Verse>(`/get-verse/${version}/${book}/${chapter}/${verse}`);
+  return await apiBible<Verse>(`/get-verse/${version}/${book}/${chapter}/${verse}`);
 }
 
 export const api = {
