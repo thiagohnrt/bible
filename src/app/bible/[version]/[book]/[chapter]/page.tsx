@@ -82,7 +82,7 @@ export default function ChapterPage({ params: { version, book: bookId, chapter }
       <h1 className={cn("text-3xl pb-8", translation.dir ? "text-right" : "")}>
         {book.name} {chapter}
       </h1>
-      <div className="pb-20" dir={translation.dir}>
+      <div className="pb-20 verses" dir={translation.dir}>
         {verses.map((verse, i) => (
           <Verse number={verse.verse} text={verse.text} key={i} />
         ))}
