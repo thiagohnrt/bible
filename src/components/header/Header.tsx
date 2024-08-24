@@ -52,7 +52,7 @@ export default function Header() {
       </div>
       <div className="content-right">
         <VersionChange className={version || "hidden"} onTranslationSelected={onTranslationSelected}>
-          <div className="border border-neutral-600 rounded-full active:bg-primary/30 transition-colors px-3 py-1">
+          <div className="border border-neutral-600 rounded-full active:bg-primary/30 transition-colors px-3 py-1 cursor-pointer">
             {version}
           </div>
         </VersionChange>

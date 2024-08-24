@@ -99,7 +99,7 @@ export function VersionChange({ children, className, onTranslationSelected }: Pr
           <DialogDescription></DialogDescription>
           <LanguageChange languages={data.languages} current={data.current.language} onLanguageSelected={setLanguage}>
             <div className="pt-4">
-              <div className="rounded-full flex justify-between gap-4 px-4 py-3 items-center bg-highlight-active">
+              <div className="rounded-full flex justify-between gap-4 px-4 py-3 items-center bg-highlight-active cursor-pointer [&>*]:cursor-pointer">
                 <IoLanguage />
                 <label className="flex-auto">{data.current.language?.language}</label>
                 <MdOutlineFilterList />
