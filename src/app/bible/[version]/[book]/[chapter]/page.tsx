@@ -4,9 +4,11 @@ import { api, Book, Translation, Verse as IVerse } from "@/services/api";
 import { ChapterProps } from "./layout";
 import { cn, getBibleHistory, repeat, setBibleHistory } from "@/lib/utils";
 import { useEffect, useState } from "react";
-import Verse from "@/components/chapter/Verse";
 import { Skeleton } from "@/components/ui/skeleton";
 import { usePathname } from "next/navigation";
+import { ChapterDrawer } from "@/components/chapter/ChapterDrawer";
+import { ChapterProvider } from "@/providers/chapterProvider";
+import VerseAction from "@/components/chapter/VerseAction";
 
 interface Data {
   translation: Translation;
@@ -78,15 +80,16 @@ export default function ChapterPage({ params: { version, book: bookId, chapter }
   }
 
   return (
-    <>
+    <ChapterProvider>
+      <ChapterDrawer book={book} chapter={chapter} />
       <h1 className={cn("text-3xl pb-8", translation.dir ? "text-right" : "")}>
         {book.name} {chapter}
       </h1>
-      <div className="pb-20 verses" dir={translation.dir}>
+      <div className="pb-20" dir={translation.dir}>
         {verses.map((verse, i) => (
-          <Verse number={verse.verse} text={verse.text} key={i} />
+          <VerseAction data={verse} key={i} />
         ))}
       </div>
-    </>
+    </ChapterProvider>
   );
 }
