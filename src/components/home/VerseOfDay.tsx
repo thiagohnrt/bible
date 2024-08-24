@@ -1,8 +1,9 @@
 import { TRANSLATIONS_DEFAULT } from "@/constants/bible";
 import Verse from "../chapter/Verse";
+import { Verse as IVerse } from "@/services/api";
 
-async function apiBollsLife<T = any>(url: string): Promise<T> {
-  const response = await fetch(`https://bolls.life${url}`);
+async function apiBible<T = any>(url: string): Promise<T> {
+  const response = await fetch(`${process.env.APP_URL}/api/bible?path=${url}`);
   if (response.status === 200) {
     return await response.json();
   }
@@ -14,7 +15,11 @@ interface Props {
 }
 
 export async function VerseOfDay({ className }: Props) {
-  const verse = await apiBollsLife(`/get-verse/${TRANSLATIONS_DEFAULT}/${58}/${4}/${12}`);
+  const verse = await apiBible<IVerse>(`/get-verse/${TRANSLATIONS_DEFAULT}/${58}/${4}/${12}`);
+
+  if (!verse) {
+    return <></>;
+  }
 
   return (
     <div className={className}>
