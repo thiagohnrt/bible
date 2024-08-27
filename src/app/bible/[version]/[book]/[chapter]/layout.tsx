@@ -1,7 +1,12 @@
 import { ChapterNavigation } from "@/components/chapter/ChapterNavigation";
 
 export interface ChapterProps {
-  params: { version: string; book: number; chapter: number };
+  params: {
+    version: string;
+    book: number;
+    chapter: number;
+    verse?: string;
+  };
 }
 
 interface Props extends ChapterProps {

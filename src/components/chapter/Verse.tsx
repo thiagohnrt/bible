@@ -15,6 +15,7 @@ interface VerseProps {
 export default function Verse({ number, text, comment = false, onClick, className, style }: VerseProps) {
   return (
     <div
+      id={`verse-${number}`}
       data-verse={number}
       onClick={onClick}
       className={cn(font.className, "text-lg leading-9", !comment ? "[&>sup]:hidden" : "", className)}

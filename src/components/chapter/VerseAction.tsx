@@ -15,7 +15,7 @@ interface VerseProps {
   className?: string;
 }
 
-export default function VerseAction({ data }: VerseProps) {
+export default function VerseAction({ data, className }: VerseProps) {
   const { verses, setVerses, setVerseComment } = useContext(ChapterContext);
   const [isSelected, setSelected] = useState(false);
   const { verse, text, comment } = data;
@@ -44,7 +44,11 @@ export default function VerseAction({ data }: VerseProps) {
       <Verse
         number={verse}
         text={text}
-        className={cn("flex-auto", isSelected ? "underline decoration-dashed decoration-1 underline-offset-4" : "")}
+        className={cn(
+          className,
+          "flex-auto",
+          isSelected ? "underline decoration-dashed decoration-1 underline-offset-4" : ""
+        )}
         onClick={() => setSelected(!isSelected)}
       />
       <div className="flex flex-grow-0 flex-shrink-0 basis-8">

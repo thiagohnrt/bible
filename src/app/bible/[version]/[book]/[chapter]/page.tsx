@@ -10,6 +10,7 @@ import { VerseDrawer } from "@/components/chapter/VerseDrawer";
 import { ChapterProvider } from "@/providers/chapterProvider";
 import VerseAction from "@/components/chapter/VerseAction";
 import { CommentDrawer } from "@/components/chapter/CommentDrawer";
+// import { unescape } from "querystring";
 
 interface Data {
   translation: Translation;
@@ -41,9 +42,10 @@ export interface BibleHistory {
   translation: string;
 }
 
-export default function ChapterPage({ params: { version, book: bookId, chapter } }: ChapterProps) {
+export default function ChapterPage({ params: { version, book: bookId, chapter, verse } }: ChapterProps) {
   const pathname = usePathname();
   const [{ translation, book, verses }, setData] = useState<Data>({} as Data);
+  const [firstVerse, lastVerse] = verse?.split("-").map((v) => +v) ?? [];
 
   useEffect(() => {
     const history = getBibleHistory();
@@ -66,6 +68,13 @@ export default function ChapterPage({ params: { version, book: bookId, chapter }
     getData(version, bookId, chapter).then((data) => setData(data));
   }, [bookId, chapter, version]);
 
+  useEffect(() => {
+    if (verses?.length && verse) {
+      const num = decodeURIComponent(verse).split(",")[0].split("-")[0];
+      document.querySelector(`#verse-${num}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, [verses, verse]);
+
   if (!book) {
     return (
       <>
@@ -82,14 +91,44 @@ export default function ChapterPage({ params: { version, book: bookId, chapter }
     );
   }
 
+  const isVerseInInterval = (verse: number, interval?: string): boolean => {
+    if (!interval) {
+      return false;
+    }
+
+    const ranges = decodeURIComponent(interval)
+      .split(",")
+      .map((range) => range.trim());
+
+    for (const range of ranges) {
+      if (range.includes("-")) {
+        const [start, end] = range.split("-").map(Number);
+        if (verse >= start && verse <= end) {
+          return true;
+        }
+      } else {
+        const singleNum = Number(range);
+        if (verse == singleNum) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  };
+
   return (
     <ChapterProvider>
       <h1 className={cn("text-3xl pb-8", translation.dir ? "text-right" : "")}>
         {book.name} {chapter}
       </h1>
       <div className="pb-20" dir={translation.dir}>
-        {verses.map((verse, i) => (
-          <VerseAction data={verse} key={i} />
+        {verses.map((data, i) => (
+          <VerseAction
+            data={data}
+            className={isVerseInInterval(data.verse, verse) ? "bg-neutral-100 dark:bg-neutral-900" : ""}
+            key={i}
+          />
         ))}
       </div>
       <VerseDrawer book={book} chapter={chapter} />
