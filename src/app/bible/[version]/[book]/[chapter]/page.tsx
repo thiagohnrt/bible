@@ -38,6 +38,7 @@ export interface BibleHistory {
   };
   chapter: number;
   firstVerse: string;
+  translation: string;
 }
 
 export default function ChapterPage({ params: { version, book: bookId, chapter } }: ChapterProps) {
@@ -55,10 +56,11 @@ export default function ChapterPage({ params: { version, book: bookId, chapter }
         },
         chapter,
         firstVerse: verses[0].text,
+        translation: translation.short_name,
       };
       setBibleHistory(data);
     }
-  }, [pathname, book, chapter, verses]);
+  }, [pathname, book, chapter, verses, translation]);
 
   useEffect(() => {
     getData(version, bookId, chapter).then((data) => setData(data));

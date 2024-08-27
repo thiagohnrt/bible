@@ -29,7 +29,7 @@ export function ContinueReading({ className }: Props) {
       </div>
       <div className="pt-4">
         <p className="text-lg font-bold pb-3">
-          {bibleHistory.book.name} {bibleHistory.chapter}
+          {bibleHistory.book.name} {bibleHistory.chapter} - {bibleHistory.translation}
         </p>
         <Verse text={bibleHistory.firstVerse} className=" line-clamp-2 text-base leading-7" />
       </div>
