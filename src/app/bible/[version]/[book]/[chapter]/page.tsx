@@ -6,9 +6,10 @@ import { cn, getBibleHistory, repeat, setBibleHistory } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { usePathname } from "next/navigation";
-import { ChapterDrawer } from "@/components/chapter/ChapterDrawer";
+import { VerseDrawer } from "@/components/chapter/VerseDrawer";
 import { ChapterProvider } from "@/providers/chapterProvider";
 import VerseAction from "@/components/chapter/VerseAction";
+import { CommentDrawer } from "@/components/chapter/CommentDrawer";
 
 interface Data {
   translation: Translation;
@@ -81,7 +82,6 @@ export default function ChapterPage({ params: { version, book: bookId, chapter }
 
   return (
     <ChapterProvider>
-      <ChapterDrawer book={book} chapter={chapter} />
       <h1 className={cn("text-3xl pb-8", translation.dir ? "text-right" : "")}>
         {book.name} {chapter}
       </h1>
@@ -90,6 +90,8 @@ export default function ChapterPage({ params: { version, book: bookId, chapter }
           <VerseAction data={verse} key={i} />
         ))}
       </div>
+      <VerseDrawer book={book} chapter={chapter} />
+      <CommentDrawer book={book} chapter={chapter} />
     </ChapterProvider>
   );
 }

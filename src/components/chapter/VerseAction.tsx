@@ -15,8 +15,8 @@ interface VerseProps {
   className?: string;
 }
 
-export default function VerseAction({ data, className }: VerseProps) {
-  const { verses, setVerses } = useContext(ChapterContext);
+export default function VerseAction({ data }: VerseProps) {
+  const { verses, setVerses, setVerseComment } = useContext(ChapterContext);
   const [isSelected, setSelected] = useState(false);
   const { verse, text, comment } = data;
 
@@ -40,15 +40,22 @@ export default function VerseAction({ data, className }: VerseProps) {
   }, [verses]);
 
   return (
-    <div className="flex justify-between">
+    <div className="flex gap-2 justify-between -mr-6">
       <Verse
         number={verse}
         text={text}
+        className={cn("flex-auto", isSelected ? "underline decoration-dashed decoration-1 underline-offset-4" : "")}
         onClick={() => setSelected(!isSelected)}
-        className={cn(isSelected ? "underline decoration-dashed decoration-1 underline-offset-4" : "")}
-        style={{ width: "calc(100% - 18px)" }}
       />
-      {comment ? <TfiCommentAlt size={12} className="mt-3" /> : <></>}
+      <div className="flex flex-grow-0 flex-shrink-0 basis-8">
+        {comment ? (
+          <div className="flex justify-center flex-1 pt-3" onClick={() => setVerseComment(data)}>
+            <TfiCommentAlt size={12} />
+          </div>
+        ) : (
+          <></>
+        )}
+      </div>
     </div>
   );
 }

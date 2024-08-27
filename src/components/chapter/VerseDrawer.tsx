@@ -1,26 +1,16 @@
 "use client";
 
-import { ReactNode, useContext } from "react";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "../ui/drawer";
 import { ChapterContext } from "@/providers/chapterProvider";
 import { Book, Verse } from "@/services/api";
-import { cn } from "@/lib/utils";
+import { ReactNode, useContext } from "react";
+import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from "../ui/drawer";
 
 interface Props {
   book: Book;
   chapter: number;
 }
 
-export function ChapterDrawer({ book, chapter }: Props) {
+export function VerseDrawer({ book, chapter }: Props) {
   const { verses, setVerses } = useContext(ChapterContext);
 
   const formatVerses = (data: Verse[]): string => {
@@ -46,7 +36,6 @@ export function ChapterDrawer({ book, chapter }: Props) {
 
   return (
     <Drawer open={verses.length > 0} onClose={() => setVerses([])} modal={false}>
-      <DrawerTrigger asChild></DrawerTrigger>
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>
