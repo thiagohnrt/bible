@@ -6,6 +6,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { getBibleHistory, getTranslation } from "@/lib/utils";
 import { BIBLE_HISTORY_EVENT, TRANSLATIONS_DEFAULT } from "@/constants/bible";
+import { TbMenuDeep } from "react-icons/tb";
 
 export default function BottomNavigator() {
   const pathname = usePathname();
@@ -38,7 +39,7 @@ export default function BottomNavigator() {
         {pathname.startsWith("/bible") ? <RiBookFill size={20} /> : <RiBookLine size={20} />}
       </MenuItem>
       <MenuItem url="/more" label="Mais">
-        {pathname === "/more" ? <RiMenuFill size={20} /> : <RiMenuLine size={20} />}
+        <TbMenuDeep size={20} />
       </MenuItem>
     </footer>
   );

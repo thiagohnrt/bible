@@ -1,6 +1,13 @@
 "use client";
 
+import { db } from "@/database/bibleDB";
+import { getTranslation } from "@/lib/utils";
 import { api, Language, Translation } from "@/services/api";
+import { usePathname } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
+import { HiCheck, HiDownload } from "react-icons/hi";
+import { IoLanguage } from "react-icons/io5";
+import { MdOutlineFilterList } from "react-icons/md";
 import {
   Dialog,
   DialogClose,
@@ -10,15 +17,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import { useCallback, useEffect, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
-import { cn, getTranslation } from "@/lib/utils";
-import { IoLanguage } from "react-icons/io5";
-import { MdOutlineFilterList } from "react-icons/md";
 import { LanguageChange } from "./LanguageChange";
-import { HiCheck, HiDownload } from "react-icons/hi";
-import { db } from "@/database/bibleDB";
-import { TRANSLATIONS_DEFAULT } from "@/constants/bible";
 
 interface Props {
   children: React.ReactNode;
