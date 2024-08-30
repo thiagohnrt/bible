@@ -1,4 +1,4 @@
-import { TRANSLATIONS_DEFAULT } from "@/constants/bible";
+import { TRANSLATION_DEFAULT } from "@/constants/bible";
 import Verse from "../chapter/Verse";
 import { Verse as IVerse } from "@/services/api";
 
@@ -15,7 +15,7 @@ interface Props {
 }
 
 export async function VerseOfDay({ className }: Props) {
-  const translation = TRANSLATIONS_DEFAULT;
+  const translation = TRANSLATION_DEFAULT;
   const verse = await apiBible<IVerse>(`/get-verse/${translation}/${58}/${4}/${12}`);
 
   if (!verse) {

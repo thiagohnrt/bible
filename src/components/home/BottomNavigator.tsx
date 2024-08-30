@@ -5,15 +5,15 @@ import Link from "next/link";
 import { ReactNode, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { getBibleHistory, getTranslation } from "@/lib/utils";
-import { BIBLE_HISTORY_EVENT, TRANSLATIONS_DEFAULT } from "@/constants/bible";
+import { EVENT_BIBLE_HISTORY, TRANSLATION_DEFAULT } from "@/constants/bible";
 import { TbMenuDeep } from "react-icons/tb";
 
 export default function BottomNavigator() {
   const pathname = usePathname();
-  const [bibleLink, setBibleLink] = useState(`/bible/${TRANSLATIONS_DEFAULT}`);
+  const [bibleLink, setBibleLink] = useState(`/bible/${TRANSLATION_DEFAULT}`);
 
   useEffect(() => {
-    const translation = getTranslation(pathname) || TRANSLATIONS_DEFAULT;
+    const translation = getTranslation(pathname) || TRANSLATION_DEFAULT;
     const onChangeStorage = (event: Event) => {
       const history = getBibleHistory();
       let book = "";
@@ -23,10 +23,10 @@ export default function BottomNavigator() {
       setBibleLink(`/bible/${translation}${book}`);
     };
 
-    window.addEventListener(BIBLE_HISTORY_EVENT, onChangeStorage);
+    window.addEventListener(EVENT_BIBLE_HISTORY, onChangeStorage);
 
     return () => {
-      window.removeEventListener(BIBLE_HISTORY_EVENT, onChangeStorage);
+      window.removeEventListener(EVENT_BIBLE_HISTORY, onChangeStorage);
     };
   }, [pathname]);
 

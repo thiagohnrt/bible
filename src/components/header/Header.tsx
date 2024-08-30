@@ -8,7 +8,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { getTranslation } from "@/lib/utils";
 import { Translation } from "@/services/api";
 import { BibleContext } from "@/providers/bibleProvider";
-import { TRANSLATIONS_DEFAULT } from "@/constants/bible";
+import { TRANSLATION_DEFAULT } from "@/constants/bible";
 import { db } from "@/database/bibleDB";
 
 export default function Header() {
@@ -32,7 +32,7 @@ export default function Header() {
   useEffect(() => {
     const handleAppInstalled = (event: Event) => {
       db.saveLanguages();
-      db.saveTranslation(getTranslation(pathname) || TRANSLATIONS_DEFAULT);
+      db.saveTranslation(getTranslation(pathname) || TRANSLATION_DEFAULT);
     };
 
     window.addEventListener("appinstalled", handleAppInstalled);

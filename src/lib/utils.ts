@@ -1,5 +1,5 @@
 import { BibleHistory } from "@/app/bible/[version]/[book]/[chapter]/page";
-import { BIBLE_HISTORY, BIBLE_HISTORY_EVENT } from "@/constants/bible";
+import { KEY_BIBLE_HISTORY, EVENT_BIBLE_HISTORY } from "@/constants/bible";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -16,11 +16,11 @@ export function getTranslation(pathname: string): string {
 }
 
 export const setBibleHistory = (data: BibleHistory): void => {
-  localStorage.setItem(BIBLE_HISTORY, JSON.stringify(data));
-  window.dispatchEvent(new Event(BIBLE_HISTORY_EVENT));
+  localStorage.setItem(KEY_BIBLE_HISTORY, JSON.stringify(data));
+  window.dispatchEvent(new Event(EVENT_BIBLE_HISTORY));
 };
 export const getBibleHistory = (): BibleHistory => {
-  return JSON.parse(localStorage.getItem(BIBLE_HISTORY) ?? "{}");
+  return JSON.parse(localStorage.getItem(KEY_BIBLE_HISTORY) ?? "{}");
 };
 
 export const repeat = (count: number, callbackfn: (index: number) => void) => {
