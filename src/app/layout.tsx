@@ -8,6 +8,7 @@ import { BibleProvider } from "@/providers/bibleProvider";
 import { DialogProvider } from "@/providers/dialogProvider";
 import { CookieConsent } from "@/components/home/CookieConsent";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/providers/themeProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,16 +25,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(inter.className, "dark")}>
-        <BibleProvider>
-          <DialogProvider>
-            <Header />
-            <main className="px-6 pt-6 pb-24 relative">{children}</main>
-            <BottomNavigator />
-          </DialogProvider>
-        </BibleProvider>
-        <Toaster />
-        <CookieConsent />
+      <body className={cn(inter.className)}>
+        <ThemeProvider attribute="class" defaultTheme="system">
+          <BibleProvider>
+            <DialogProvider>
+              <Header />
+              <main className="px-6 pt-6 pb-24 relative">{children}</main>
+              <BottomNavigator />
+            </DialogProvider>
+          </BibleProvider>
+          <Toaster />
+          <CookieConsent />
+        </ThemeProvider>
       </body>
     </html>
   );
