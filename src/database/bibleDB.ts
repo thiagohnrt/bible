@@ -1,8 +1,7 @@
 import { api, Book, Language, Verse } from "@/services/api";
 import { IDB } from "./indexedDB";
+import { KEY_LANGUAGES_SAVED, KEY_TRANSLATION_SAVED } from "@/constants/bible";
 
-const TRANSLATION_SAVED = "translations_saved";
-const LANGUAGES_SAVED = "languages_saved";
 interface TranslationsSaved {
   [translation: string]: "pending" | "done";
 }
@@ -68,7 +67,7 @@ const saveTranslation = async (translation: string) => {
 const saveLanguages = async () => {
   const languages = await api.getLanguages();
   await idb.addAll("languages", languages);
-  localStorage.setItem(LANGUAGES_SAVED, "true");
+  localStorage.setItem(KEY_LANGUAGES_SAVED, "true");
 };
 
 const getVerses = async (translation: string, book: number, chapter: number) => {
@@ -83,12 +82,12 @@ const getLanguages = async () => {
   return idb.getAll<Language>("languages");
 };
 
-const getTranslations = (): TranslationsSaved => JSON.parse(localStorage.getItem(TRANSLATION_SAVED) || "{}");
-const setTranslations = (item: TranslationsSaved) => localStorage.setItem(TRANSLATION_SAVED, JSON.stringify(item));
+const getTranslations = (): TranslationsSaved => JSON.parse(localStorage.getItem(KEY_TRANSLATION_SAVED) || "{}");
+const setTranslations = (item: TranslationsSaved) => localStorage.setItem(KEY_TRANSLATION_SAVED, JSON.stringify(item));
 const hasTranslationSaved = (translation: string): boolean => {
   return getTranslations()[translation] === "done";
 };
-const hasLanguagesSaved = (): boolean => localStorage.getItem(LANGUAGES_SAVED) === "true";
+const hasLanguagesSaved = (): boolean => localStorage.getItem(KEY_LANGUAGES_SAVED) === "true";
 
 export const db = {
   saveTranslation,
