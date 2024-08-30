@@ -5,7 +5,7 @@ import { MdInfoOutline, MdShare } from "react-icons/md";
 import { RiBookLine } from "react-icons/ri";
 
 export default function MorePage() {
-  const iconSize = 28;
+  const iconSize = 20;
   return (
     <div className="flex flex-col -mx-6">
       <ItemMenu label="Versões" icon={<IoLanguage size={iconSize} />} />
