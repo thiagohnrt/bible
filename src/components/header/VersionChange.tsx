@@ -1,10 +1,10 @@
 "use client";
 
 import { db } from "@/database/bibleDB";
-import { getTranslation } from "@/lib/utils";
+import { getTranslationStorage, setTranslationStorage } from "@/lib/utils";
+import { BibleContext } from "@/providers/bibleProvider";
 import { api, Language, Translation } from "@/services/api";
-import { usePathname } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { HiCheck, HiDownload } from "react-icons/hi";
 import { IoLanguage } from "react-icons/io5";
 import { MdOutlineFilterList } from "react-icons/md";
@@ -35,7 +35,7 @@ interface Data {
 }
 
 export function VersionChange({ children, className, onTranslationSelected }: Props) {
-  const pathname = usePathname();
+  const { translation: translationContext, setTranslation: setTranslationContext } = useContext(BibleContext);
   const [data, setData] = useState<Data>({
     current: {
       language: {} as Language,
@@ -45,17 +45,13 @@ export function VersionChange({ children, className, onTranslationSelected }: Pr
     languages: [],
   });
 
-  const fetchLanguages = useCallback(async () => {
-    const translationCurrent = getTranslation(pathname);
-    if (!translationCurrent) {
-      return;
-    }
-
+  const fetchLanguages = useCallback(async (translationCurrent: Translation) => {
     const languages = await api.getLanguages();
     const saved = db.getTranslationsSaved();
 
     const languageCurrent = languages.find(
-      (lang) => lang.translations.findIndex((translation) => translation.short_name === translationCurrent) > -1
+      (lang) =>
+        lang.translations.findIndex((translation) => translation.short_name === translationCurrent.short_name) > -1
     );
 
     const downloaded = languages
@@ -69,16 +65,18 @@ export function VersionChange({ children, className, onTranslationSelected }: Pr
     setData({
       current: {
         language: languageCurrent,
-        translation: translationCurrent,
+        translation: translationCurrent.short_name,
       },
       downloaded,
       languages,
     });
-  }, [pathname]);
+  }, []);
 
   useEffect(() => {
-    fetchLanguages();
-  }, [fetchLanguages]);
+    if (translationContext) {
+      fetchLanguages(translationContext);
+    }
+  }, [fetchLanguages, translationContext]);
 
   const setLanguage = (language: Language) => {
     setData({ ...data, current: { ...data.current, language } });
@@ -86,6 +84,12 @@ export function VersionChange({ children, className, onTranslationSelected }: Pr
 
   const sortTranslations = (translations: Translation[]) =>
     translations.sort((a, b) => a.short_name.localeCompare(b.short_name));
+
+  const handleTranslationSelected = (translation: Translation) => {
+    setTranslationContext(translation);
+    setTranslationStorage(translation);
+    onTranslationSelected(translation);
+  };
 
   return (
     <Dialog id="translations">
@@ -115,7 +119,7 @@ export function VersionChange({ children, className, onTranslationSelected }: Pr
                   <DialogClose asChild key={t}>
                     <button
                       type="button"
-                      onClick={() => onTranslationSelected(translation)}
+                      onClick={() => handleTranslationSelected(translation)}
                       className="py-2 mb-1 flex flex-col w-full text-left outline-none"
                     >
                       <div className="w-full flex justify-between items-end">
@@ -143,7 +147,7 @@ export function VersionChange({ children, className, onTranslationSelected }: Pr
                         <DialogClose asChild key={t}>
                           <button
                             type="button"
-                            onClick={() => onTranslationSelected(translation)}
+                            onClick={() => handleTranslationSelected(translation)}
                             className="py-2 mb-1 flex flex-col w-full text-left outline-none"
                           >
                             <div className="w-full flex justify-between items-end">

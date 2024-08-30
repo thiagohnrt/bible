@@ -1,17 +1,30 @@
 "use client";
 
+import { VersionChange } from "@/components/header/VersionChange";
+import { ItemMenu } from "@/components/more/ItemMenu";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { share } from "@/lib/share";
-import { ReactNode } from "react";
+import { BibleContext } from "@/providers/bibleProvider";
+import { useContext } from "react";
 import { IoLanguage } from "react-icons/io5";
 import { MdInfoOutline, MdShare } from "react-icons/md";
 import { RiBookLine } from "react-icons/ri";
 
 export default function MorePage() {
+  const { translation } = useContext(BibleContext);
   const iconSize = 20;
+
   return (
     <div className="flex flex-col -mx-6">
-      <ItemMenu label="Versões" icon={<IoLanguage size={iconSize} />} />
+      <VersionChange onTranslationSelected={() => {}}>
+        <div>
+          <ItemMenu label="Versões" icon={<IoLanguage size={iconSize} />}>
+            <small className="line-clamp-1 opacity-50">
+              {translation?.short_name} - {translation?.full_name}
+            </small>
+          </ItemMenu>
+        </div>
+      </VersionChange>
       <ItemMenu label="Planos de leitura" icon={<RiBookLine size={iconSize} />} />
       <Separator />
       <ItemMenu label="Aparência" icon={<ThemeToggle />} />
@@ -22,18 +35,6 @@ export default function MorePage() {
         onClick={() => share({ text: "Estou usando esse app da bíblia e ele é incrível.", url: location.origin })}
       />
       <ItemMenu label="Sobre" icon={<MdInfoOutline size={iconSize} />} />
-    </div>
-  );
-}
-
-function ItemMenu({ label, icon, ...props }: { label: string; icon?: ReactNode; onClick?: () => void }) {
-  return (
-    <div
-      className="flex items-center justify-between gap-2 px-6 py-3 active:bg-neutral-100 dark:active:bg-neutral-900 transition-colors"
-      {...props}
-    >
-      <div>{label}</div>
-      <div>{icon}</div>
     </div>
   );
 }

@@ -2,25 +2,38 @@
 
 import { RiHome5Fill, RiHome5Line, RiBookFill, RiBookLine, RiMenuFill, RiMenuLine } from "react-icons/ri";
 import Link from "next/link";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useContext, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { getBibleHistory, getTranslation } from "@/lib/utils";
-import { EVENT_BIBLE_HISTORY, TRANSLATION_DEFAULT } from "@/constants/bible";
+import { getBibleHistory, getTranslationPathname } from "@/lib/utils";
+import { EVENT_BIBLE_HISTORY } from "@/constants/bible";
 import { TbMenuDeep } from "react-icons/tb";
+import { BibleContext } from "@/providers/bibleProvider";
+import { Translation } from "@/services/api";
 
 export default function BottomNavigator() {
+  const { translation: translationContext } = useContext(BibleContext);
   const pathname = usePathname();
-  const [bibleLink, setBibleLink] = useState(`/bible/${TRANSLATION_DEFAULT}`);
+  const [bibleLink, setBibleLink] = useState(`/bible`);
+
+  const getBibleLink = (translation: Translation): string => {
+    const history = getBibleHistory();
+    let book = "";
+    if (history.book?.id) {
+      book = "#" + history.book.id;
+    }
+    return `/bible/${translation.short_name}${book}`;
+  };
 
   useEffect(() => {
-    const translation = getTranslation(pathname) || TRANSLATION_DEFAULT;
+    if (translationContext) {
+      setBibleLink(getBibleLink(translationContext));
+    }
+  }, [translationContext]);
+
+  useEffect(() => {
+    const translation = getTranslationPathname(pathname);
     const onChangeStorage = (event: Event) => {
-      const history = getBibleHistory();
-      let book = "";
-      if (history.book?.id) {
-        book = "#" + history.book.id;
-      }
-      setBibleLink(`/bible/${translation}${book}`);
+      setBibleLink(getBibleLink(translation));
     };
 
     window.addEventListener(EVENT_BIBLE_HISTORY, onChangeStorage);

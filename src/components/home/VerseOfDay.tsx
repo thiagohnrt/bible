@@ -1,22 +1,23 @@
-import { TRANSLATION_DEFAULT } from "@/constants/bible";
-import Verse from "../chapter/Verse";
-import { Verse as IVerse } from "@/services/api";
+"use client";
 
-async function apiBible<T = any>(url: string): Promise<T> {
-  const response = await fetch(`${process.env.APP_URL}/api/bible?path=${url}`);
-  if (response.status === 200) {
-    return await response.json();
-  }
-  throw new Error(response.statusText);
-}
+import { BibleContext } from "@/providers/bibleProvider";
+import { api, Verse as IVerse } from "@/services/api";
+import { useContext, useEffect, useState } from "react";
+import Verse from "../chapter/Verse";
 
 interface Props {
   className?: string;
 }
 
-export async function VerseOfDay({ className }: Props) {
-  const translation = TRANSLATION_DEFAULT;
-  const verse = await apiBible<IVerse>(`/get-verse/${translation}/${58}/${4}/${12}`);
+export function VerseOfDay({ className }: Props) {
+  const { translation } = useContext(BibleContext);
+  const [verse, setVerse] = useState<IVerse | null>(null);
+
+  useEffect(() => {
+    if (translation) {
+      api.getVerse(translation.short_name, 58, 4, 12).then((data) => setVerse(data));
+    }
+  }, [translation]);
 
   if (!verse) {
     return <></>;
@@ -25,7 +26,7 @@ export async function VerseOfDay({ className }: Props) {
   return (
     <div className={className}>
       <h1 className="text-lg font-bold">Versículo do dia</h1>
-      <div className="text-lg py-4">Hebreus 4:12 - {translation}</div>
+      <div className="text-lg py-4">Hebreus 4:12 - {translation?.short_name}</div>
       <Verse className="pb-2" text={verse.text} />
     </div>
   );
