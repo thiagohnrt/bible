@@ -20,6 +20,15 @@ export function VerseOfDay({ className }: Props) {
     }
   }, [translation]);
 
+  const randomImage = (max: number): string => {
+    const currentDate = new Date();
+    const dayOfYear =
+      (Date.UTC(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate()) -
+        Date.UTC(currentDate.getFullYear(), 0, 0)) /
+      86400000;
+    return `/img/verseOfDay/${(dayOfYear % max) + 1}.jpg`;
+  };
+
   if (!verse) {
     return <></>;
   }
@@ -29,11 +38,11 @@ export function VerseOfDay({ className }: Props) {
       <h1 className="text-lg font-bold mb-2">Versículo do dia</h1>
       <div
         className={cn(
-          "flex flex-col gap-4 text-center text-white p-6 rounded-lg",
+          "flex flex-col justify-center gap-4 text-center text-white py-6 px-8 min-h-80 rounded-lg",
           "bg-center bg-cover bg-blend-saturation"
         )}
         style={{
-          backgroundImage: "linear-gradient(black, black), url('/img/verseOfDay/1.jpg')",
+          backgroundImage: `linear-gradient(black, black), url(${randomImage(5)})`,
           textShadow: "1px 1px 5px #000",
         }}
       >
