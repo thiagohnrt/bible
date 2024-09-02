@@ -74,6 +74,10 @@ const getVerses = async (translation: string, book: number, chapter: number) => 
   return idb.getAll<Verse>("verses", "chapterIndex", [translation, book, chapter]);
 };
 
+const getVerse = async (translation: string, book: number, chapter: number, verse: number) => {
+  return idb.get<Verse>("verses", [translation, book, chapter, verse]);
+};
+
 const getBooks = async (translation: string) => {
   return idb.getAll<Book>("books", "translationIndex", translation);
 };
@@ -93,6 +97,7 @@ export const db = {
   saveTranslation,
   saveLanguages,
   getVerses,
+  getVerse,
   getBooks,
   getLanguages,
   getTranslationsSaved: getTranslations,

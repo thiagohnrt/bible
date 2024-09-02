@@ -96,8 +96,12 @@ async function getVerses(translation: string, book: number, chapter: number) {
     return await apiBible<Verse[]>(`/get-chapter/${translation}/${book}/${chapter}`);
   }
 }
-async function getVerse(version: string, book: number, chapter: number, verse: number) {
-  return await apiBible<Verse>(`/get-verse/${version}/${book}/${chapter}/${verse}`);
+async function getVerse(translation: string, book: number, chapter: number, verse: number) {
+  if (db.util.hasTranslationSaved(translation)) {
+    return await db.getVerse(translation, +book, +chapter, +verse);
+  } else {
+    return await apiBible<Verse>(`/get-verse/${translation}/${book}/${chapter}/${verse}`);
+  }
 }
 
 export const api = {
