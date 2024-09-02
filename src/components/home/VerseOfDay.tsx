@@ -28,7 +28,10 @@ export function VerseOfDay({ className }: Props) {
     <div className={className}>
       <h1 className="text-lg font-bold mb-2">Versículo do dia</h1>
       <div
-        className={cn("flex flex-col gap-4 text-center p-6 rounded-lg", "bg-center bg-cover bg-blend-saturation")}
+        className={cn(
+          "flex flex-col gap-4 text-center text-white p-6 rounded-lg",
+          "bg-center bg-cover bg-blend-saturation"
+        )}
         style={{
           backgroundImage: "linear-gradient(black, black), url('/img/verseOfDay/1.jpg')",
           textShadow: "1px 1px 5px #000",
