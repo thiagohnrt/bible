@@ -10,7 +10,6 @@ import { VerseDrawer } from "@/components/chapter/VerseDrawer";
 import { ChapterProvider } from "@/providers/chapterProvider";
 import VerseAction from "@/components/chapter/VerseAction";
 import { CommentDrawer } from "@/components/chapter/CommentDrawer";
-// import { unescape } from "querystring";
 
 interface Data {
   translation: Translation;
@@ -45,7 +44,6 @@ export interface BibleHistory {
 export default function ChapterPage({ params: { version, book: bookId, chapter, verse } }: ChapterProps) {
   const pathname = usePathname();
   const [{ translation, book, verses }, setData] = useState<Data>({} as Data);
-  const [firstVerse, lastVerse] = verse?.split("-").map((v) => +v) ?? [];
 
   useEffect(() => {
     const history = getBibleHistory();
