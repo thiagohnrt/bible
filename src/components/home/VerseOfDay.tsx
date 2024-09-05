@@ -14,7 +14,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import { MdMonochromePhotos, MdShare } from "react-icons/md";
+import { MdShare } from "react-icons/md";
+import { IoContrastOutline, IoContrastSharp } from "react-icons/io5";
+import { Merriweather } from "next/font/google";
+
+const font = Merriweather({ subsets: ["latin"], weight: "400" });
 
 interface Props {
   className?: string;
@@ -23,7 +27,7 @@ interface Props {
 export function VerseOfDay({ className }: Props) {
   const { translation } = useContext(BibleContext);
   const [verse, setVerse] = useState<IVerse | null>(null);
-  const [isMonochrome, setMonochrome] = useState(true);
+  const [isMonochrome, setMonochrome] = useState(false);
 
   useEffect(() => {
     if (translation) {
@@ -40,13 +44,8 @@ export function VerseOfDay({ className }: Props) {
     return `/img/verseOfDay/${(dayOfYear % max) + 1}.jpg`;
   };
 
-  const classNameImage = `flex flex-col justify-center gap-4 text-center text-white py-6 px-8 bg-center bg-cover ${
-    isMonochrome ? "bg-blend-saturation" : ""
-  }`;
-  const styleImage = {
-    backgroundImage: `${isMonochrome ? "linear-gradient(black, black)," : ""} url(${randomImage(5)})`,
-    textShadow: "1px 1px 5px #000",
-  };
+  const urlImage = randomImage(10);
+  const classNameImage = "flex flex-col justify-center gap-4 text-left text-white py-6 px-8 bg-center bg-cover";
 
   if (!verse) {
     return <></>;
@@ -57,9 +56,9 @@ export function VerseOfDay({ className }: Props) {
       <h1 className="text-lg font-bold mb-2">Versículo do dia</h1>
       <Dialog id="verseOfDay">
         <DialogTrigger>
-          <div className={cn("min-h-80 rounded-lg", classNameImage)} style={styleImage}>
-            <Verse className="pb-2 text-base leading-9" text={verse.text} />
-            <div className="text-sm">Hebreus 4:12</div>
+          <div className={cn("min-h-80 rounded-lg", classNameImage)} style={{ backgroundImage: `url(${urlImage})` }}>
+            <Verse className={cn(font.className, "pb-2 leading-6")} text={verse.text} />
+            <div className="text-sm">Hebreus 4:12 {translation?.short_name}</div>
           </div>
         </DialogTrigger>
         <DialogContent className="h-svh w-lvw p-0">
@@ -67,9 +66,12 @@ export function VerseOfDay({ className }: Props) {
             <DialogTitle></DialogTitle>
             <DialogDescription></DialogDescription>
           </DialogHeader>
-          <div className={cn("", classNameImage)} style={styleImage}>
-            <Verse className="pb-2 text-base leading-9" text={verse.text} />
-            <div className="text-sm">Hebreus 4:12</div>
+          <div
+            className={cn(classNameImage, isMonochrome && "bg-blend-saturation")}
+            style={{ backgroundImage: `${isMonochrome ? "linear-gradient(black, black)," : ""} url(${urlImage})` }}
+          >
+            <Verse className={cn(font.className, "pb-2 text-xl leading-9")} text={verse.text} />
+            <div className="text-sm">Hebreus 4:12 {translation?.short_name}</div>
           </div>
           <DialogFooter className="absolute left-0 right-0 bottom-0 flex flex-row justify-center gap-8 p-8 text-white">
             <div className="flex items-center justify-center w-12 h-12 rounded-full active:shadow-xl transition-shadow">
@@ -79,7 +81,7 @@ export function VerseOfDay({ className }: Props) {
               className="flex items-center justify-center w-12 h-12 rounded-full active:shadow-xl transition-shadow"
               onClick={() => setMonochrome(!isMonochrome)}
             >
-              <MdMonochromePhotos size={20} />
+              {isMonochrome ? <IoContrastSharp size={20} /> : <IoContrastOutline size={20} />}
             </div>
           </DialogFooter>
         </DialogContent>
