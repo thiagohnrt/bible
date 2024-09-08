@@ -1,11 +1,11 @@
-import { ContinueReading } from "@/components/home/ContinueReading";
-import { VerseOfDay } from "@/components/home/VerseOfDay";
+import { DecisionReading } from "@/components/home/DecisionReading";
+import { VerseOfTheDay } from "@/components/home/VerseOfTheDay";
 
 export default function HomePage() {
   return (
     <>
-      <VerseOfDay className="mb-8" />
-      <ContinueReading className="mb-8" />
+      <VerseOfTheDay className="mb-8" />
+      <DecisionReading className="mb-8" />
     </>
   );
 }

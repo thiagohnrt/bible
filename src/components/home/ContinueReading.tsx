@@ -1,26 +1,17 @@
 "use client";
 
-import { cn, getBibleHistory } from "@/lib/utils";
-import Verse from "../chapter/Verse";
 import { BibleHistory } from "@/app/bible/[version]/[book]/[chapter]/page";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import Verse from "../chapter/Verse";
 
 interface Props {
+  history: BibleHistory;
   className?: string;
 }
 
-export function ContinueReading({ className }: Props) {
-  const [bibleHistory, setBibleHistory] = useState<BibleHistory>({} as BibleHistory);
-
-  useEffect(() => {
-    setBibleHistory(getBibleHistory());
-  }, []);
-
-  if (!bibleHistory.url) {
-    return <></>;
-  }
-
+export function ContinueReading({ history: bibleHistory, className }: Props) {
+  console.log(bibleHistory);
   return (
     <Link href={bibleHistory.url} className={cn("block rounded-md p-4 bg-highlight-active", className)}>
       <div className="flex justify-between">
