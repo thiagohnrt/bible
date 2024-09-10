@@ -4,6 +4,7 @@ import {
   EVENT_BIBLE_HISTORY,
   KEY_TRANSLATION_CURRENT,
   TRANSLATION_DEFAULT,
+  TRANSLATION_NAME_DEFAULT,
 } from "@/constants/bible";
 import { Translation } from "@/services/api";
 import { type ClassValue, clsx } from "clsx";
@@ -24,7 +25,7 @@ export function getTranslationPathname(pathname: string): Translation {
     }
   }
   return {
-    full_name: "",
+    full_name: TRANSLATION_NAME_DEFAULT,
     short_name: TRANSLATION_DEFAULT,
   };
 }
@@ -46,7 +47,7 @@ export const getTranslationStorage = (): Translation => {
     return JSON.parse(translation);
   }
   return {
-    full_name: "",
+    full_name: TRANSLATION_NAME_DEFAULT,
     short_name: TRANSLATION_DEFAULT,
   };
 };

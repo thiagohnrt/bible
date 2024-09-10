@@ -1,5 +1,6 @@
 // Values
 export const TRANSLATION_DEFAULT = "NVIPT";
+export const TRANSLATION_NAME_DEFAULT = "Nova Versão Internacional";
 
 // Keys
 export const KEY_BIBLE_HISTORY = "last_chapter_read";
