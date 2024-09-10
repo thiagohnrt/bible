@@ -36,16 +36,20 @@ export function VerseDrawer({ book, chapter }: Props) {
     return result.join(", ");
   };
 
+  const verseFull = () =>
+    `${verses.map((verse) => verse.text).join("")} ${book.name} ${chapter}:${formatVerses(verses)}`.replace(
+      /<\/?[^>]+(>|$)/g,
+      ""
+    );
+
   const handleShare = () => {
     share({
-      text: `${verses.map((verse) => verse.text).join("")} ${book.name} ${chapter}:${formatVerses(verses)}`,
+      text: verseFull(),
     });
   };
 
   const handleCopy = async () => {
-    await clipboard.writeText(
-      `${verses.map((verse) => verse.text).join("")} ${book.name} ${chapter}:${formatVerses(verses)}`
-    );
+    await clipboard.writeText(verseFull());
     closeDrawer();
   };
 
