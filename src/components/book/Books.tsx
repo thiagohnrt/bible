@@ -26,7 +26,7 @@ export function Books({ version }: Props) {
 
   useEffect(() => {
     if (books.length) {
-      const bookId = location.hash.substring(1);
+      const bookId = location.search.substring(1);
       if (itemRefs.current[`${bookId}`]) {
         setTimeout(
           (ref) => {

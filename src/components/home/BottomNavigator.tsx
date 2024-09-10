@@ -19,7 +19,7 @@ export default function BottomNavigator() {
     const history = getBibleHistory();
     let book = "";
     if (history.book?.id) {
-      book = "#" + history.book.id;
+      book = "?" + history.book.id;
     }
     return `/bible/${translation.short_name}${book}`;
   };
