@@ -120,7 +120,7 @@ export default function ChapterPage({ params: { version, book: bookId, chapter, 
       <h1 className={cn("text-3xl pb-8", translation.dir ? "text-right" : "")}>
         {book.name} {chapter}
       </h1>
-      <div className="pb-20" dir={translation.dir}>
+      <div className="pb-40" dir={translation.dir}>
         {verses.map((data, i) => (
           <VerseAction
             data={data}
