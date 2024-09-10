@@ -4,6 +4,8 @@ import { ChapterContext } from "@/providers/chapterProvider";
 import { Book, Verse } from "@/services/api";
 import { ReactNode, useContext } from "react";
 import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from "../ui/drawer";
+import { share } from "@/lib/share";
+import { clipboard } from "@/lib/clipboard";
 
 interface Props {
   book: Book;
@@ -34,6 +36,23 @@ export function VerseDrawer({ book, chapter }: Props) {
     return result.join(", ");
   };
 
+  const handleShare = () => {
+    share({
+      text: `${verses.map((verse) => verse.text).join("")} ${book.name} ${chapter}:${formatVerses(verses)}`,
+    });
+  };
+
+  const handleCopy = async () => {
+    await clipboard.writeText(
+      `${verses.map((verse) => verse.text).join("")} ${book.name} ${chapter}:${formatVerses(verses)}`
+    );
+    closeDrawer();
+  };
+
+  const closeDrawer = () => {
+    setVerses([]);
+  };
+
   return (
     <Drawer open={verses.length > 0} onClose={() => setVerses([])} modal={false}>
       <DrawerContent>
@@ -45,8 +64,8 @@ export function VerseDrawer({ book, chapter }: Props) {
         </DrawerHeader>
         <DrawerFooter>
           <div className="whitespace-nowrap overflow-x-auto mb-4">
-            <ActionButton>Compartilhar</ActionButton>
-            <ActionButton>Copiar</ActionButton>
+            <ActionButton onClick={handleShare}>Compartilhar</ActionButton>
+            <ActionButton onClick={handleCopy}>Copiar</ActionButton>
             <ActionButton>Comparar</ActionButton>
             <ActionButton>Imagem</ActionButton>
           </div>
@@ -70,8 +89,12 @@ export function VerseDrawer({ book, chapter }: Props) {
   );
 }
 
-function ActionButton({ children }: { children: ReactNode }) {
-  return <div className="inline-block mr-[10px] px-3 py-2 rounded-full bg-highlight-active text-sm">{children}</div>;
+function ActionButton({ children, ...props }: { children: ReactNode; onClick?: () => void }) {
+  return (
+    <div className="inline-block mr-[10px] px-3 py-2 rounded-full bg-highlight-active text-sm" {...props}>
+      {children}
+    </div>
+  );
 }
 
 function BookmarkColor({ color }: { color: string }) {
