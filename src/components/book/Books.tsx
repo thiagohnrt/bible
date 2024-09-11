@@ -19,10 +19,8 @@ export function Books({ version }: Props) {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (!books.length) {
-      api.getBooks(version).then((data) => setBooks(data));
-    }
-  }, [books, version]);
+    api.getBooks(version).then((data) => setBooks(data));
+  }, [version]);
 
   useEffect(() => {
     if (books.length) {

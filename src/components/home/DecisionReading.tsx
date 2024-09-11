@@ -1,12 +1,10 @@
 "use client";
 
-import { cn, getBibleHistory } from "@/lib/utils";
-import Verse from "../chapter/Verse";
 import { BibleHistory } from "@/app/bible/[version]/[book]/[chapter]/page";
-import Link from "next/link";
+import { getBibleHistory } from "@/lib/utils";
 import { useEffect, useState } from "react";
-import { SuggestedReading } from "./SuggestedReading";
 import { ContinueReading } from "./ContinueReading";
+import { SuggestedReading } from "./SuggestedReading";
 
 interface Props {
   className?: string;
