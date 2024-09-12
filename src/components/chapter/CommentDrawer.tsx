@@ -2,9 +2,10 @@
 
 import { ChapterContext } from "@/providers/chapterProvider";
 import { Book } from "@/services/api";
-import { ReactNode, useContext } from "react";
+import { useContext } from "react";
 import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from "../ui/drawer";
 import Verse from "./Verse";
+import * as bolls from "@/custom/bolls";
 
 interface Props {
   book: Book;
@@ -29,7 +30,7 @@ export function CommentDrawer({ book, chapter }: Props) {
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>
-            {book.name} {chapter}:{verseComment?.verse}
+            {bolls.book(book).name} {chapter}:{verseComment?.verse}
           </DrawerTitle>
           <DrawerDescription></DrawerDescription>
         </DrawerHeader>

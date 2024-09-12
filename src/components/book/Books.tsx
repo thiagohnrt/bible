@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { Skeleton } from "../ui/skeleton";
 import { usePathname } from "next/navigation";
 import { repeat } from "@/lib/utils";
+import * as bolls from "@/custom/bolls";
 
 interface Props {
   version: string;
@@ -64,7 +65,7 @@ export function Books({ version }: Props) {
             key={i}
             className="border-none"
           >
-            <AccordionTrigger className="text-left">{book.name}</AccordionTrigger>
+            <AccordionTrigger className="text-left">{bolls.book(book).name}</AccordionTrigger>
             <AccordionContent>
               <Chapters version={version} book={book.book} total={book.chapters} />
             </AccordionContent>

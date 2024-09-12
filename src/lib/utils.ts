@@ -5,6 +5,8 @@ import {
   KEY_TRANSLATION_CURRENT,
   TRANSLATION_DEFAULT,
   TRANSLATION_NAME_DEFAULT,
+  LANGUAGE_DEFAULT,
+  KEY_LANGUAGE_CURRENT,
 } from "@/constants/bible";
 import { Translation } from "@/services/api";
 import { type ClassValue, clsx } from "clsx";
@@ -36,6 +38,14 @@ export const setBibleHistory = (data: BibleHistory): void => {
 };
 export const getBibleHistory = (): BibleHistory => {
   return JSON.parse(localStorage.getItem(KEY_BIBLE_HISTORY) ?? "{}");
+};
+
+export const setLanguageStorage = (language: string) => {
+  localStorage.setItem(KEY_LANGUAGE_CURRENT, language);
+};
+export const getLanguageStorage = (): string => {
+  const language = localStorage.getItem(KEY_LANGUAGE_CURRENT);
+  return language || LANGUAGE_DEFAULT;
 };
 
 export const setTranslationStorage = (translation: Translation) => {

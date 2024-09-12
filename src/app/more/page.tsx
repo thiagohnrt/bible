@@ -9,6 +9,7 @@ import { useContext } from "react";
 import { IoLanguage } from "react-icons/io5";
 import { MdInfoOutline, MdShare } from "react-icons/md";
 import { RiBookLine } from "react-icons/ri";
+import * as bolls from "@/custom/bolls";
 
 export default function MorePage() {
   const { translation } = useContext(BibleContext);
@@ -20,7 +21,9 @@ export default function MorePage() {
         <div>
           <ItemMenu label="Versões" icon={<IoLanguage size={iconSize} />}>
             <small className="line-clamp-1 opacity-50">
-              {translation?.short_name} - {translation?.full_name}
+              {translation
+                ? bolls.translation(translation).short_name + " - " + bolls.translation(translation).full_name
+                : ""}
             </small>
           </ItemMenu>
         </div>

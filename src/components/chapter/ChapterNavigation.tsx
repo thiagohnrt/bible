@@ -5,6 +5,7 @@ import { api, Book } from "@/services/api";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
+import * as bolls from "@/custom/bolls";
 
 interface Props {
   version: string;
@@ -42,7 +43,7 @@ function ChapterBook({ version, bookData: book, chapter }: PropsChildren) {
         className="w-full h-14 text-center text-sm font-bold overflow-hidden bg-highlight-active"
         style={{ lineHeight: "3.5rem" }}
       >
-        {book.name ? `${book.name} ${chapter}` : ""}
+        {book.name ? `${bolls.book(book).name} ${chapter}` : ""}
       </div>
     </Link>
   );
@@ -76,7 +77,6 @@ function ChapterNext({ version, bookData: book, chapter }: PropsChildren) {
     } else {
       linkNext = "#";
     }
-  } else {
   }
   return (
     <Link href={linkNext} className="self-stretch flex items-center justify-start">

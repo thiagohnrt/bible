@@ -11,7 +11,6 @@ interface Props {
 }
 
 export function ContinueReading({ history: bibleHistory, className }: Props) {
-  console.log(bibleHistory);
   return (
     <Link href={bibleHistory.url} className={cn("block rounded-md p-4 bg-highlight-active", className)}>
       <div className="flex justify-between">
@@ -20,7 +19,7 @@ export function ContinueReading({ history: bibleHistory, className }: Props) {
       </div>
       <div className="pt-4">
         <p className="text-lg font-bold pb-3">
-          {bibleHistory.book.name} {bibleHistory.chapter} - {bibleHistory.translation}
+          {bibleHistory.book.name} {bibleHistory.chapter} {bibleHistory.translation}
         </p>
         <Verse text={bibleHistory.firstVerse} className=" line-clamp-2 text-base leading-7" />
       </div>

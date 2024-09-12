@@ -1,11 +1,11 @@
 "use client";
 
-import { cn, getBibleHistory } from "@/lib/utils";
-import Verse from "../chapter/Verse";
-import { BibleHistory } from "@/app/bible/[version]/[book]/[chapter]/page";
-import Link from "next/link";
-import { useContext, useEffect, useState } from "react";
+import * as bolls from "@/custom/bolls";
+import { cn } from "@/lib/utils";
 import { BibleContext } from "@/providers/bibleProvider";
+import Link from "next/link";
+import { useContext } from "react";
+import Verse from "../chapter/Verse";
 
 interface Props {
   className?: string;
@@ -24,7 +24,7 @@ export function SuggestedReading({ className }: Props) {
         <p className="text-sm leading-6 font-bold">Começar</p>
       </div>
       <div className="pt-4">
-        <p className="text-lg font-bold pb-3">João 1 - {translation?.short_name}</p>
+        <p className="text-lg font-bold pb-3">João 1 {translation ? bolls.translation(translation).short_name : ""}</p>
         <Verse
           text={"No princípio era aquele que é a Palavra. Ele estava com Deus, e era Deus..."}
           className=" line-clamp-2 text-base leading-7"

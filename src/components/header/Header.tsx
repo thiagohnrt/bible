@@ -8,6 +8,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useContext, useEffect } from "react";
 import { PiLeafFill } from "react-icons/pi";
 import { VersionChange } from "./VersionChange";
+import * as bolls from "@/custom/bolls";
 
 export default function Header() {
   const { translation: translationCurrent, setLoading } = useContext(BibleContext);
@@ -48,7 +49,7 @@ export default function Header() {
         {pathname.includes("/bible") && translationCurrent ? (
           <VersionChange onTranslationSelected={onTranslationSelected}>
             <div className="border border-neutral-600 rounded-full active:bg-primary/30 transition-colors px-3 py-1 cursor-pointer">
-              {translationCurrent.short_name}
+              {bolls.translation(translationCurrent).short_name}
             </div>
           </VersionChange>
         ) : (

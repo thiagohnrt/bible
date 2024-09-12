@@ -1,7 +1,7 @@
 "use client";
 
 import { db } from "@/database/bibleDB";
-import { getTranslationStorage, setTranslationStorage } from "@/lib/utils";
+import { setTranslationStorage } from "@/lib/utils";
 import { BibleContext } from "@/providers/bibleProvider";
 import { api, Language, Translation } from "@/services/api";
 import { useCallback, useContext, useEffect, useState } from "react";
@@ -18,6 +18,7 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { LanguageChange } from "./LanguageChange";
+import * as bolls from "@/custom/bolls";
 
 interface Props {
   children: React.ReactNode;
@@ -123,10 +124,10 @@ export function VersionChange({ children, className, onTranslationSelected }: Pr
                       className="py-2 mb-1 flex flex-col w-full text-left outline-none"
                     >
                       <div className="w-full flex justify-between items-end">
-                        <span>{translation.short_name}</span>
+                        <span>{bolls.translation(translation).short_name}</span>
                         {translation.short_name === data.current.translation ? <HiCheck /> : <></>}
                       </div>
-                      <small className="opacity-50">{translation.full_name}</small>
+                      <small className="opacity-50">{bolls.translation(translation).full_name}</small>
                     </button>
                   </DialogClose>
                 );
@@ -151,10 +152,10 @@ export function VersionChange({ children, className, onTranslationSelected }: Pr
                             className="py-2 mb-1 flex flex-col w-full text-left outline-none"
                           >
                             <div className="w-full flex justify-between items-end">
-                              <span>{translation.short_name}</span>
+                              <span>{bolls.translation(translation).short_name}</span>
                               {!db.util.hasTranslationSaved(translation.short_name) ? <HiDownload /> : <></>}
                             </div>
-                            <small className="opacity-50">{translation.full_name}</small>
+                            <small className="opacity-50">{bolls.translation(translation).full_name}</small>
                           </button>
                         </DialogClose>
                       );

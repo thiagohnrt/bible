@@ -6,6 +6,7 @@ import { ReactNode, useContext } from "react";
 import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from "../ui/drawer";
 import { share } from "@/lib/share";
 import { clipboard } from "@/lib/clipboard";
+import * as bolls from "@/custom/bolls";
 
 interface Props {
   book: Book;
@@ -62,7 +63,7 @@ export function VerseDrawer({ book, chapter }: Props) {
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>
-            {book.name} {chapter}:{formatVerses(verses)}
+            {bolls.book(book).name} {chapter}:{formatVerses(verses)}
           </DrawerTitle>
           <DrawerDescription></DrawerDescription>
         </DrawerHeader>

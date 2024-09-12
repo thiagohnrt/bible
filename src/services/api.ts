@@ -16,6 +16,7 @@ export interface VersionBook {
 }
 
 export interface Book {
+  language: string;
   translation: string;
   book: number;
   name: string;
@@ -68,8 +69,19 @@ async function getBooks(translation: string): Promise<Book[]> {
   if (db.util.hasTranslationSaved(translation)) {
     return await db.getBooks(translation);
   } else {
-    const versionBook = await apiBible<VersionBook>(`/static/bolls/app/views/translations_books.json`);
-    return versionBook[translation].map<Book>((bookData: any) => ({ ...bookData, book: bookData.bookid, translation }));
+    const [versionBook, languages] = await Promise.all([
+      apiBible<VersionBook>(`/static/bolls/app/views/translations_books.json`),
+      getLanguages(),
+    ]);
+    const language = languages.find((language) =>
+      language.translations.some((trns) => trns.short_name === translation)
+    )!;
+    return versionBook[translation].map<Book>((bookData: any) => ({
+      ...bookData,
+      book: bookData.bookid,
+      translation,
+      language: language.language,
+    }));
   }
 }
 
