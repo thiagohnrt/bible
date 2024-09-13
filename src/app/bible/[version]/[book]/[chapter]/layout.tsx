@@ -1,4 +1,5 @@
 import { ChapterNavigation } from "@/components/chapter/ChapterNavigation";
+import { TopNavigation } from "@/components/chapter/TopNavigation";
 
 export interface ChapterProps {
   params: {
@@ -18,6 +19,7 @@ export default async function ChapterLayout({ children, params: { version, book,
     <>
       {children}
       <ChapterNavigation version={version} book={book} chapter={chapter} />
+      <TopNavigation />
     </>
   );
 }

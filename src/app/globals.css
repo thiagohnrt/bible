@@ -75,11 +75,30 @@
   }
 }
 
+/* Root */
+.window-scroll-down header {
+  transform: translateY(-4rem);
+}
+.window-scroll-down footer,
+.window-scroll-down .chapter-navigation,
+.window-scroll-down .chapter-top-navigation {
+  transform: translateY(4rem);
+}
+
 .bg-highlight {
   @apply bg-neutral-100 dark:bg-neutral-900;
 }
 .bg-highlight-active {
   @apply bg-neutral-100 active:bg-neutral-200 dark:bg-neutral-900 dark:active:bg-neutral-800 transition-colors;
+}
+
+/* Chapter */
+.window-scroll-down .chapter-navigation .chapter-book,
+.window-scroll-down .chapter-navigation .chapter-prev,
+.window-scroll-down .chapter-navigation .chapter-next,
+.window-scroll-down .chapter-navigation .chapter-prev-btn,
+.window-scroll-down .chapter-navigation .chapter-next-btn {
+  @apply bg-transparent;
 }
 
 /* Verse */

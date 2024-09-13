@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/header/Header";
-import { cn } from "@/lib/utils";
-import BottomNavigator from "@/components/home/BottomNavigator";
+import { Footer } from "@/components/footer/Footer";
+import { Body } from "@/components/root/Body";
 import { BibleProvider } from "@/providers/bibleProvider";
 import { DialogProvider } from "@/providers/dialogProvider";
 import { CookieConsent } from "@/components/home/CookieConsent";
@@ -25,19 +25,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(inter.className)}>
+      <Body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="system">
           <BibleProvider>
             <DialogProvider>
               <Header />
-              <main className="px-6 pt-6 pb-24 relative">{children}</main>
-              <BottomNavigator />
+              <main className="px-6 py-20 relative">{children}</main>
+              <Footer />
             </DialogProvider>
           </BibleProvider>
           <Toaster />
           <CookieConsent />
         </ThemeProvider>
-      </body>
+      </Body>
     </html>
   );
 }

@@ -4,7 +4,7 @@ import { RiHome5Fill, RiHome5Line, RiBookFill, RiBookLine, RiMenuFill, RiMenuLin
 import Link from "next/link";
 import { ReactNode, useContext, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { getBibleHistory, getTranslationPathname } from "@/lib/utils";
+import { cn, getBibleHistory, getTranslationPathname } from "@/lib/utils";
 import { EVENT_BIBLE_HISTORY } from "@/constants/bible";
 import { TbMenuDeep } from "react-icons/tb";
 import { BibleContext } from "@/providers/bibleProvider";
@@ -44,7 +44,13 @@ export default function BottomNavigator() {
   }, [pathname]);
 
   return (
-    <footer className="h-16 z-10 bg-background fixed left-0 bottom-0 right-0 border-t flex items-center justify-between">
+    <footer
+      className={cn(
+        "fixed left-0 bottom-0 right-0 h-16 z-10",
+        "bg-background border-t flex items-center justify-between",
+        "transition-all duration-500"
+      )}
+    >
       <MenuItem url="/" label="Início">
         {pathname === "/" ? <RiHome5Fill size={20} /> : <RiHome5Line size={20} />}
       </MenuItem>

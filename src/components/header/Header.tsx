@@ -9,6 +9,7 @@ import { useContext, useEffect } from "react";
 import { PiLeafFill } from "react-icons/pi";
 import { VersionChange } from "./VersionChange";
 import * as bolls from "@/custom/bolls";
+import { cn } from "@/lib/utils";
 
 export default function Header() {
   const { translation: translationCurrent, setLoading } = useContext(BibleContext);
@@ -38,7 +39,13 @@ export default function Header() {
   }, [translationCurrent]);
 
   return (
-    <header className="px-6 h-16 border-b flex items-center justify-between">
+    <header
+      className={cn(
+        "fixed left-0 right-0 px-6 h-16 z-10",
+        "bg-background border-b flex items-center justify-between",
+        "transition-all duration-500"
+      )}
+    >
       <div className="content-left">
         <Link href="/" className="flex flex-nowrap items-center gap-1">
           <PiLeafFill size={18} />
