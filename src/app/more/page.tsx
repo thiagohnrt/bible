@@ -8,8 +8,9 @@ import { BibleContext } from "@/providers/bibleProvider";
 import { useContext } from "react";
 import { IoLanguage } from "react-icons/io5";
 import { MdChatBubbleOutline, MdInfoOutline, MdOutlineWarningAmber, MdShare } from "react-icons/md";
-import { RiBookLine, RiChat4Line } from "react-icons/ri";
+import { RiBookLine } from "react-icons/ri";
 import * as bolls from "@/custom/bolls";
+import packageJson from "../../../package.json";
 
 export default function MorePage() {
   const { translation } = useContext(BibleContext);
@@ -43,6 +44,7 @@ export default function MorePage() {
         onClick={() => share({ text: "Estou usando esse app da bíblia e ele é incrível.", url: location.origin })}
       />
       <ItemMenu label="Sobre" icon={<MdInfoOutline size={iconSize} />} />
+      <ItemMenu label={`Versão ${packageJson.version}`} />
     </div>
   );
 }
