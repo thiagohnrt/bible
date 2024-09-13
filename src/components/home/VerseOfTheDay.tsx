@@ -10,6 +10,9 @@ import img07 from "../../../public/img/verseOfTheDay/7.jpg";
 import img08 from "../../../public/img/verseOfTheDay/8.jpg";
 import img09 from "../../../public/img/verseOfTheDay/9.jpg";
 import img10 from "../../../public/img/verseOfTheDay/10.jpg";
+import img11 from "../../../public/img/verseOfTheDay/11.jpg";
+import img12 from "../../../public/img/verseOfTheDay/12.jpg";
+import img13 from "../../../public/img/verseOfTheDay/13.jpg";
 import {
   Dialog,
   DialogContent,
@@ -26,18 +29,18 @@ interface Props {
 }
 
 export function VerseOfTheDay({ className }: Props) {
-  const images = [img01, img02, img03, img04, img05, img06, img07, img08, img09, img10];
+  const images = [img01, img02, img03, img04, img05, img06, img07, img08, img09, img10, img11, img12, img13];
 
-  const randomImage = (max: number) => {
+  const randomImage = () => {
     const currentDate = new Date();
     const dayOfYear =
       (Date.UTC(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate()) -
         Date.UTC(currentDate.getFullYear(), 0, 0)) /
       86400000;
-    return images[dayOfYear % max] ?? img01;
+    return images[dayOfYear % images.length] ?? img01;
   };
 
-  const imgSrc = randomImage(10);
+  const imgSrc = randomImage();
 
   return (
     <div className={className}>
