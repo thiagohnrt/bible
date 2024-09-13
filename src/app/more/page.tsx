@@ -7,8 +7,8 @@ import { share } from "@/lib/share";
 import { BibleContext } from "@/providers/bibleProvider";
 import { useContext } from "react";
 import { IoLanguage } from "react-icons/io5";
-import { MdInfoOutline, MdShare } from "react-icons/md";
-import { RiBookLine } from "react-icons/ri";
+import { MdChatBubbleOutline, MdInfoOutline, MdOutlineWarningAmber, MdShare } from "react-icons/md";
+import { RiBookLine, RiChat4Line } from "react-icons/ri";
 import * as bolls from "@/custom/bolls";
 
 export default function MorePage() {
@@ -31,6 +31,11 @@ export default function MorePage() {
       <ItemMenu label="Planos de leitura" icon={<RiBookLine size={iconSize} />} />
       <Separator />
       <ItemMenu label="Aparência" icon={<ThemeToggle />} />
+      <Separator />
+      <ItemMenu label="Feedback" icon={<MdChatBubbleOutline size={iconSize} />}>
+        <small className="opacity-50">Sugestões e ideias</small>
+      </ItemMenu>
+      <ItemMenu label="Reportar um problema" icon={<MdOutlineWarningAmber size={iconSize} />} />
       <Separator />
       <ItemMenu
         label="Compartilhar"
