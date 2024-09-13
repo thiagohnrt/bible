@@ -7,6 +7,7 @@ import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, D
 import { share } from "@/lib/share";
 import { clipboard } from "@/lib/clipboard";
 import * as bolls from "@/custom/bolls";
+import { BibleContext } from "@/providers/bibleProvider";
 
 interface Props {
   book: Book;
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export function VerseDrawer({ book, chapter }: Props) {
+  const { translation } = useContext(BibleContext);
   const { verses, setVerses } = useContext(ChapterContext);
 
   const formatVerses = (data: Verse[]): string => {
@@ -37,11 +39,15 @@ export function VerseDrawer({ book, chapter }: Props) {
     return result.join(", ");
   };
 
-  const verseFull = () =>
-    `${verses.map((verse) => verse.text).join("")} ${book.name} ${chapter}:${formatVerses(verses)}`.replace(
-      /<\/?[^>]+(>|$)/g,
-      ""
-    );
+  const verseFull = () => {
+    const el = document.createElement("DIV");
+    el.innerHTML = verses.map((verse) => verse.text).join("");
+    el.querySelectorAll("sup").forEach((sup) => el.removeChild(sup));
+    const versesText = ((el.innerText || el.textContent) ?? "").replace(/\n/g, " ").replace(/  /g, " ").trim();
+    return `${versesText}\n${bolls.book(book).name} ${chapter}:${formatVerses(verses)} ${
+      translation && bolls.translation(translation).short_name
+    }`;
+  };
 
   const handleShare = () => {
     share({
