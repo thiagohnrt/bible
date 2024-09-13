@@ -1,4 +1,4 @@
-import BottomNavigator from "../home/BottomNavigator";
+import BottomNavigator from "./BottomNavigator";
 
 export function Footer() {
   return <BottomNavigator />;
