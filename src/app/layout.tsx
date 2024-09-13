@@ -1,14 +1,12 @@
+import { Footer } from "@/components/footer/Footer";
+import Header from "@/components/header/Header";
+import { CookieConsent } from "@/components/home/CookieConsent";
+import { Body } from "@/components/root/Body";
+import { Toaster } from "@/components/ui/sonner";
+import { Providers } from "@/providers/providers";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/header/Header";
-import { Footer } from "@/components/footer/Footer";
-import { Body } from "@/components/root/Body";
-import { BibleProvider } from "@/providers/bibleProvider";
-import { DialogProvider } from "@/providers/dialogProvider";
-import { CookieConsent } from "@/components/home/CookieConsent";
-import { Toaster } from "@/components/ui/sonner";
-import { ThemeProvider } from "@/providers/themeProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,17 +24,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="system">
-          <BibleProvider>
-            <DialogProvider>
-              <Header />
-              <main className="px-6 py-20 relative">{children}</main>
-              <Footer />
-            </DialogProvider>
-          </BibleProvider>
+        <Providers>
+          <Header />
+          <main className="px-6 py-20 relative">{children}</main>
+          <Footer />
           <Toaster />
           <CookieConsent />
-        </ThemeProvider>
+        </Providers>
       </Body>
     </html>
   );
