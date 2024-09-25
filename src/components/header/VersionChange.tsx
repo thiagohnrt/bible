@@ -1,7 +1,7 @@
 "use client";
 
 import { db } from "@/database/bibleDB";
-import { setTranslationStorage } from "@/lib/utils";
+import { setTranslationStorage, sortTranslations } from "@/lib/utils";
 import { BibleContext } from "@/providers/bibleProvider";
 import { api, Language, Translation } from "@/services/api";
 import { useCallback, useContext, useEffect, useState } from "react";
@@ -82,9 +82,6 @@ export function VersionChange({ children, className, onTranslationSelected }: Pr
   const setLanguage = (language: Language) => {
     setData({ ...data, current: { ...data.current, language } });
   };
-
-  const sortTranslations = (translations: Translation[]) =>
-    translations.sort((a, b) => a.short_name.localeCompare(b.short_name));
 
   const handleTranslationSelected = (translation: Translation) => {
     setTranslationContext(translation);

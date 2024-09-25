@@ -8,7 +8,7 @@ import {
   LANGUAGE_DEFAULT,
   KEY_LANGUAGE_CURRENT,
 } from "@/constants/bible";
-import { Translation } from "@/services/api";
+import { Translation, Verse } from "@/services/api";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -68,3 +68,27 @@ export const repeat = (count: number, callbackfn: (index: number) => void) => {
     .split(".")
     .map((v, i) => callbackfn(i));
 };
+
+export const formatVerses = (data: Verse[]): string => {
+  const verses = data.map(({ verse }) => verse);
+  if (verses.length === 0) return "";
+
+  let result: string[] = [];
+  let start = verses[0];
+
+  for (let i = 1; i <= verses.length; i++) {
+    if (verses[i] !== verses[i - 1] + 1) {
+      if (start === verses[i - 1]) {
+        result.push(`${start}`);
+      } else {
+        result.push(`${start}-${verses[i - 1]}`);
+      }
+      start = verses[i];
+    }
+  }
+
+  return result.join(", ");
+};
+
+export const sortTranslations = (translations: Translation[]) =>
+  translations.sort((a, b) => a.short_name.localeCompare(b.short_name));

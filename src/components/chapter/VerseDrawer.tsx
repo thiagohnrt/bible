@@ -1,13 +1,15 @@
 "use client";
 
 import { ChapterContext } from "@/providers/chapterProvider";
-import { Book, Verse } from "@/services/api";
-import { ReactNode, useContext } from "react";
+import { Book } from "@/services/api";
+import { forwardRef, ReactNode, useContext } from "react";
 import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from "../ui/drawer";
 import { share } from "@/lib/share";
 import { clipboard } from "@/lib/clipboard";
 import * as bolls from "@/custom/bolls";
 import { BibleContext } from "@/providers/bibleProvider";
+import { CompareVerses } from "./CompareVerses";
+import { formatVerses } from "@/lib/utils";
 
 interface Props {
   book: Book;
@@ -17,27 +19,6 @@ interface Props {
 export function VerseDrawer({ book, chapter }: Props) {
   const { translation } = useContext(BibleContext);
   const { verses, setVerses } = useContext(ChapterContext);
-
-  const formatVerses = (data: Verse[]): string => {
-    const verses = data.map(({ verse }) => verse);
-    if (verses.length === 0) return "";
-
-    let result: string[] = [];
-    let start = verses[0];
-
-    for (let i = 1; i <= verses.length; i++) {
-      if (verses[i] !== verses[i - 1] + 1) {
-        if (start === verses[i - 1]) {
-          result.push(`${start}`);
-        } else {
-          result.push(`${start}-${verses[i - 1]}`);
-        }
-        start = verses[i];
-      }
-    }
-
-    return result.join(", ");
-  };
 
   const verseFull = () => {
     const el = document.createElement("DIV");
@@ -77,7 +58,9 @@ export function VerseDrawer({ book, chapter }: Props) {
           <div className="whitespace-nowrap overflow-x-auto mb-4">
             <ActionButton onClick={handleShare}>Compartilhar</ActionButton>
             <ActionButton onClick={handleCopy}>Copiar</ActionButton>
-            <ActionButton>Comparar</ActionButton>
+            <CompareVerses book={book} chapter={chapter}>
+              <ActionButton>Comparar</ActionButton>
+            </CompareVerses>
             <ActionButton>Imagem</ActionButton>
           </div>
           <div className="whitespace-nowrap overflow-x-auto mb-4">
@@ -100,13 +83,20 @@ export function VerseDrawer({ book, chapter }: Props) {
   );
 }
 
-function ActionButton({ children, ...props }: { children: ReactNode; onClick?: () => void }) {
+export const ActionButton = forwardRef<
+  HTMLDivElement,
+  {
+    children: ReactNode;
+    onClick?: () => void;
+  }
+>(({ children, ...props }, ref) => {
   return (
-    <div className="inline-block mr-[10px] px-3 py-2 rounded-full bg-highlight-active text-sm" {...props}>
+    <div className="inline-block mr-[10px] px-3 py-2 rounded-full bg-highlight-active text-sm" ref={ref} {...props}>
       {children}
     </div>
   );
-}
+});
+ActionButton.displayName = "ActionButton";
 
 function BookmarkColor({ color }: { color: string }) {
   return <div className="inline-block mr-[15px] w-[30px] h-[30px] rounded" style={{ backgroundColor: color }}></div>;
