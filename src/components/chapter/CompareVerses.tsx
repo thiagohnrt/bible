@@ -33,13 +33,10 @@ export function CompareVerses({ book, chapter, children }: Props) {
       if (translationContext) {
         const languages = await api.getLanguages();
 
-        const languageCurrent = languages.find(
-          (lang) =>
-            lang.translations.findIndex((translation) => translation.short_name === translationContext.short_name) > -1
-        );
+        const allTranslations = languages.map((language) => language.translations).flat();
 
         const translationsSaved = db.getTranslationsSaved();
-        const translations = languageCurrent?.translations.filter(
+        const translations = allTranslations.filter(
           (translation) => translationsSaved[translation.short_name] === "done"
         );
 
