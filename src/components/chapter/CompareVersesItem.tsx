@@ -22,13 +22,13 @@ export function CompareVersesItem({ translation, book, chapter, verses }: Props)
   }, [book, chapter, translation, verses]);
 
   return (
-    <div className="flex flex-col pb-6">
+    <div className="flex flex-col pb-8">
       <div className="flex items-center gap-2 pb-2">
         <div>{translation.short_name}</div>
         <small className="opacity-50">{translation.full_name}</small>
       </div>
       <div className="flex gap-4">
-        <div className="bg-black dark:bg-white w-2 rounded-full"></div>
+        <div className="flex-shrink-0 w-[4px] bg-black dark:bg-white rounded-full"></div>
         <div>
           {data.map((item, i) => {
             return <Verse text={item.text} key={i} className="text-base leading-7" />;
