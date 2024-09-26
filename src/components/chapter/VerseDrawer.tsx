@@ -23,7 +23,8 @@ export function VerseDrawer({ book, chapter }: Props) {
   const verseFull = () => {
     const el = document.createElement("DIV");
     el.innerHTML = verses.map((verse) => verse.text).join("");
-    el.querySelectorAll("sup").forEach((sup) => el.removeChild(sup));
+    el.querySelectorAll("sup").forEach((sup) => el.removeChild(sup)); // NAA
+    el.querySelectorAll("s").forEach((sup) => el.removeChild(sup)); // KJV
     const versesText = ((el.innerText || el.textContent) ?? "").replace(/\n/g, " ").replace(/  /g, " ").trim();
     return `${versesText}\n${bolls.book(book).name} ${chapter}:${formatVerses(verses)} ${
       translation && bolls.translation(translation).short_name
