@@ -25,7 +25,10 @@ export function VerseOfTheDayText({ className }: Props) {
   }, [translation]);
 
   return (
-    <div className={cn("transition-opacity", verse ? "opacity-100" : "opacity-0", className)} style={{ zIndex: 2 }}>
+    <div
+      className={cn("transition-opacity text-white", verse ? "opacity-100" : "opacity-0", className)}
+      style={{ zIndex: 2 }}
+    >
       <Verse className={cn(font.className, "pb-2 leading-6", "votd-verse")} text={verse?.text ?? ""} />
       <div className="votd-book text-sm mt-4">
         Hebreus 4:12 {translation ? bolls.translation(translation).short_name : ""}
