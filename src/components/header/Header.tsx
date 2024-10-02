@@ -10,8 +10,8 @@ import { VersionChange } from "./VersionChange";
 import * as bolls from "@/custom/bolls";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import imgLogoLight from "../../../public/bible_app_light.svg";
-import imgLogoDark from "../../../public/bible_app_dark.svg";
+import imgLogoLight from "../../../public/bible_light.png";
+import imgLogoDark from "../../../public/bible_dark.png";
 
 export default function Header() {
   const { translation: translationCurrent, setLoading } = useContext(BibleContext);
@@ -50,9 +50,9 @@ export default function Header() {
     >
       <div className="content-left">
         <Link href="/" className="flex flex-nowrap items-center gap-2">
-          <Image src={imgLogoLight} alt="Bíblia" width={22} className="block dark:hidden" />
-          <Image src={imgLogoDark} alt="Bíblia" width={22} className="hidden dark:block" />
-          <h1 className="text-2xl font-semibold">Bíblia</h1>
+          <Image src={imgLogoLight} alt="Bíblia" width={18} className="block dark:hidden" />
+          <Image src={imgLogoDark} alt="Bíblia" width={18} className="hidden dark:block" />
+          <h1 className="text-xl">Bíblia</h1>
         </Link>
       </div>
       <div className="content-right">
