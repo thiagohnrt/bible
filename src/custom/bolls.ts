@@ -14,6 +14,12 @@ export const translation = (trns: Translation): Translation => {
     translation.full_name = "Nova Almeida Atualizada";
   } else if (translation.short_name === "KJA") {
     translation.full_name = "King James Atualizada";
+  } else if (translation.short_name === "NBV07") {
+    translation.short_name = "NBV-P";
+    translation.full_name = "Nova Bíblia Viva";
+  } else if (translation.short_name === "TB10") {
+    translation.short_name = "TB";
+    translation.full_name = "Tradução Brasileira";
   }
   return translation;
 };
