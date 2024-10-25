@@ -2,6 +2,7 @@ import { ItemMenu } from "@/components/more/ItemMenu";
 import { ItemShare } from "@/components/more/ItemShare";
 import { ItemTranslation } from "@/components/more/ItemTranslation";
 import { ItemVersion } from "@/components/more/ItemVersion";
+import { Container } from "@/components/root/Container";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { MdChatBubbleOutline, MdInfoOutline, MdOutlineWarningAmber } from "react-icons/md";
 import { RiBookLine } from "react-icons/ri";
@@ -10,7 +11,7 @@ export default function MorePage() {
   const iconSize = 20;
 
   return (
-    <div className="flex flex-col -mx-6">
+    <Container className="flex flex-col px-0">
       <ItemTranslation iconSize={iconSize} />
       <ItemMenu label="Planos de leitura" icon={<RiBookLine size={iconSize} />} />
       <Separator />
@@ -24,7 +25,7 @@ export default function MorePage() {
       <ItemShare iconSize={iconSize} />
       <ItemMenu label="Sobre" icon={<MdInfoOutline size={iconSize} />} />
       <ItemVersion />
-    </div>
+    </Container>
   );
 }
 

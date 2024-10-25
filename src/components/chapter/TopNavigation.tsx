@@ -3,7 +3,11 @@
 import { cn } from "@/lib/utils";
 import { RiArrowUpSLine } from "react-icons/ri";
 
-export function TopNavigation() {
+interface Props {
+  className?: string;
+}
+
+export function TopNavigation({ className }: Props) {
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -14,9 +18,13 @@ export function TopNavigation() {
   return (
     <div
       onClick={scrollToTop}
-      className={cn("chapter-top-navigation", "fixed right-2 bottom-40 h-14 w-14 z-10 ", "transition-all duration-500")}
+      className={cn("fixed h-14 w-14 z-10 cursor-pointer", "transition-all duration-500", className)}
     >
-      <div className={cn("flex h-full w-full rounded-full items-center justify-center bg-highlight-active")}>
+      <div
+        className={cn(
+          "flex h-full w-full rounded-full items-center justify-center bg-highlight-active shadow-md shadow-black "
+        )}
+      >
         <RiArrowUpSLine size={24} />
       </div>
     </div>

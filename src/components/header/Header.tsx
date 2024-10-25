@@ -12,8 +12,13 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import imgLogoLight from "../../../public/bible_light.png";
 import imgLogoDark from "../../../public/bible_dark.png";
+import { Container } from "../root/Container";
 
-export default function Header() {
+interface Props {
+  className?: string;
+}
+
+export default function Header({ className }: Props) {
   const { translation: translationCurrent, setLoading } = useContext(BibleContext);
   const pathname = usePathname();
   const router = useRouter();
@@ -43,29 +48,31 @@ export default function Header() {
   return (
     <header
       className={cn(
-        "fixed left-0 right-0 px-6 h-16 z-10",
-        "bg-background border-b flex items-center justify-between",
-        "transition-all duration-500"
+        "fixed left-0 right-0 h-16 z-10 flex bg-background border-b",
+        "transition-transform duration-500",
+        className
       )}
     >
-      <div className="content-left">
-        <Link href="/" className="flex flex-nowrap items-center gap-2">
-          <Image src={imgLogoLight} alt="Bíblia" width={18} className="block dark:hidden" />
-          <Image src={imgLogoDark} alt="Bíblia" width={18} className="hidden dark:block" />
-          <h1 className="text-xl">Bíblia</h1>
-        </Link>
-      </div>
-      <div className="content-right">
-        {pathname.includes("/bible") && translationCurrent ? (
-          <VersionChange onTranslationSelected={onTranslationSelected}>
-            <div className="border border-neutral-600 rounded-full active:bg-primary/30 transition-colors px-3 py-1 cursor-pointer">
-              {bolls.translation(translationCurrent).short_name}
-            </div>
-          </VersionChange>
-        ) : (
-          <></>
-        )}
-      </div>
+      <Container className="flex px-6 items-center justify-between">
+        <div className="content-left">
+          <Link href="/" className="flex flex-nowrap items-center gap-2">
+            <Image src={imgLogoLight} alt="Bíblia" width={18} className="block dark:hidden" />
+            <Image src={imgLogoDark} alt="Bíblia" width={18} className="hidden dark:block" />
+            <h1 className="text-xl">Bíblia</h1>
+          </Link>
+        </div>
+        <div className="content-right">
+          {pathname.includes("/bible") && translationCurrent ? (
+            <VersionChange onTranslationSelected={onTranslationSelected}>
+              <div className="border border-neutral-600 rounded-full active:bg-primary/30 transition-colors px-3 py-1 cursor-pointer">
+                {bolls.translation(translationCurrent).short_name}
+              </div>
+            </VersionChange>
+          ) : (
+            <></>
+          )}
+        </div>
+      </Container>
     </header>
   );
 }

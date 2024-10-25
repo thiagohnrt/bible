@@ -1,13 +1,21 @@
+import { BookList } from "@/components/home/BookList";
 import { DecisionReading } from "@/components/home/DecisionReading";
 import { VerseOfTheDay } from "@/components/home/VerseOfTheDay";
+import { Container } from "@/components/root/Container";
+import { headers } from "next/headers";
+import { userAgent } from "next/server";
 
 export const runtime = "edge";
 
 export default function HomePage() {
+  const { device } = userAgent({ headers: headers() });
   return (
     <>
-      <VerseOfTheDay className="mb-8" />
-      <DecisionReading className="mb-8" />
+      <Container>
+        <VerseOfTheDay className="mb-8" />
+        <DecisionReading className="mb-8" />
+      </Container>
+      <BookList device={device} />
     </>
   );
 }

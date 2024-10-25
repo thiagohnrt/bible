@@ -94,7 +94,7 @@ export function VersionChange({ children, className, onTranslationSelected }: Pr
       <DialogTrigger asChild className={className}>
         {children}
       </DialogTrigger>
-      <DialogContent className="flex flex-col h-svh w-lvw p-0">
+      <DialogContent className="flex flex-col h-svh w-lvw p-0 md:max-w-lg md:h-auto md:max-h-[90vh] md:border md:rounded-lg">
         <DialogHeader className="p-6 pb-3">
           <DialogTitle>Versões</DialogTitle>
           <DialogDescription></DialogDescription>

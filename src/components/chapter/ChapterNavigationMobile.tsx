@@ -1,11 +1,11 @@
 "use client";
 
+import * as bolls from "@/custom/bolls";
 import { cn } from "@/lib/utils";
 import { api, Book } from "@/services/api";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
-import * as bolls from "@/custom/bolls";
 
 interface Props {
   version: string;
@@ -13,11 +13,11 @@ interface Props {
   chapter: number;
 }
 
-export function ChapterNavigation({ version, book: bookId, chapter }: Props) {
+export function ChapterNavigationMobile({ version, book: bookId, chapter }: Props) {
   const [book, setBook] = useState<Book>({} as Book);
 
   useEffect(() => {
-    api.getBook(version, bookId).then((b) => setBook(b));
+    api.getBook(version, bookId).then((data) => setBook(data));
   }, [bookId, version]);
 
   return (
@@ -30,18 +30,20 @@ export function ChapterNavigation({ version, book: bookId, chapter }: Props) {
       )}
       style={{ bottom: "calc(4rem - 1px)" }}
     >
-      <ChapterPrev version={version} book={bookId} bookData={book} chapter={chapter} />
-      <ChapterBook version={version} book={bookId} bookData={book} chapter={chapter} />
-      <ChapterNext version={version} book={bookId} bookData={book} chapter={chapter} />
+      <ChapterPrev version={version} book={book} chapter={chapter} />
+      <ChapterBook version={version} book={book} chapter={chapter} />
+      <ChapterNext version={version} book={book} chapter={chapter} />
     </div>
   );
 }
 
-interface PropsChildren extends Props {
-  bookData: Book;
+interface PropsChildren {
+  version: string;
+  book: Book;
+  chapter: number;
 }
 
-function ChapterBook({ version, bookData: book, chapter }: PropsChildren) {
+function ChapterBook({ version, book, chapter }: PropsChildren) {
   return (
     <Link className="self-stretch flex-auto flex items-center" href={`/bible/${version}?${book.book}`}>
       <div
@@ -54,7 +56,7 @@ function ChapterBook({ version, bookData: book, chapter }: PropsChildren) {
   );
 }
 
-function ChapterPrev({ version, bookData: book, chapter }: PropsChildren) {
+function ChapterPrev({ version, book, chapter }: PropsChildren) {
   let linkPrev = `/bible/${version}/${book.book}/${+chapter - 1}`;
   if (chapter == 1) {
     if (book.bookPrev) {
@@ -74,7 +76,7 @@ function ChapterPrev({ version, bookData: book, chapter }: PropsChildren) {
   );
 }
 
-function ChapterNext({ version, bookData: book, chapter }: PropsChildren) {
+function ChapterNext({ version, book, chapter }: PropsChildren) {
   let linkNext = `/bible/${version}/${book.book}/${+chapter + 1}`;
   if (book.chapters == chapter) {
     if (book.bookNext) {

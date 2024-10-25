@@ -5,12 +5,14 @@ import { Translation } from "@/services/api";
 import { usePathname } from "next/navigation";
 import { createContext, ReactNode, Dispatch, SetStateAction, useState, useEffect } from "react";
 
-export const BibleContext = createContext<{
+interface ContextProps {
   translation: Translation | null;
   setTranslation: Dispatch<SetStateAction<Translation | null>> | (() => void);
   isLoading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>> | (() => void);
-}>({
+}
+
+export const BibleContext = createContext<ContextProps>({
   translation: null,
   setTranslation: () => null,
   isLoading: false,

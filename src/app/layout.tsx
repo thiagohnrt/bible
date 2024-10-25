@@ -1,7 +1,6 @@
 import { Footer } from "@/components/footer/Footer";
 import Header from "@/components/header/Header";
 import { CookieConsent } from "@/components/home/CookieConsent";
-import { Body } from "@/components/root/Body";
 import { Toaster } from "@/components/ui/sonner";
 import { Providers } from "@/providers/providers";
 import type { Metadata } from "next";
@@ -23,15 +22,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Body className={inter.className}>
+      <body className={inter.className}>
         <Providers>
           <Header />
-          <main className="px-6 py-20 relative">{children}</main>
+          <main className="py-20 md:pb-0 relative">{children}</main>
           <Footer />
           <Toaster />
           <CookieConsent />
         </Providers>
-      </Body>
+      </body>
     </html>
   );
 }
