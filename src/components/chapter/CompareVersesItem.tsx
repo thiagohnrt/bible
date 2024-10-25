@@ -1,6 +1,7 @@
 import { api, Book, Translation, Verse as IVerse } from "@/services/api";
 import { useEffect, useState } from "react";
 import Verse from "./Verse";
+import * as bolls from "@/custom/bolls";
 
 interface Props {
   translation: Translation;
@@ -24,8 +25,8 @@ export function CompareVersesItem({ translation, book, chapter, verses }: Props)
   return (
     <div className="flex flex-col pb-8">
       <div className="flex items-center gap-2 pb-2">
-        <div>{translation.short_name}</div>
-        <small className="opacity-50">{translation.full_name}</small>
+        <div>{bolls.translation(translation).short_name}</div>
+        <small className="opacity-50">{bolls.translation(translation).full_name}</small>
       </div>
       <div className="flex gap-4">
         <div className="flex-shrink-0 w-[4px] bg-black dark:bg-white rounded-full"></div>
