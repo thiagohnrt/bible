@@ -17,22 +17,24 @@ const DialogClose = DialogPrimitive.Close;
 
 interface DialogProps extends DialogPrimitive.DialogProps {
   id: string;
+  onClose?: () => void;
 }
-function Dialog({ id, children, ...props }: DialogProps) {
+function Dialog({ id, onClose, children, ...props }: DialogProps) {
   const { register } = React.useContext(DialogContext);
   const [open, setOpen] = React.useState(false);
 
   const handleOpenChange = React.useCallback(
     (open: boolean) => {
+      if (!open && onClose) onClose();
       setOpen(open);
       window.dispatchEvent(new CustomEvent(DIALOG_EVENT, { detail: { id, open } }));
     },
-    [id]
+    [id, onClose]
   );
 
   React.useEffect(() => {
-    register({ ...props, id, onOpenChange: setOpen });
-  }, [id, props, register]);
+    register({ ...props, id, onOpenChange: setOpen, onClose });
+  }, [id, onClose, props, register]);
 
   return (
     <DialogPrimitive.Root key={id} open={open} onOpenChange={handleOpenChange} {...props}>

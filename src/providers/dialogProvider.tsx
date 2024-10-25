@@ -14,6 +14,7 @@ export const DIALOG_EVENT = "dialogOpenChange";
 
 interface DialogProps extends DialogPrimitive.DialogProps {
   id: string;
+  onClose?: () => void;
 }
 
 export function DialogProvider({ children }: { children: ReactNode }) {
@@ -51,7 +52,10 @@ export function DialogProvider({ children }: { children: ReactNode }) {
 
       const dialog = dialogsRef.current.findLast((dialog) => dialog.id === dialogChange.id);
 
-      dialog && dialog.onOpenChange && dialog.onOpenChange(dialogChange.open);
+      if (dialog && dialog.onOpenChange) {
+        if (!dialogChange.open && dialog.onClose) dialog.onClose();
+        dialog.onOpenChange(dialogChange.open);
+      }
     };
 
     const onOpenChange = (event: Event) => {

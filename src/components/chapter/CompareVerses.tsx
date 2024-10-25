@@ -25,7 +25,7 @@ interface Props {
 
 export function CompareVerses({ book, chapter, children }: Props) {
   const { translation: translationContext } = useContext(BibleContext);
-  const { verses } = useContext(ChapterContext);
+  const { verses, setVerseComment } = useContext(ChapterContext);
   const [translations, setTranslations] = useState<Translation[]>([]);
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export function CompareVerses({ book, chapter, children }: Props) {
   }, [translationContext]);
 
   return (
-    <Dialog id="compare">
+    <Dialog id="compare" onClose={() => setVerseComment(null)}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="flex flex-col justify-between h-svh w-lvw p-0">
         <DialogHeader className="p-6 pb-3">
