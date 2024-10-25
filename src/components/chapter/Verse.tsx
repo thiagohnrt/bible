@@ -5,7 +5,7 @@ const font = Merriweather({ subsets: ["latin"], weight: "300" });
 
 interface VerseProps {
   text: string;
-  number?: number;
+  number?: number | undefined;
   comment?: boolean;
   onClick?: () => void;
   className?: string;
