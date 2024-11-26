@@ -53,7 +53,7 @@ export function CompareVersesItem({ translation, book, chapter, verses }: Props)
       <div className="flex gap-4">
         <div className="flex-shrink-0 w-[4px] bg-black dark:bg-white rounded-full"></div>
         <div className="flex gap-2 justify-between">
-          <div className="flex-auto" onClick={onVersesSelected}>
+          <div className="flex-auto cursor-pointer" onClick={onVersesSelected}>
             {data.verses.map((item, i) => {
               return (
                 <Verse

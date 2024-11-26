@@ -10,6 +10,8 @@ import * as bolls from "@/custom/bolls";
 import { BibleContext } from "@/providers/bibleProvider";
 import { CompareVerses } from "./CompareVerses";
 import { formatVerses } from "@/lib/utils";
+import { RootContext } from "@/providers/rootProvider";
+import { Toast, ToastClose, ToastDescription, ToastProvider, ToastTitle, ToastViewport } from "../ui/toast";
 
 interface Props {
   book: Book;
@@ -17,6 +19,7 @@ interface Props {
 }
 
 export function VerseDrawer({ book, chapter }: Props) {
+  const { device } = useContext(RootContext);
   const { translation } = useContext(BibleContext);
   const { verses, setVerses } = useContext(ChapterContext);
 
@@ -46,8 +49,27 @@ export function VerseDrawer({ book, chapter }: Props) {
     setVerses([]);
   };
 
+  if (device.type !== "mobile") {
+    return (
+      <ToastProvider swipeDirection="up">
+        <Toast open={verses.length > 0} onOpenChange={(open) => !open && closeDrawer()} duration={86400000}>
+          <div className="grid gap-3">
+            <ToastTitle className="text-lg">
+              {bolls.book(book).name} {chapter}:{formatVerses(verses)}
+            </ToastTitle>
+            <ToastDescription>
+              <VerseActions book={book} chapter={chapter} share={handleShare} copy={handleCopy} />
+            </ToastDescription>
+          </div>
+          <ToastClose />
+        </Toast>
+        <ToastViewport className="md:max-w-[500px] z-[49]" />
+      </ToastProvider>
+    );
+  }
+
   return (
-    <Drawer open={verses.length > 0} onClose={() => setVerses([])} modal={false}>
+    <Drawer open={verses.length > 0} onClose={() => closeDrawer()} modal={false}>
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>
@@ -56,31 +78,46 @@ export function VerseDrawer({ book, chapter }: Props) {
           <DrawerDescription></DrawerDescription>
         </DrawerHeader>
         <DrawerFooter>
-          <div className="whitespace-nowrap overflow-x-auto mb-4">
-            <ActionButton onClick={handleShare}>Compartilhar</ActionButton>
-            <ActionButton onClick={handleCopy}>Copiar</ActionButton>
-            <CompareVerses book={book} chapter={chapter}>
-              <ActionButton>Comparar</ActionButton>
-            </CompareVerses>
-            <ActionButton>Imagem</ActionButton>
-          </div>
-          <div className="whitespace-nowrap overflow-x-auto mb-4">
-            <BookmarkColor color="cadetblue" />
-            <BookmarkColor color="chocolate" />
-            <BookmarkColor color="cornflowerblue" />
-            <BookmarkColor color="darkcyan" />
-            <BookmarkColor color="darkgoldenrod" />
-            <BookmarkColor color="darkgreen" />
-            <BookmarkColor color="dimgray" />
-            <BookmarkColor color="dodgerblue" />
-            <BookmarkColor color="salmon" />
-            <BookmarkColor color="sienna" />
-            <BookmarkColor color="yellowgreen" />
-            <BookmarkColor color="fuchsia" />
-          </div>
+          <VerseActions book={book} chapter={chapter} share={handleShare} copy={handleCopy} />
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
+  );
+}
+
+interface VerseActionsProps {
+  book: Book;
+  chapter: number;
+  share: () => void;
+  copy: () => void;
+}
+
+function VerseActions({ book, chapter, share, copy }: VerseActionsProps) {
+  return (
+    <>
+      <div className="whitespace-nowrap overflow-x-auto mb-4">
+        <ActionButton onClick={share}>Compartilhar</ActionButton>
+        <ActionButton onClick={copy}>Copiar</ActionButton>
+        <CompareVerses book={book} chapter={chapter}>
+          <ActionButton>Comparar</ActionButton>
+        </CompareVerses>
+        <ActionButton>Imagem</ActionButton>
+      </div>
+      <div className="whitespace-nowrap overflow-x-auto mb-4">
+        <BookmarkColor color="cadetblue" />
+        <BookmarkColor color="chocolate" />
+        <BookmarkColor color="cornflowerblue" />
+        <BookmarkColor color="darkcyan" />
+        <BookmarkColor color="darkgoldenrod" />
+        <BookmarkColor color="darkgreen" />
+        <BookmarkColor color="dimgray" />
+        <BookmarkColor color="dodgerblue" />
+        <BookmarkColor color="salmon" />
+        <BookmarkColor color="sienna" />
+        <BookmarkColor color="yellowgreen" />
+        <BookmarkColor color="fuchsia" />
+      </div>
+    </>
   );
 }
 
@@ -92,7 +129,11 @@ export const ActionButton = forwardRef<
   }
 >(({ children, ...props }, ref) => {
   return (
-    <div className="inline-block mr-[10px] px-3 py-2 rounded-full bg-highlight-active text-sm" ref={ref} {...props}>
+    <div
+      className="inline-block mr-[10px] px-3 py-2 rounded-full bg-highlight-active text-sm cursor-pointer"
+      ref={ref}
+      {...props}
+    >
       {children}
     </div>
   );

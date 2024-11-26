@@ -7,7 +7,6 @@ import { Merriweather } from "next/font/google";
 import { useContext, useEffect, useState } from "react";
 import { TfiCommentAlt } from "react-icons/tfi";
 import Verse from "./Verse";
-import { RootContext } from "@/providers/rootProvider";
 
 const font = Merriweather({ subsets: ["latin"], weight: "300" });
 
@@ -17,7 +16,6 @@ interface VerseProps {
 }
 
 export default function VerseAction({ data, className }: VerseProps) {
-  const { device } = useContext(RootContext);
   const { verses, setVerses, setVerseComment } = useContext(ChapterContext);
   const [isSelected, setSelected] = useState(false);
   const { verse, text, comment } = data;
@@ -48,12 +46,10 @@ export default function VerseAction({ data, className }: VerseProps) {
         text={text}
         className={cn(
           className,
-          "flex-auto",
+          "cursor-pointer flex-auto",
           isSelected ? "underline decoration-dashed decoration-1 underline-offset-4" : ""
         )}
-        onClick={() => {
-          if (device.type === "mobile") setSelected(!isSelected);
-        }}
+        onClick={() => setSelected(!isSelected)}
       />
       <div className="flex flex-grow-0 flex-shrink-0 basis-8">
         {comment ? (

@@ -89,7 +89,7 @@
   @apply bg-neutral-100 dark:bg-neutral-900;
 }
 .bg-highlight-active {
-  @apply bg-neutral-100 active:bg-neutral-200 dark:bg-neutral-900 dark:active:bg-neutral-800 transition-colors;
+  @apply bg-neutral-100 active:bg-neutral-200 hover:bg-neutral-200 dark:bg-neutral-900 dark:active:bg-neutral-800 dark:hover:bg-neutral-800 transition-colors;
 }
 
 /* Chapter */

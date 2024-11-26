@@ -48,7 +48,7 @@ export function CompareVerses({ book, chapter, children }: Props) {
   return (
     <Dialog id="compare" onClose={() => setVerseComment(null)}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="flex flex-col justify-between h-svh w-lvw p-0">
+      <DialogContent className="flex flex-col h-svh w-lvw p-0 md:max-w-lg md:h-auto md:max-h-[90vh] md:border md:rounded-lg">
         <DialogHeader className="p-6 pb-3">
           <DialogTitle>Comparar Versículo</DialogTitle>
           <DialogDescription></DialogDescription>
@@ -71,7 +71,7 @@ export function CompareVerses({ book, chapter, children }: Props) {
             );
           })}
         </div>
-        <DialogFooter className="p-6 border-t flex flex-row items-center justify-center gap-2 active:bg-neutral-100 dark:active:bg-neutral-900 transition-colors">
+        <DialogFooter className="p-6 border-t flex flex-row items-center justify-center sm:justify-center gap-2 cursor-pointer select-none active:bg-neutral-100 dark:active:bg-neutral-900 transition-colors">
           <VscSettings size={20} />
           <span>Versões</span>
         </DialogFooter>
