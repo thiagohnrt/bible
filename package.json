@@ -1,6 +1,7 @@
 {
   "name": "bible",
   "version": "0.22.0",
+  "datetime": "2024-11-26T09:30:00-03:00",
   "private": true,
   "scripts": {
     "dev": "next dev",

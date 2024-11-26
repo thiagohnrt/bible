@@ -3,7 +3,7 @@ import packageJson from "../../../package.json";
 
 export function ItemVersion() {
   const getVersion = () => {
-    const now = new Date();
+    const now = new Date(packageJson.datetime);
     const year = String(now.getFullYear()).substring(2);
     const month = String(now.getMonth() + 1).padStart(2, "0"); // Janeiro é 0!
     const day = String(now.getDate()).padStart(2, "0");
