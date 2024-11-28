@@ -2,13 +2,13 @@
 
 import { ChapterContext } from "@/providers/chapterProvider";
 import { Book } from "@/services/api";
-import { forwardRef, ReactNode, useContext } from "react";
+import { forwardRef, ReactNode, useContext, useState } from "react";
 import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from "../ui/drawer";
 import { share } from "@/lib/share";
 import { clipboard } from "@/lib/clipboard";
 import { BibleContext } from "@/providers/bibleProvider";
 import { CompareVerses } from "./CompareVerses";
-import { formatVerses } from "@/lib/utils";
+import { cn, formatVerses } from "@/lib/utils";
 import { RootContext } from "@/providers/rootProvider";
 import { Toast, ToastClose, ToastDescription, ToastProvider, ToastTitle, ToastViewport } from "../ui/toast";
 
@@ -39,7 +39,6 @@ export function VerseDrawer({ book, chapter }: Props) {
 
   const handleCopy = async () => {
     await clipboard.writeText(verseFull());
-    closeDrawer();
   };
 
   const closeDrawer = () => {
@@ -90,11 +89,19 @@ interface VerseActionsProps {
 }
 
 function VerseActions({ book, chapter, share, copy }: VerseActionsProps) {
+  const [isCopied, setCopied] = useState(false);
+  const handleCopy = () => {
+    copy();
+    setCopied(true);
+    setTimeout(() => setCopied(false), 3000);
+  };
   return (
     <>
       <div className="whitespace-nowrap overflow-x-auto mb-4">
         <ActionButton onClick={share}>Compartilhar</ActionButton>
-        <ActionButton onClick={copy}>Copiar</ActionButton>
+        <ActionButton className={cn(isCopied && "bg-green-500")} onClick={handleCopy}>
+          {isCopied ? "Copiado" : "Copiar"}
+        </ActionButton>
         <CompareVerses book={book} chapter={chapter}>
           <ActionButton>Comparar</ActionButton>
         </CompareVerses>
@@ -122,12 +129,16 @@ export const ActionButton = forwardRef<
   HTMLDivElement,
   {
     children: ReactNode;
+    className?: string;
     onClick?: () => void;
   }
->(({ children, ...props }, ref) => {
+>(({ className, children, ...props }, ref) => {
   return (
     <div
-      className="inline-block mr-[10px] px-3 py-2 rounded-full bg-highlight-active text-sm cursor-pointer"
+      className={cn(
+        "inline-block mr-[10px] px-3 py-2 rounded-full bg-highlight-active text-sm cursor-pointer",
+        className
+      )}
       ref={ref}
       {...props}
     >
