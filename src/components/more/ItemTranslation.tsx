@@ -5,7 +5,6 @@ import { VersionChange } from "../header/VersionChange";
 import { ItemMenu } from "./ItemMenu";
 import { useContext } from "react";
 import { BibleContext } from "@/providers/bibleProvider";
-import * as bolls from "@/custom/bolls";
 
 interface Props {
   iconSize: number;
@@ -18,9 +17,7 @@ export function ItemTranslation({ iconSize }: Props) {
       <div>
         <ItemMenu label="Versões" icon={<IoLanguage size={iconSize} />}>
           <small className="line-clamp-1 opacity-50">
-            {translation
-              ? bolls.translation(translation).short_name + " - " + bolls.translation(translation).full_name
-              : ""}
+            {translation ? translation.short_name + " - " + translation.full_name : ""}
           </small>
         </ItemMenu>
       </div>

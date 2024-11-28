@@ -7,7 +7,6 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useContext, useEffect } from "react";
 import { VersionChange } from "./VersionChange";
-import * as bolls from "@/custom/bolls";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import imgLogoLight from "../../../public/bible_light.png";
@@ -65,7 +64,7 @@ export default function Header({ className }: Props) {
           {pathname.includes("/bible") && translationCurrent ? (
             <VersionChange onTranslationSelected={onTranslationSelected}>
               <div className="border border-neutral-600 rounded-full active:bg-primary/30 transition-colors px-3 py-1 cursor-pointer">
-                {bolls.translation(translationCurrent).short_name}
+                {translationCurrent.short_name}
               </div>
             </VersionChange>
           ) : (

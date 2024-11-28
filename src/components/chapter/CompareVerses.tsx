@@ -11,7 +11,6 @@ import {
 import { BibleContext } from "@/providers/bibleProvider";
 import { ChapterContext } from "@/providers/chapterProvider";
 import { api, Book, Translation } from "@/services/api";
-import * as bolls from "@/custom/bolls";
 import { formatVerses, sortTranslations } from "@/lib/utils";
 import { CompareVersesItem } from "./CompareVersesItem";
 import { db } from "@/database/bibleDB";
@@ -54,7 +53,7 @@ export function CompareVerses({ book, chapter, children }: Props) {
           <DialogDescription></DialogDescription>
           <div>
             <h3 className="text-3xl my-3">
-              {bolls.book(book).name} {chapter}:{formatVerses(verses)}
+              {book.name} {chapter}:{formatVerses(verses)}
             </h3>
           </div>
         </DialogHeader>

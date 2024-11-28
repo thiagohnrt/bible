@@ -6,7 +6,6 @@ import { forwardRef, ReactNode, useContext } from "react";
 import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from "../ui/drawer";
 import { share } from "@/lib/share";
 import { clipboard } from "@/lib/clipboard";
-import * as bolls from "@/custom/bolls";
 import { BibleContext } from "@/providers/bibleProvider";
 import { CompareVerses } from "./CompareVerses";
 import { formatVerses } from "@/lib/utils";
@@ -29,9 +28,7 @@ export function VerseDrawer({ book, chapter }: Props) {
     el.querySelectorAll("sup").forEach((sup) => el.removeChild(sup)); // NAA
     el.querySelectorAll("s").forEach((sup) => el.removeChild(sup)); // KJV
     const versesText = ((el.innerText || el.textContent) ?? "").replace(/\n/g, " ").replace(/  /g, " ").trim();
-    return `${versesText}\n\n${bolls.book(book).name} ${chapter}:${formatVerses(verses)} ${
-      translation && bolls.translation(translation).short_name
-    }`;
+    return `${versesText}\n\n${book.name} ${chapter}:${formatVerses(verses)} ${translation?.short_name}`;
   };
 
   const handleShare = () => {
@@ -55,7 +52,7 @@ export function VerseDrawer({ book, chapter }: Props) {
         <Toast open={verses.length > 0} onOpenChange={(open) => !open && closeDrawer()} duration={86400000}>
           <div className="grid gap-3">
             <ToastTitle className="text-lg">
-              {bolls.book(book).name} {chapter}:{formatVerses(verses)}
+              {book.name} {chapter}:{formatVerses(verses)}
             </ToastTitle>
             <ToastDescription>
               <VerseActions book={book} chapter={chapter} share={handleShare} copy={handleCopy} />
@@ -73,7 +70,7 @@ export function VerseDrawer({ book, chapter }: Props) {
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>
-            {bolls.book(book).name} {chapter}:{formatVerses(verses)}
+            {book.name} {chapter}:{formatVerses(verses)}
           </DrawerTitle>
           <DrawerDescription></DrawerDescription>
         </DrawerHeader>

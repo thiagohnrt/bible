@@ -10,7 +10,6 @@ import { VerseDrawer } from "@/components/chapter/VerseDrawer";
 import { ChapterProvider } from "@/providers/chapterProvider";
 import VerseAction from "@/components/chapter/VerseAction";
 import { CommentDrawer } from "@/components/chapter/CommentDrawer";
-import * as bolls from "@/custom/bolls";
 
 interface Data {
   translation: Translation;
@@ -53,11 +52,11 @@ export default function ChapterPage({ params: { version, book: bookId, chapter, 
         url: pathname,
         book: {
           id: book.book,
-          name: bolls.book(book).name,
+          name: book.name,
         },
         chapter,
         firstVerse: verses[0].text,
-        translation: bolls.translation(translation).short_name,
+        translation: translation.short_name,
       };
       setBibleHistory(data);
     }
@@ -119,7 +118,7 @@ export default function ChapterPage({ params: { version, book: bookId, chapter, 
   return (
     <ChapterProvider>
       <h1 className={cn("text-3xl pb-8", translation.dir ? "text-right" : "")}>
-        {bolls.book(book).name} {chapter}
+        {book.name} {chapter}
       </h1>
       <div className="pb-40 md:pb-4" dir={translation.dir}>
         {verses.map((data, i) => (

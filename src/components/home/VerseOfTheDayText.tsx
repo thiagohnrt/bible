@@ -6,7 +6,6 @@ import { useContext, useEffect, useState } from "react";
 import { api, Verse as IVerse } from "@/services/api";
 import Verse from "../chapter/Verse";
 import { cn } from "@/lib/utils";
-import * as bolls from "@/custom/bolls";
 
 const font = Merriweather({ subsets: ["latin"], weight: "400" });
 
@@ -30,9 +29,7 @@ export function VerseOfTheDayText({ className }: Props) {
       style={{ zIndex: 2 }}
     >
       <Verse className={cn(font.className, "pb-2 leading-6", "votd-verse")} text={verse?.text ?? ""} />
-      <div className="votd-book text-sm mt-4">
-        Hebreus 4:12 {translation ? bolls.translation(translation).short_name : ""}
-      </div>
+      <div className="votd-book text-sm mt-4">Hebreus 4:12 {translation?.short_name ?? ""}</div>
     </div>
   );
 }

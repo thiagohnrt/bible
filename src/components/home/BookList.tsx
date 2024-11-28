@@ -3,7 +3,6 @@
 import { BibleContext } from "@/providers/bibleProvider";
 import { api, Book, Translation } from "@/services/api";
 import { useContext, useEffect, useState } from "react";
-import * as bolls from "@/custom/bolls";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Container } from "../root/Container";
@@ -71,7 +70,7 @@ function BooksTestament({
             className="block leading-7 hover:underline"
             key={i}
           >
-            {bolls.book(book).name}
+            {book.name}
           </Link>
         ))}
       </div>

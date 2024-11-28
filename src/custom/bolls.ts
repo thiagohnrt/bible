@@ -1,4 +1,4 @@
-import { Book, Language, Translation } from "@/services/api";
+import { Book, Translation } from "@/services/api";
 
 export const translation = (trns: Translation): Translation => {
   const translation = structuredClone(trns);

@@ -1,4 +1,5 @@
 import { db } from "@/database/bibleDB";
+import * as bolls from "@/custom/bolls";
 
 export interface Translation {
   short_name: string;
@@ -41,12 +42,21 @@ async function apiBible<T = any>(path: string): Promise<T> {
   throw new Error(response.statusText);
 }
 
-async function getLanguages() {
-  if (db.util.hasLanguagesSaved()) {
-    return await db.getLanguages();
-  } else {
-    return await apiBible<Language[]>("/static/bolls/app/views/languages.json");
-  }
+async function getLanguages(): Promise<Language[]> {
+  const languages = await (async () => {
+    if (db.util.hasLanguagesSaved()) {
+      return await db.getLanguages();
+    } else {
+      return await apiBible<Language[]>("/static/bolls/app/views/languages.json");
+    }
+  })();
+
+  return languages.map((language) => {
+    return {
+      ...language,
+      translations: language.translations.map((translation) => bolls.translation(translation)),
+    };
+  });
 }
 
 async function getTranslation(version: string): Promise<Translation> {
@@ -66,23 +76,27 @@ async function getTranslationData(version: string): Promise<Verse[]> {
 }
 
 async function getBooks(translation: string): Promise<Book[]> {
-  if (db.util.hasTranslationSaved(translation)) {
-    return await db.getBooks(translation);
-  } else {
-    const [versionBook, languages] = await Promise.all([
-      apiBible<VersionBook>(`/static/bolls/app/views/translations_books.json`),
-      getLanguages(),
-    ]);
-    const language = languages.find((language) =>
-      language.translations.some((trns) => trns.short_name === translation)
-    )!;
-    return versionBook[translation].map<Book>((bookData: any) => ({
-      ...bookData,
-      book: bookData.bookid,
-      translation,
-      language: language.language,
-    }));
-  }
+  const books = await (async () => {
+    if (db.util.hasTranslationSaved(translation)) {
+      return await db.getBooks(translation);
+    } else {
+      const [versionBook, languages] = await Promise.all([
+        apiBible<VersionBook>(`/static/bolls/app/views/translations_books.json`),
+        getLanguages(),
+      ]);
+      const language = languages.find((language) =>
+        language.translations.some((trns) => trns.short_name === translation)
+      )!;
+      return versionBook[translation].map<Book>((bookData: any) => ({
+        ...bookData,
+        book: bookData.bookid,
+        translation,
+        language: language.language,
+      }));
+    }
+  })();
+
+  return books.map((book) => bolls.book(book));
 }
 
 async function getBook(version: string, book: number): Promise<Book> {

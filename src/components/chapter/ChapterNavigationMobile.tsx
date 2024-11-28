@@ -1,6 +1,5 @@
 "use client";
 
-import * as bolls from "@/custom/bolls";
 import { cn } from "@/lib/utils";
 import { api, Book } from "@/services/api";
 import Link from "next/link";
@@ -50,7 +49,7 @@ function ChapterBook({ version, book, chapter }: PropsChildren) {
         className="chapter-book w-full h-14 text-center text-sm font-bold overflow-hidden bg-highlight-active"
         style={{ lineHeight: "3.5rem" }}
       >
-        {book.name ? `${bolls.book(book).name} ${chapter}` : ""}
+        {book.name ? `${book.name} ${chapter}` : ""}
       </div>
     </Link>
   );

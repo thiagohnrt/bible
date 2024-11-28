@@ -5,7 +5,6 @@ import { Book, Verse as IVerse } from "@/services/api";
 import { useContext } from "react";
 import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from "../ui/drawer";
 import Verse from "./Verse";
-import * as bolls from "@/custom/bolls";
 import { RootContext } from "@/providers/rootProvider";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../ui/dialog";
 
@@ -24,7 +23,7 @@ export function CommentDrawer({ book, chapter }: Props) {
         <DialogContent className="flex flex-col h-svh w-lvw p-0 md:max-w-lg md:h-auto md:max-h-[90vh] md:border md:rounded-lg">
           <DialogHeader className="p-6 pb-3">
             <DialogTitle>
-              {bolls.book(book).name} {chapter}:{verseComment?.verse}
+              {book.name} {chapter}:{verseComment?.verse}
             </DialogTitle>
             <DialogDescription>Comentário</DialogDescription>
           </DialogHeader>
@@ -39,7 +38,7 @@ export function CommentDrawer({ book, chapter }: Props) {
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>
-            {bolls.book(book).name} {chapter}:{verseComment?.verse}
+            {book.name} {chapter}:{verseComment?.verse}
           </DrawerTitle>
           <DrawerDescription></DrawerDescription>
         </DrawerHeader>

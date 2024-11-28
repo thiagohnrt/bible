@@ -3,7 +3,6 @@
 import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import * as bolls from "@/custom/bolls";
 import { api, Book } from "@/services/api";
 import { useEffect, useState } from "react";
 
@@ -21,22 +20,22 @@ export function ChapterNavigationDesktop({ version, book: bookId, chapter }: Pro
   }, [bookId, version]);
 
   let linkPrev = `/bible/${version}/${book.book}/${+chapter - 1}`;
-  let chapterPrev = `${bolls.book(book).name ?? ""} ${+chapter - 1}`;
+  let chapterPrev = `${book.name ?? ""} ${+chapter - 1}`;
   if (chapter == 1) {
     if (book.bookPrev) {
       linkPrev = `/bible/${version}/${book.bookPrev.book}/${book.bookPrev.chapters}`;
-      chapterPrev = `${bolls.book(book.bookPrev).name ?? ""} ${book.bookPrev.chapters}`;
+      chapterPrev = `${book.bookPrev.name ?? ""} ${book.bookPrev.chapters}`;
     } else {
       linkPrev = "#";
     }
   }
 
   let linkNext = `/bible/${version}/${book.book}/${+chapter + 1}`;
-  let chapterNext = `${bolls.book(book).name ?? ""} ${+chapter + 1}`;
+  let chapterNext = `${book.name ?? ""} ${+chapter + 1}`;
   if (book.chapters == chapter) {
     if (book.bookNext) {
       linkNext = `/bible/${version}/${book.bookNext.book}/1`;
-      chapterNext = `${bolls.book(book.bookNext).name ?? ""} 1`;
+      chapterNext = `${book.bookNext.name ?? ""} 1`;
     } else {
       linkNext = "#";
     }

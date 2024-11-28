@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { Chapters } from "./Chapters";
 import { api, Book } from "@/services/api";
-import * as bolls from "@/custom/bolls";
 import { Skeleton } from "../ui/skeleton";
 
 interface Props {
@@ -30,7 +29,7 @@ export function ChaptersSidebar({ version, book: bookId, chapter }: Props) {
 
   return (
     <>
-      <h2 className="pb-4">{bolls.book(book).name}</h2>
+      <h2 className="pb-4">{book.name}</h2>
       <Chapters
         version={version}
         book={book}
