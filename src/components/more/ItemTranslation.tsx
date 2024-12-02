@@ -13,7 +13,8 @@ interface Props {
 export function ItemTranslation({ iconSize }: Props) {
   const { translation } = useContext(BibleContext);
   return (
-    <VersionChange onTranslationSelected={() => {}}>
+    // TODO implementar
+    <VersionChange onTranslationSelected={() => {}} onTranslationDeleted={() => {}}>
       <div>
         <ItemMenu label="Versões" icon={<IoLanguage size={iconSize} />}>
           <small className="line-clamp-1 opacity-50">
