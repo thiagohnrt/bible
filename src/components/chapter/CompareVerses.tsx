@@ -34,9 +34,9 @@ export function CompareVerses({ book, chapter, children }: Props) {
 
         const allTranslations = languages.map((language) => language.translations).flat();
 
-        const translationsSaved = db.getTranslationsSaved();
+        const translationsSaved = db.getTranslationsOffline();
         const translations = allTranslations.filter(
-          (translation) => translationsSaved[translation.short_name] === "done"
+          (translation) => translationsSaved[translation.identifier] === "done"
         );
 
         setTranslations(translations ?? []);

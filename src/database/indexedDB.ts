@@ -152,16 +152,23 @@ export class IDB {
     });
   }
 
-  async delete(storeName: string, query: IDBValidKey | IDBKeyRange): Promise<void> {
+  async delete(storeName: string, indexName: string, query: IDBValidKey | IDBKeyRange): Promise<void> {
     const db = await this.openDatabase();
     return new Promise((resolve, reject) => {
       const transaction = db.transaction([storeName], "readwrite");
       const store = transaction.objectStore(storeName);
+      const index = store.index(indexName);
 
-      const request = store.delete(query);
+      const request = index.openCursor(query);
 
-      request.onsuccess = () => {
-        resolve();
+      request.onsuccess = (event) => {
+        const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result;
+        if (cursor) {
+          cursor.delete();
+          cursor.continue();
+        } else {
+          resolve();
+        }
       };
 
       request.onerror = () => {

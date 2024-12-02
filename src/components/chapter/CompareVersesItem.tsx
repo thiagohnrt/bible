@@ -29,17 +29,17 @@ export function CompareVersesItem({ translation, book, chapter, verses }: Props)
   useEffect(() => {
     (async () => {
       const data = await Promise.all(
-        verses.map((verse) => api.getVerse(translation.short_name, book.book, chapter, verse))
+        verses.map((verse) => api.getVerse(translation.identifier, book.book, chapter, verse))
       );
       setData({ verses: data, comments: data.filter((i) => i.comment) });
     })();
   }, [book, chapter, translation, verses]);
 
   const onVersesSelected = () => {
-    if (translation.short_name !== translationCurrent?.short_name) {
+    if (translation.identifier !== translationCurrent?.identifier) {
       setTranslationContext(translation);
       setTranslationStorage(translation);
-      router.push(`/bible/${translation.short_name}/${book.book}/${chapter}/${formatVerses(data.verses)}`);
+      router.push(`/bible/${translation.identifier}/${book.book}/${chapter}/${formatVerses(data.verses)}`);
     }
   };
 

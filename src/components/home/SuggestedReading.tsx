@@ -15,7 +15,7 @@ export function SuggestedReading({ className }: Props) {
 
   return (
     <Link
-      href={`/bible/${translation?.short_name}/43/1`}
+      href={`/bible/${translation?.identifier}/43/1`}
       className={cn("block rounded-md p-4 bg-highlight-active", className)}
     >
       <div className="flex justify-between">

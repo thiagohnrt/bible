@@ -11,6 +11,7 @@ import {
 import { Translation, Verse } from "@/services/api";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import * as bolls from "@/custom/bolls";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -20,16 +21,18 @@ export function getTranslationPathname(pathname: string): Translation {
   if (pathname.startsWith("/bible")) {
     const translation = pathname.substring(1).split("/")[1];
     if (translation) {
-      return {
-        full_name: "",
+      return bolls.translation({
+        identifier: translation,
         short_name: translation,
-      };
+        full_name: "",
+      });
     }
   }
-  return {
-    full_name: TRANSLATION_NAME_DEFAULT,
+  return bolls.translation({
+    identifier: TRANSLATION_DEFAULT,
     short_name: TRANSLATION_DEFAULT,
-  };
+    full_name: TRANSLATION_NAME_DEFAULT,
+  });
 }
 
 export const setBibleHistory = (data: BibleHistory): void => {
@@ -56,10 +59,11 @@ export const getTranslationStorage = (): Translation => {
   if (translation) {
     return JSON.parse(translation);
   }
-  return {
-    full_name: TRANSLATION_NAME_DEFAULT,
+  return bolls.translation({
+    identifier: TRANSLATION_DEFAULT,
     short_name: TRANSLATION_DEFAULT,
-  };
+    full_name: TRANSLATION_NAME_DEFAULT,
+  });
 };
 
 export const repeat = (count: number, callbackfn: (index: number) => void) => {

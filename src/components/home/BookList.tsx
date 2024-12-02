@@ -22,7 +22,7 @@ export function BookList({ device, className }: Props) {
 
   useEffect(() => {
     if (device?.type !== "mobile" && translation) {
-      api.getBooks(translation.short_name).then((books) => setBooks(books));
+      api.getBooks(translation.identifier).then((books) => setBooks(books));
     }
   }, [device, translation]);
 
@@ -66,7 +66,7 @@ function BooksTestament({
       <div className="md:columns-2 lg:columns-3">
         {books.map((book, i) => (
           <Link
-            href={`/bible/${translation.short_name}/${book.book}`}
+            href={`/bible/${translation.identifier}/${book.book}`}
             className="block leading-7 hover:underline"
             key={i}
           >

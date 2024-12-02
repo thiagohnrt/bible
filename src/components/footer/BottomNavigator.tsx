@@ -21,7 +21,7 @@ export default function BottomNavigator() {
     if (history.book?.id) {
       book = "?" + history.book.id;
     }
-    return `/bible/${translation.short_name}${book}`;
+    return `/bible/${translation.identifier}${book}`;
   };
 
   useEffect(() => {

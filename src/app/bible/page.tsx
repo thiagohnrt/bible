@@ -16,5 +16,5 @@ export default function BiblePage() {
     return <></>;
   }
 
-  return <VersionPage params={{ version: translation.short_name }} />;
+  return <VersionPage params={{ version: translation.identifier }} />;
 }

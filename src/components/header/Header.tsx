@@ -5,7 +5,7 @@ import { BibleContext } from "@/providers/bibleProvider";
 import { Translation } from "@/services/api";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useContext, useEffect } from "react";
+import { useCallback, useContext, useEffect } from "react";
 import { VersionChange } from "./VersionChange";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -18,22 +18,50 @@ interface Props {
 }
 
 export default function Header({ className }: Props) {
-  const { translation: translationCurrent, setLoading } = useContext(BibleContext);
+  const { translation: translationCurrent, setTranslationsOffline, setLoading } = useContext(BibleContext);
   const pathname = usePathname();
   const router = useRouter();
 
+  const saveTranslation = useCallback(
+    async (translationId: string) => {
+      await db.saveTranslation(translationId);
+      setTranslationsOffline(db.getTranslationsOffline());
+    },
+    [setTranslationsOffline]
+  );
+
   const onTranslationSelected = async (translation: Translation) => {
     setLoading(true);
-    await db.saveTranslation(translation.short_name);
+    await saveTranslation(translation.identifier);
     setLoading(false);
-    router.push(pathname.replace(translationCurrent?.short_name!, translation.short_name));
+    router.push(pathname.replace(translationCurrent?.identifier!, translation.identifier));
+  };
+
+  const onTranslationDeleted = async (translationId: string) => {
+    if (db.util.hasTranslationSaved(translationId)) {
+      db.deleteTranslation(translationId)
+        .then(() => {
+          const translationsUpdated = db.getTranslationsOffline();
+          delete translationsUpdated[translationId];
+          setTranslationsOffline(translationsUpdated);
+        })
+        .catch(() => {
+          const translationsUpdated = db.getTranslationsOffline();
+          translationsUpdated[translationId] = "errorDeleting";
+          setTranslationsOffline(translationsUpdated);
+        });
+
+      const translationsUpdated = db.getTranslationsOffline();
+      translationsUpdated[translationId] = "deleting";
+      setTranslationsOffline(translationsUpdated);
+    }
   };
 
   useEffect(() => {
     const handleAppInstalled = (event: Event) => {
       if (translationCurrent) {
         db.saveLanguages();
-        db.saveTranslation(translationCurrent.short_name);
+        saveTranslation(translationCurrent.identifier);
       }
     };
 
@@ -42,7 +70,7 @@ export default function Header({ className }: Props) {
     return () => {
       window.removeEventListener("appinstalled", handleAppInstalled);
     };
-  }, [translationCurrent]);
+  }, [saveTranslation, translationCurrent]);
 
   return (
     <header
@@ -62,7 +90,7 @@ export default function Header({ className }: Props) {
         </div>
         <div className="content-right">
           {pathname.includes("/bible") && translationCurrent ? (
-            <VersionChange onTranslationSelected={onTranslationSelected}>
+            <VersionChange onTranslationSelected={onTranslationSelected} onTranslationDeleted={onTranslationDeleted}>
               <div className="border border-neutral-600 rounded-full active:bg-primary/30 transition-colors px-3 py-1 cursor-pointer">
                 {translationCurrent.short_name}
               </div>

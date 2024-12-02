@@ -1,5 +1,6 @@
 "use client";
 
+import { db, TranslationsOffline } from "@/database/bibleDB";
 import { getTranslationPathname, getTranslationStorage, setTranslationStorage } from "@/lib/utils";
 import { Translation } from "@/services/api";
 import { usePathname } from "next/navigation";
@@ -8,6 +9,8 @@ import { createContext, ReactNode, Dispatch, SetStateAction, useState, useEffect
 interface ContextProps {
   translation: Translation | null;
   setTranslation: Dispatch<SetStateAction<Translation | null>> | (() => void);
+  translationsOffline: TranslationsOffline;
+  setTranslationsOffline: Dispatch<SetStateAction<TranslationsOffline>> | (() => void);
   isLoading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>> | (() => void);
 }
@@ -15,25 +18,29 @@ interface ContextProps {
 export const BibleContext = createContext<ContextProps>({
   translation: null,
   setTranslation: () => null,
+  translationsOffline: {},
+  setTranslationsOffline: () => null,
   isLoading: false,
   setLoading: () => null,
 });
 
 export function BibleProvider({ children }: { children: ReactNode }) {
   const [translationContext, setTranslationContext] = useState<Translation | null>(null);
+  const [translationsOffline, setTranslationsOffline] = useState({});
   const [isLoading, setLoading] = useState(false);
   const [isVerified, setVerified] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
     setTranslationContext(getTranslationStorage());
+    setTranslationsOffline(db.getTranslationsOffline());
   }, []);
 
   useEffect(() => {
     const translationPathname = getTranslationPathname(pathname);
     if (pathname.includes("/bible") && !isVerified && translationPathname && translationContext) {
       setVerified(true);
-      if (translationPathname.short_name !== translationContext.short_name) {
+      if (translationPathname.identifier !== translationContext.identifier) {
         setTranslationContext(translationPathname);
         setTranslationStorage(translationPathname);
       }
@@ -42,7 +49,14 @@ export function BibleProvider({ children }: { children: ReactNode }) {
 
   return (
     <BibleContext.Provider
-      value={{ translation: translationContext, setTranslation: setTranslationContext, isLoading, setLoading }}
+      value={{
+        translation: translationContext,
+        setTranslation: setTranslationContext,
+        translationsOffline,
+        setTranslationsOffline,
+        isLoading,
+        setLoading,
+      }}
     >
       {isLoading ? (
         <div className="z-50 bg-background fixed left-0 top-0 right-0 bottom-0 flex items-center justify-center">

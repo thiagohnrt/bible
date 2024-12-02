@@ -2,6 +2,7 @@ import { Book, Translation } from "@/services/api";
 
 export const translation = (trns: Translation): Translation => {
   const translation = structuredClone(trns);
+  translation.identifier = `${translation.short_name}`;
   if (translation.short_name === "NVIPT") {
     translation.short_name = "NVI";
   } else if (translation.short_name === "ARA") {

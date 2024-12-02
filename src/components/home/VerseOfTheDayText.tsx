@@ -19,7 +19,7 @@ export function VerseOfTheDayText({ className }: Props) {
 
   useEffect(() => {
     if (translation) {
-      api.getVerse(translation.short_name, 58, 4, 12).then((data) => setVerse(data));
+      api.getVerse(translation.identifier, 58, 4, 12).then((data) => setVerse(data));
     }
   }, [translation]);
 

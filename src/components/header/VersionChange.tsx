@@ -5,7 +5,7 @@ import { setTranslationStorage, sortTranslations } from "@/lib/utils";
 import { BibleContext } from "@/providers/bibleProvider";
 import { api, Language, Translation } from "@/services/api";
 import { useCallback, useContext, useEffect, useState } from "react";
-import { HiCheck, HiDownload } from "react-icons/hi";
+import { HiCheck, HiDownload, HiOutlineMinusCircle } from "react-icons/hi";
 import { IoLanguage } from "react-icons/io5";
 import { MdOutlineFilterList } from "react-icons/md";
 import {
@@ -18,11 +18,13 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { LanguageChange } from "./LanguageChange";
+import { DeleteVersionConfirm } from "./DeleteVersionConfirm";
 
 interface Props {
   children: React.ReactNode;
   className?: string;
   onTranslationSelected: (translation: Translation) => void;
+  onTranslationDeleted: (translationId: string) => void;
 }
 
 interface Data {
@@ -34,8 +36,12 @@ interface Data {
   languages: Language[];
 }
 
-export function VersionChange({ children, className, onTranslationSelected }: Props) {
-  const { translation: translationContext, setTranslation: setTranslationContext } = useContext(BibleContext);
+export function VersionChange({ children, className, onTranslationSelected, onTranslationDeleted }: Props) {
+  const {
+    translation: translationContext,
+    setTranslation: setTranslationContext,
+    translationsOffline,
+  } = useContext(BibleContext);
   const [data, setData] = useState<Data>({
     current: {
       language: {} as Language,
@@ -45,38 +51,38 @@ export function VersionChange({ children, className, onTranslationSelected }: Pr
     languages: [],
   });
 
-  const fetchLanguages = useCallback(async (translationCurrent: Translation) => {
-    const languages = await api.getLanguages();
-    const saved = db.getTranslationsSaved();
-
-    const languageCurrent = languages.find(
-      (lang) =>
-        lang.translations.findIndex((translation) => translation.short_name === translationCurrent.short_name) > -1
-    );
-
-    const downloaded = languages
-      .map((language) =>
-        language.translations
-          .map<Translation | null>((translation) => (saved[translation.short_name] === "done" ? translation : null))
-          .filter((translation) => translation != null)
-      )
-      .flat();
-
-    setData({
-      current: {
-        language: languageCurrent,
-        translation: translationCurrent.short_name,
-      },
-      downloaded,
-      languages,
-    });
-  }, []);
-
   useEffect(() => {
-    if (translationContext) {
-      fetchLanguages(translationContext);
+    if (!translationContext) {
+      return;
     }
-  }, [fetchLanguages, translationContext]);
+    (async () => {
+      const languages = await api.getLanguages();
+
+      const languageCurrent = languages.find(
+        (lang) =>
+          lang.translations.findIndex((translation) => translation.identifier === translationContext.identifier) > -1
+      );
+
+      const downloaded = languages
+        .map((language) =>
+          language.translations
+            .map<Translation | null>((translation) =>
+              translationsOffline[translation.identifier] === "done" ? translation : null
+            )
+            .filter((translation) => translation != null)
+        )
+        .flat();
+
+      setData({
+        current: {
+          language: languageCurrent,
+          translation: translationContext.identifier,
+        },
+        downloaded,
+        languages,
+      });
+    })();
+  }, [translationContext, translationsOffline]);
 
   const setLanguage = (language: Language) => {
     setData({ ...data, current: { ...data.current, language } });
@@ -113,19 +119,34 @@ export function VersionChange({ children, className, onTranslationSelected }: Pr
               <h2 className="text-lg font-bold mb-2">Minhas versões ({data.downloaded.length})</h2>
               {sortTranslations(data.downloaded).map((translation, t) => {
                 return (
-                  <DialogClose asChild key={t}>
-                    <button
-                      type="button"
-                      onClick={() => handleTranslationSelected(translation)}
-                      className="py-2 mb-1 flex flex-col w-full text-left outline-none"
-                    >
-                      <div className="w-full flex justify-between items-end">
-                        <span>{translation.short_name}</span>
-                        {translation.short_name === data.current.translation ? <HiCheck /> : <></>}
-                      </div>
-                      <small className="opacity-50">{translation.full_name}</small>
-                    </button>
-                  </DialogClose>
+                  <div className="flex items-center" key={t}>
+                    <DialogClose asChild>
+                      <button
+                        type="button"
+                        onClick={() => handleTranslationSelected(translation)}
+                        className="py-2 mb-1 flex items-center w-full outline-none"
+                      >
+                        <div className="flex-auto flex flex-col text-left">
+                          <span>{translation.short_name}</span>
+                          <small className="opacity-50">{translation.full_name}</small>
+                        </div>
+                        <div className="flex-initial flex justify-center">
+                          {translation.identifier === data.current.translation ? <HiCheck /> : <></>}
+                        </div>
+                      </button>
+                    </DialogClose>
+                    <>
+                      {translation.identifier !== data.current.translation ? (
+                        <DeleteVersionConfirm translation={translation} onDelete={onTranslationDeleted}>
+                          <div className="p-3 -mr-3">
+                            <HiOutlineMinusCircle />
+                          </div>
+                        </DeleteVersionConfirm>
+                      ) : (
+                        <></>
+                      )}
+                    </>
+                  </div>
                 );
               })}
             </>
@@ -149,7 +170,7 @@ export function VersionChange({ children, className, onTranslationSelected }: Pr
                           >
                             <div className="w-full flex justify-between items-end">
                               <span>{translation.short_name}</span>
-                              {!db.util.hasTranslationSaved(translation.short_name) ? <HiDownload /> : <></>}
+                              {!db.util.hasTranslationSaved(translation.identifier) ? <HiDownload /> : <></>}
                             </div>
                             <small className="opacity-50">{translation.full_name}</small>
                           </button>

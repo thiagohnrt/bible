@@ -17,11 +17,11 @@ interface Data {
   verses: IVerse[];
 }
 
-async function getData(version: string, bookId: number, chapter: number): Promise<Data> {
+async function getData(translationId: string, bookId: number, chapter: number): Promise<Data> {
   const [translation, book, verses] = await Promise.all([
-    api.getTranslation(version),
-    api.getBook(version, bookId),
-    api.getVerses(version, bookId, chapter),
+    api.getTranslation(translationId),
+    api.getBook(translationId, bookId),
+    api.getVerses(translationId, bookId, chapter),
   ]);
   return {
     translation,
@@ -39,6 +39,7 @@ export interface BibleHistory {
   chapter: number;
   firstVerse: string;
   translation: string;
+  translationId: string;
 }
 
 export default function ChapterPage({ params: { version, book: bookId, chapter, verse } }: ChapterProps) {
@@ -57,6 +58,7 @@ export default function ChapterPage({ params: { version, book: bookId, chapter, 
         chapter,
         firstVerse: verses[0].text,
         translation: translation.short_name,
+        translationId: translation.identifier,
       };
       setBibleHistory(data);
     }
