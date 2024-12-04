@@ -1,4 +1,5 @@
 import { ItemMenu } from "@/components/more/ItemMenu";
+import { ItemSettings } from "@/components/more/ItemSettings";
 import { ItemShare } from "@/components/more/ItemShare";
 import { ItemTranslation } from "@/components/more/ItemTranslation";
 import { ItemVersion } from "@/components/more/ItemVersion";
@@ -22,6 +23,7 @@ export default function MorePage() {
       </ItemMenu>
       <ItemMenu label="Reportar um problema" icon={<MdOutlineWarningAmber size={iconSize} />} />
       <Separator />
+      <ItemSettings iconSize={iconSize} />
       <ItemShare iconSize={iconSize} />
       <ItemMenu label="Sobre" icon={<MdInfoOutline size={iconSize} />} />
       <ItemVersion />

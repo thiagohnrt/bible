@@ -1,7 +1,7 @@
 "use client";
 
 import { db } from "@/database/bibleDB";
-import { setTranslationStorage, sortTranslations } from "@/lib/utils";
+import { sortTranslations } from "@/lib/utils";
 import { BibleContext } from "@/providers/bibleProvider";
 import { api, Language, Translation } from "@/services/api";
 import { useCallback, useContext, useEffect, useState } from "react";
@@ -19,6 +19,8 @@ import {
 } from "../ui/dialog";
 import { LanguageChange } from "./LanguageChange";
 import { DeleteVersionConfirm } from "./DeleteVersionConfirm";
+import { CgSpinner } from "react-icons/cg";
+import { RiErrorWarningLine } from "react-icons/ri";
 
 interface Props {
   children: React.ReactNode;
@@ -37,11 +39,7 @@ interface Data {
 }
 
 export function VersionChange({ children, className, onTranslationSelected, onTranslationDeleted }: Props) {
-  const {
-    translation: translationContext,
-    setTranslation: setTranslationContext,
-    translationsOffline,
-  } = useContext(BibleContext);
+  const { translation: translationContext, translationsOffline } = useContext(BibleContext);
   const [data, setData] = useState<Data>({
     current: {
       language: {} as Language,
@@ -67,7 +65,7 @@ export function VersionChange({ children, className, onTranslationSelected, onTr
         .map((language) =>
           language.translations
             .map<Translation | null>((translation) =>
-              translationsOffline[translation.identifier] === "done" ? translation : null
+              translationsOffline[translation.identifier] === "downloaded" ? translation : null
             )
             .filter((translation) => translation != null)
         )
@@ -86,12 +84,6 @@ export function VersionChange({ children, className, onTranslationSelected, onTr
 
   const setLanguage = (language: Language) => {
     setData({ ...data, current: { ...data.current, language } });
-  };
-
-  const handleTranslationSelected = (translation: Translation) => {
-    setTranslationContext(translation);
-    setTranslationStorage(translation);
-    onTranslationSelected(translation);
   };
 
   return (
@@ -123,7 +115,7 @@ export function VersionChange({ children, className, onTranslationSelected, onTr
                     <DialogClose asChild>
                       <button
                         type="button"
-                        onClick={() => handleTranslationSelected(translation)}
+                        onClick={() => onTranslationSelected(translation)}
                         className="py-2 mb-1 flex items-center w-full outline-none"
                       >
                         <div className="flex-auto flex flex-col text-left">
@@ -165,12 +157,22 @@ export function VersionChange({ children, className, onTranslationSelected, onTr
                         <DialogClose asChild key={t}>
                           <button
                             type="button"
-                            onClick={() => handleTranslationSelected(translation)}
+                            onClick={() => onTranslationSelected(translation)}
                             className="py-2 mb-1 flex flex-col w-full text-left outline-none"
                           >
                             <div className="w-full flex justify-between items-end">
                               <span>{translation.short_name}</span>
-                              {!db.util.hasTranslationSaved(translation.identifier) ? <HiDownload /> : <></>}
+                              {!translationsOffline[translation.identifier] ? <HiDownload /> : <></>}
+                              {translationsOffline[translation.identifier] === "downloading" ? (
+                                <CgSpinner className="animate-spin" />
+                              ) : (
+                                <></>
+                              )}
+                              {translationsOffline[translation.identifier] === "downloadFailed" ? (
+                                <RiErrorWarningLine />
+                              ) : (
+                                <></>
+                              )}
                             </div>
                             <small className="opacity-50">{translation.full_name}</small>
                           </button>

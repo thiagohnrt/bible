@@ -1,7 +1,7 @@
 import { api, Book, Translation, Verse as IVerse } from "@/services/api";
 import { useContext, useEffect, useState } from "react";
 import Verse from "./Verse";
-import { formatVerses, setTranslationStorage } from "@/lib/utils";
+import { formatVerses } from "@/lib/utils";
 import { BibleContext } from "@/providers/bibleProvider";
 import { useRouter } from "next/navigation";
 import { TfiCommentAlt } from "react-icons/tfi";
@@ -38,7 +38,6 @@ export function CompareVersesItem({ translation, book, chapter, verses }: Props)
   const onVersesSelected = () => {
     if (translation.identifier !== translationCurrent?.identifier) {
       setTranslationContext(translation);
-      setTranslationStorage(translation);
       router.push(`/bible/${translation.identifier}/${book.book}/${chapter}/${formatVerses(data.verses)}`);
     }
   };

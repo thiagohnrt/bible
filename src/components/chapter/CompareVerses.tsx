@@ -36,7 +36,7 @@ export function CompareVerses({ book, chapter, children }: Props) {
 
         const translationsSaved = db.getTranslationsOffline();
         const translations = allTranslations.filter(
-          (translation) => translationsSaved[translation.identifier] === "done"
+          (translation) => translationsSaved[translation.identifier] === "downloaded"
         );
 
         setTranslations(translations ?? []);

@@ -1,67 +1,74 @@
 "use client";
 
 import { db } from "@/database/bibleDB";
+import { cn } from "@/lib/utils";
 import { BibleContext } from "@/providers/bibleProvider";
 import { Translation } from "@/services/api";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useContext, useEffect } from "react";
-import { VersionChange } from "./VersionChange";
-import { cn } from "@/lib/utils";
-import Image from "next/image";
-import imgLogoLight from "../../../public/bible_light.png";
+import { useContext, useEffect } from "react";
 import imgLogoDark from "../../../public/bible_dark.png";
+import imgLogoLight from "../../../public/bible_light.png";
 import { Container } from "../root/Container";
+import { VersionChange } from "./VersionChange";
 
 interface Props {
   className?: string;
 }
 
 export default function Header({ className }: Props) {
-  const { translation: translationCurrent, setTranslationsOffline, setLoading } = useContext(BibleContext);
+  const {
+    translation: translationCurrent,
+    setTranslation: setTranslationContext,
+    setTranslationsOffline,
+  } = useContext(BibleContext);
   const pathname = usePathname();
   const router = useRouter();
 
-  const saveTranslation = useCallback(
-    async (translationId: string) => {
-      await db.saveTranslation(translationId);
-      setTranslationsOffline(db.getTranslationsOffline());
-    },
-    [setTranslationsOffline]
-  );
-
   const onTranslationSelected = async (translation: Translation) => {
-    setLoading(true);
-    await saveTranslation(translation.identifier);
-    setLoading(false);
-    router.push(pathname.replace(translationCurrent?.identifier!, translation.identifier));
+    // Por algum motivo a navegação não funciona sem esse sleep abaixo
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    db.saveTranslation(translation.identifier, setTranslationsOffline);
+    navigateToTranslation(translation);
+    setTranslationContext(translation);
   };
 
-  const onTranslationDeleted = async (translationId: string) => {
-    if (db.util.hasTranslationSaved(translationId)) {
-      db.deleteTranslation(translationId)
-        .then(() => {
-          const translationsUpdated = db.getTranslationsOffline();
-          delete translationsUpdated[translationId];
-          setTranslationsOffline(translationsUpdated);
-        })
-        .catch(() => {
-          const translationsUpdated = db.getTranslationsOffline();
-          translationsUpdated[translationId] = "errorDeleting";
-          setTranslationsOffline(translationsUpdated);
-        });
-
-      const translationsUpdated = db.getTranslationsOffline();
-      translationsUpdated[translationId] = "deleting";
-      setTranslationsOffline(translationsUpdated);
-    }
+  const onTranslationDeleted = (translationId: string) => {
+    db.deleteTranslation(translationId, setTranslationsOffline);
   };
+
+  const navigateToTranslation = async (translation: Translation) => {
+    const newPath = pathname.replace(translationCurrent?.identifier!, translation.identifier);
+    router.push(newPath);
+  };
+
+  useEffect(() => {
+    const beforeunload = () => {
+      const translationsOffline = db.getTranslationsOffline();
+      for (let key in translationsOffline) {
+        if (translationsOffline[key] === "downloading") {
+          translationsOffline[key] = "downloadFailed";
+        }
+        if (translationsOffline[key] === "deleting") {
+          translationsOffline[key] = "deleteFailed";
+        }
+      }
+      db.setTranslationsOffline(translationsOffline);
+    };
+
+    window.addEventListener("beforeunload", beforeunload);
+
+    return () => {
+      window.removeEventListener("beforeunload", beforeunload);
+    };
+  }, [setTranslationsOffline]);
 
   useEffect(() => {
     const handleAppInstalled = (event: Event) => {
       if (translationCurrent) {
         db.saveLanguages();
-        saveTranslation(translationCurrent.identifier);
+        db.saveTranslation(translationCurrent.identifier, setTranslationsOffline);
       }
     };
 
@@ -70,7 +77,7 @@ export default function Header({ className }: Props) {
     return () => {
       window.removeEventListener("appinstalled", handleAppInstalled);
     };
-  }, [saveTranslation, translationCurrent]);
+  }, [setTranslationsOffline, translationCurrent]);
 
   return (
     <header

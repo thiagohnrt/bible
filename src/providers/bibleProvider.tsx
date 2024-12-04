@@ -25,33 +25,45 @@ export const BibleContext = createContext<ContextProps>({
 });
 
 export function BibleProvider({ children }: { children: ReactNode }) {
-  const [translationContext, setTranslationContext] = useState<Translation | null>(null);
-  const [translationsOffline, setTranslationsOffline] = useState({});
+  const [translationCurrent, setTranslationCurrent] = useState<Translation | null>(null);
+  const [translationsOffline, setTranslationsOffline] = useState<TranslationsOffline>({ INITIAL: "deleteFailed" });
   const [isLoading, setLoading] = useState(false);
   const [isVerified, setVerified] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
-    setTranslationContext(getTranslationStorage());
+    setTranslationCurrent(getTranslationStorage());
     setTranslationsOffline(db.getTranslationsOffline());
   }, []);
 
   useEffect(() => {
+    if (translationCurrent) {
+      setTranslationStorage(translationCurrent);
+    }
+  }, [translationCurrent]);
+
+  useEffect(() => {
+    if (!translationsOffline["INITIAL"]) {
+      db.setTranslationsOffline(translationsOffline);
+    }
+  }, [translationsOffline]);
+
+  useEffect(() => {
     const translationPathname = getTranslationPathname(pathname);
-    if (pathname.includes("/bible") && !isVerified && translationPathname && translationContext) {
+    if (pathname.includes("/bible") && !isVerified && translationPathname && translationCurrent) {
       setVerified(true);
-      if (translationPathname.identifier !== translationContext.identifier) {
-        setTranslationContext(translationPathname);
+      if (translationPathname.identifier !== translationCurrent.identifier) {
+        setTranslationCurrent(translationPathname);
         setTranslationStorage(translationPathname);
       }
     }
-  }, [isVerified, pathname, translationContext]);
+  }, [isVerified, pathname, translationCurrent]);
 
   return (
     <BibleContext.Provider
       value={{
-        translation: translationContext,
-        setTranslation: setTranslationContext,
+        translation: translationCurrent,
+        setTranslation: setTranslationCurrent,
         translationsOffline,
         setTranslationsOffline,
         isLoading,

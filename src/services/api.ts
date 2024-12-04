@@ -60,6 +60,10 @@ async function getLanguages(): Promise<Language[]> {
   });
 }
 
+async function getTranslations(): Promise<Translation[]> {
+  return (await getLanguages()).map((l) => l.translations).flat();
+}
+
 async function getTranslation(translationId: string): Promise<Translation> {
   const languages = await getLanguages();
   let translation: Translation;
@@ -133,6 +137,7 @@ async function getVerse(translationId: string, book: number, chapter: number, ve
 
 export const api = {
   getLanguages,
+  getTranslations,
   getTranslation,
   getTranslationData,
   getBooks,

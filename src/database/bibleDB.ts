@@ -3,7 +3,7 @@ import { api, Book, Language, Verse } from "@/services/api";
 import { IDB } from "./indexedDB";
 
 export interface TranslationsOffline {
-  [translation: string]: "pending" | "done" | "deleting" | "errorDeleting";
+  [translation: string]: "downloading" | "downloaded" | "downloadFailed" | "deleting" | "deleteFailed";
 }
 
 export const idb = new IDB({
@@ -42,48 +42,67 @@ export const idb = new IDB({
   ],
 });
 
-const saveTranslation = async (translation: string) => {
+const saveTranslation = async (
+  translationId: string,
+  setTranslationsStatus: (translations: TranslationsOffline) => void
+) => {
   const translationsInitial = getTranslationsOffline();
-  if (!translationsInitial[translation]) {
-    translationsInitial[translation] = "pending";
-    setTranslationsOffline(translationsInitial);
+  if (!["downloaded", "downloading"].includes(translationsInitial[translationId])) {
+    translationsInitial[translationId] = "downloading";
+    setTranslationsStatus(translationsInitial);
 
-    const [verses, books] = await Promise.all([
-      // translation data
-      api.getTranslationData(translation),
-      // books
-      api.getBooks(translation),
-    ]);
+    try {
+      const [verses, books] = await Promise.all([
+        // translation data
+        api.getTranslationData(translationId),
+        // books
+        api.getBooks(translationId),
+      ]);
 
-    await Promise.all([
-      // translation data
-      idb.addAll("verses", verses),
-      // books
-      idb.addAll("books", books),
-    ]);
+      await Promise.all([
+        // translation data
+        idb.addAll("verses", verses),
+        // books
+        idb.addAll("books", books),
+      ]);
 
-    const translationsUpdated = getTranslationsOffline();
-    translationsUpdated[translation] = "done";
-    setTranslationsOffline(translationsUpdated);
+      const translationsUpdated = getTranslationsOffline();
+      translationsUpdated[translationId] = "downloaded";
+      setTranslationsStatus(translationsUpdated);
+    } catch (error) {
+      const translationsUpdated = getTranslationsOffline();
+      translationsUpdated[translationId] = "downloadFailed";
+      setTranslationsStatus(translationsUpdated);
+    }
   }
 };
 
-const deleteTranslation = async (translationId: string) => {
+const deleteTranslation = async (
+  translationId: string,
+  setTranslationsStatus: (translations: TranslationsOffline) => void
+) => {
   const translationsInitial = getTranslationsOffline();
-  if (translationsInitial[translationId] === "done") {
+  if (["downloaded", "downloadFailed", "deleteFailed"].includes(translationsInitial[translationId])) {
     translationsInitial[translationId] = "deleting";
-    setTranslationsOffline(translationsInitial);
+    setTranslationsStatus(translationsInitial);
 
-    await Promise.all([
-      // translation data
-      idb.delete("verses", "translationIndex", translationId),
-      // books
-      idb.delete("books", "translationIndex", translationId),
-    ]);
+    try {
+      await Promise.all([
+        // translation data
+        idb.delete("verses", "translationIndex", translationId),
+        // books
+        idb.delete("books", "translationIndex", translationId),
+      ]);
 
-    const translationsUpdated = getTranslationsOffline();
-    delete translationsUpdated[translationId];
-    setTranslationsOffline(translationsUpdated);
+      const translationsUpdated = getTranslationsOffline();
+      delete translationsUpdated[translationId];
+      setTranslationsStatus(translationsUpdated);
+    } catch (error) {
+      console.error(error);
+      const translationsUpdated = getTranslationsOffline();
+      translationsUpdated[translationId] = "deleteFailed";
+      setTranslationsStatus(translationsUpdated);
+    }
   }
 };
 
@@ -114,7 +133,7 @@ const getTranslationsOffline = (): TranslationsOffline =>
 const setTranslationsOffline = (item: TranslationsOffline) =>
   localStorage.setItem(KEY_TRANSLATION_SAVED, JSON.stringify(item));
 const hasTranslationSaved = (translation: string): boolean => {
-  return getTranslationsOffline()[translation] === "done";
+  return getTranslationsOffline()[translation] === "downloaded";
 };
 const hasLanguagesSaved = (): boolean => localStorage.getItem(KEY_LANGUAGES_SAVED) === "true";
 
@@ -127,6 +146,7 @@ export const db = {
   getBooks,
   getLanguages,
   getTranslationsOffline,
+  setTranslationsOffline,
   util: {
     hasTranslationSaved,
     hasLanguagesSaved,
