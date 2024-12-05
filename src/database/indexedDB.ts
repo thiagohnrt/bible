@@ -176,6 +176,69 @@ export class IDB {
       };
     });
   }
+
+  async getIndexedDBInfo(): Promise<DBInfo> {
+    const db = await this.openDatabase();
+    return new Promise(async (resolve, reject) => {
+      const objectStoreNames = Array.from(db.objectStoreNames);
+      const dbInfo: DBInfo = {
+        dbName: this.settings.name,
+        tables: [],
+        estimatedTotalSizeBytes: 0,
+        estimatedTotalSizeFormatted: "0 Bytes",
+      };
+
+      try {
+        for (const storeName of objectStoreNames) {
+          const tableInfo = await this.getObjectStoreSize(db, storeName);
+          dbInfo.tables.push(tableInfo);
+          dbInfo.estimatedTotalSizeBytes += tableInfo.estimatedSizeBytes;
+        }
+
+        dbInfo.estimatedTotalSizeFormatted = this.formatSize(dbInfo.estimatedTotalSizeBytes);
+
+        db.close();
+        resolve(dbInfo);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  private async getObjectStoreSize(db: IDBDatabase, storeName: string): Promise<TableInfo> {
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(storeName, "readonly");
+      const store = transaction.objectStore(storeName);
+      const size: TableInfo = { storeName, estimatedSizeBytes: 0, estimatedSizeFormatted: "0 Bytes", count: 0 };
+
+      const cursorRequest = store.openCursor();
+
+      cursorRequest.onsuccess = (event) => {
+        const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result;
+
+        if (cursor) {
+          const recordSize = JSON.stringify(cursor.value).length;
+          size.estimatedSizeBytes += recordSize;
+          size.count++;
+          cursor.continue();
+        } else {
+          size.estimatedSizeFormatted = this.formatSize(size.estimatedSizeBytes);
+          resolve(size);
+        }
+      };
+
+      cursorRequest.onerror = (event) => {
+        reject(`Error reading store ${storeName}: ${(event.target as IDBRequest).error}`);
+      };
+    });
+  }
+
+  private formatSize(bytes: number): string {
+    if (bytes === 0) return "0 Bytes";
+    const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
+    const i = Math.floor(Math.log(bytes) / Math.log(1024));
+    return `${(bytes / Math.pow(1024, i)).toFixed(2)} ${sizes[i]}`;
+  }
 }
 
 interface IndexStoreIDB {
@@ -194,3 +257,17 @@ interface SettingsIDB {
   version: number;
   stores: StoreIDB[];
 }
+
+type TableInfo = {
+  storeName: string;
+  estimatedSizeBytes: number;
+  estimatedSizeFormatted: string;
+  count: number;
+};
+
+export type DBInfo = {
+  dbName: string;
+  tables: TableInfo[];
+  estimatedTotalSizeBytes: number;
+  estimatedTotalSizeFormatted: string;
+};

@@ -13,6 +13,7 @@ import { ItemMenu } from "./ItemMenu";
 import { cn } from "@/lib/utils";
 import { ManageOfflineTranslations } from "./settings/ManageOfflineTranslations";
 import { forwardRef } from "react";
+import { ClearLocalData } from "./settings/ClearLocalData";
 
 interface Props {
   iconSize: number;
@@ -31,11 +32,11 @@ export function ItemSettings({ iconSize }: Props) {
         </DialogHeader>
         <div className="overflow-y-auto">
           <ManageOfflineTranslations>
-            <div>
-              <Item label="Gerenciar Versões Offline" />
-            </div>
+            <Item label="Gerenciar Versões Offline" />
           </ManageOfflineTranslations>
-          <Item label="Limpar Dados Local" className="text-red-600" />
+          <ClearLocalData>
+            <Item label="Limpar Dados Local" className="text-red-600" />
+          </ClearLocalData>
         </div>
       </DialogContent>
     </Dialog>

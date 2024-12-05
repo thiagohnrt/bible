@@ -38,7 +38,9 @@ export function ManageOfflineTranslations({ children }: Props) {
 
   return (
     <Dialog id="manage-offline-translations">
-      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogTrigger asChild>
+        <div>{children}</div>
+      </DialogTrigger>
       <DialogContent className="flex flex-col h-svh w-lvw p-0 md:max-w-lg md:h-auto md:max-h-[90vh] md:border md:rounded-lg">
         <DialogHeader className="p-6 pb-3">
           <DialogTitle>Versões Offline</DialogTitle>

@@ -137,6 +137,10 @@ const hasTranslationSaved = (translation: string): boolean => {
 };
 const hasLanguagesSaved = (): boolean => localStorage.getItem(KEY_LANGUAGES_SAVED) === "true";
 
+const getDBInfo = () => {
+  return idb.getIndexedDBInfo();
+};
+
 export const db = {
   saveTranslation,
   deleteTranslation,
@@ -151,4 +155,5 @@ export const db = {
     hasTranslationSaved,
     hasLanguagesSaved,
   },
+  getDBInfo,
 };
