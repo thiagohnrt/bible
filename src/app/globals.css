@@ -92,6 +92,13 @@
   @apply bg-neutral-100 active:bg-neutral-200 hover:bg-neutral-200 dark:bg-neutral-900 dark:active:bg-neutral-800 dark:hover:bg-neutral-800 transition-colors;
 }
 
+/* Home */
+@media (display-mode: standalone) {
+  .install-app {
+    display: none;
+  }
+}
+
 /* Chapter */
 .window-scroll-down .chapter-navigation .chapter-book,
 .window-scroll-down .chapter-navigation .chapter-prev,
