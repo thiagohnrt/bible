@@ -44,20 +44,17 @@ async function apiBible<T = any>(path: string): Promise<T> {
 }
 
 async function getLanguages(): Promise<Language[]> {
-  const languages = await (async () => {
-    if (db.util.hasLanguagesSaved()) {
-      return await db.getLanguages();
-    } else {
-      return await apiBible<Language[]>("/static/bolls/app/views/languages.json");
-    }
-  })();
-
-  return languages.map((language) => {
-    return {
-      ...language,
-      translations: language.translations.map((translation) => bolls.translation(translation)),
-    };
-  });
+  if (db.util.hasLanguagesSaved()) {
+    return await db.getLanguages();
+  } else {
+    const languages = await apiBible<Language[]>("/static/bolls/app/views/languages.json");
+    return languages.map((language) => {
+      return {
+        ...language,
+        translations: language.translations.map((translation) => bolls.translation(translation)),
+      };
+    });
+  }
 }
 
 async function getTranslations(): Promise<Translation[]> {
@@ -81,27 +78,27 @@ async function getTranslationData(translationId: string): Promise<Verse[]> {
 }
 
 async function getBooks(translationId: string): Promise<Book[]> {
-  const books = await (async () => {
-    if (db.util.hasTranslationSaved(translationId)) {
-      return await db.getBooks(translationId);
-    } else {
-      const [translationBook, languages] = await Promise.all([
-        apiBible<TranslationBook>(`/static/bolls/app/views/translations_books.json`),
-        getLanguages(),
-      ]);
-      const language = languages.find((language) =>
-        language.translations.some((trns) => trns.identifier === translationId)
-      )!;
-      return translationBook[translationId].map<Book>((bookData: any) => ({
-        ...bookData,
-        book: bookData.bookid,
-        translation: translationId,
-        language: language.language,
-      }));
-    }
-  })();
+  if (db.util.hasTranslationSaved(translationId)) {
+    return await db.getBooks(translationId);
+  } else {
+    const [translationBook, languages] = await Promise.all([
+      apiBible<TranslationBook>(`/static/bolls/app/views/translations_books.json`),
+      getLanguages(),
+    ]);
 
-  return books.map((book) => bolls.book(book));
+    const language = languages.find((language) =>
+      language.translations.some((trns) => trns.identifier === translationId)
+    )!;
+
+    const books = translationBook[translationId].map<Book>((bookData: any) => ({
+      ...bookData,
+      book: bookData.bookid,
+      translation: translationId,
+      language: language.language,
+    }));
+
+    return books.map((book) => bolls.book(book));
+  }
 }
 
 async function getBook(version: string, book: number): Promise<Book> {

@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { db } from "@/database/bibleDB";
 import { DBInfo } from "@/database/indexedDB";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface Props {
   children: React.ReactNode;
@@ -63,10 +63,10 @@ export function ClearLocalData({ children }: Props) {
             <div>Valor</div>
             {getSession().map((data, i) => {
               return (
-                <>
+                <React.Fragment key={i}>
                   <div>{data.name}</div>
                   <pre className="overflow-x-auto">{data.value}</pre>
-                </>
+                </React.Fragment>
               );
             })}
           </div>
@@ -81,11 +81,11 @@ export function ClearLocalData({ children }: Props) {
               <div>Tamanho</div>
               {database.tables.map((table, i) => {
                 return (
-                  <>
+                  <React.Fragment key={i}>
                     <div>{table.storeName}</div>
                     <div>{table.count}</div>
                     <div>{table.estimatedSizeFormatted}</div>
-                  </>
+                  </React.Fragment>
                 );
               })}
               <div className="col-span-2">Total</div>
