@@ -126,7 +126,7 @@ export default function ChapterPage({ params: { version, book: bookId, chapter, 
         {verses.map((data, i) => (
           <VerseAction
             data={data}
-            className={isVerseInInterval(data.verse, verse) ? "bg-neutral-100 dark:bg-neutral-900" : ""}
+            className={isVerseInInterval(data.verse, verse) ? "[&[data-verse]]:font-bold" : ""}
             key={i}
           />
         ))}
