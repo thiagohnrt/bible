@@ -12,7 +12,7 @@ import { Translation, Verse } from "@/services/api";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import * as bolls from "@/custom/bolls";
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -68,6 +68,9 @@ export const getTranslationStorage = (): Translation => {
 };
 
 export const repeat = (count: number, callbackfn: (index: number) => ReactNode) => {
+  if (count <= 0) {
+    return [];
+  }
   return "."
     .repeat(count - 1)
     .split(".")

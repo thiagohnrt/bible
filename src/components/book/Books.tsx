@@ -10,9 +10,14 @@ import { repeat } from "@/lib/utils";
 
 interface Props {
   version: string;
+  device?: {
+    model?: string;
+    type?: string;
+    vendor?: string;
+  };
 }
 
-export function Books({ version }: Props) {
+export function Books({ version, device }: Props) {
   const [books, setBooks] = useState<Book[]>([]);
   const [bookId, setBookId] = useState("");
   const itemRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
@@ -66,7 +71,7 @@ export function Books({ version }: Props) {
           >
             <AccordionTrigger className="text-left">{book.name}</AccordionTrigger>
             <AccordionContent>
-              <Chapters version={version} book={book} />
+              <Chapters version={version} book={book} device={device} />
             </AccordionContent>
           </AccordionItemFocus>
         );
