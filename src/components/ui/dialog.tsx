@@ -6,6 +6,8 @@ import { Cross2Icon } from "@radix-ui/react-icons";
 
 import { cn } from "@/lib/utils";
 import { DIALOG_EVENT, DialogContext } from "@/providers/dialogProvider";
+import { HiArrowNarrowLeft } from "react-icons/hi";
+import { useRouter } from "next/navigation";
 
 const DialogRoot = DialogPrimitive.Root;
 
@@ -73,7 +75,7 @@ const DialogContent = React.forwardRef<
       {...props}
     >
       {children}
-      <DialogPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground z-50">
+      <DialogPrimitive.Close className="hidden sm:block absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground z-50">
         <Cross2Icon className="h-4 w-4" />
         <span className="sr-only">Close</span>
       </DialogPrimitive.Close>
@@ -95,13 +97,25 @@ DialogFooter.displayName = "DialogFooter";
 const DialogTitle = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Title>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
->(({ className, ...props }, ref) => (
-  <DialogPrimitive.Title
-    ref={ref}
-    className={cn("text-lg font-semibold leading-none tracking-tight", className)}
-    {...props}
-  />
-));
+>(({ className, children, ...props }, ref) => {
+  const router = useRouter();
+  return (
+    <DialogPrimitive.Title
+      ref={ref}
+      className={cn("text-lg font-semibold leading-none tracking-tight ml-6 sm:ml-0", className)}
+      {...props}
+    >
+      <div
+        onClick={router.back}
+        className="sm:hidden block absolute px-4 py-6 left-0 top-0 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground z-50"
+      >
+        <HiArrowNarrowLeft className="h-4 w-4" />
+        <span className="sr-only">Back</span>
+      </div>
+      {children}
+    </DialogPrimitive.Title>
+  );
+});
 DialogTitle.displayName = DialogPrimitive.Title.displayName;
 
 const DialogDescription = React.forwardRef<
