@@ -18,10 +18,24 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
 }
 
+interface NavigatorExtended extends Navigator {
+  standalone?: boolean;
+}
+
 export function IntallApp({ className, device }: Props) {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [isIos, setIsIos] = useState(false);
+  const [isInStandaloneMode, setIsInStandaloneMode] = useState(false);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const userAgent = window.navigator.userAgent.toLowerCase();
+    const isIosDevice = /iphone|ipad|ipod/.test(userAgent);
+    const navigatorExtended = window.navigator as NavigatorExtended;
+    const isStandalone = navigatorExtended.standalone || window.matchMedia("(display-mode: standalone)").matches;
+
+    setIsIos(isIosDevice);
+    setIsInStandaloneMode(isStandalone);
+  }, []);
 
   useEffect(() => {
     const handleBeforeInstallPrompt = (event: Event) => {
@@ -47,6 +61,10 @@ export function IntallApp({ className, device }: Props) {
         }
         setDeferredPrompt(null);
       });
+    } else if (isIos && !isInStandaloneMode) {
+      alert(
+        "Para instalar esse aplicativo, toque no ícone de compartilhamento e selecione 'Adicionar à Tela de Início'."
+      );
     }
   };
 
