@@ -2,11 +2,12 @@ import { Footer } from "@/components/footer/Footer";
 import Header from "@/components/header/Header";
 import { CookieConsent } from "@/components/home/CookieConsent";
 import { Toaster as Sonner } from "@/components/ui/sonner";
+import { Toaster } from "@/components/ui/toaster";
 import { Providers } from "@/providers/providers";
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,6 +33,7 @@ export default function RootLayout({
           <Toaster />
           <CookieConsent />
         </Providers>
+        <Analytics />
       </body>
     </html>
   );
