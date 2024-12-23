@@ -62,7 +62,7 @@ export function DialogProvider({ children }: { children: ReactNode }) {
       const detail = (event as CustomEvent).detail;
       const dialogId = "#" + detail.id;
       if (detail.open) {
-        router.push(window.location.pathname + window.location.hash + dialogId);
+        router.push(window.location.pathname + window.location.search + window.location.hash + dialogId);
       } else {
         router.back();
       }

@@ -10,6 +10,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Verses } from "./Verses";
+import { useSearchParams } from "next/navigation";
+
 interface ChaptersProps {
   version: string;
   book: Book;
@@ -47,9 +49,11 @@ interface LinkProps {
 }
 
 function Link({ version, book, chapter, chapterCurrent }: LinkProps) {
+  const searchParams = useSearchParams();
+  const parallel = searchParams.get("parallel");
   return (
     <LinkNext
-      href={`/bible/${version}/${book.book}/${chapter}`}
+      href={`/bible/${version}/${book.book}/${chapter}${parallel ? `?parallel=${parallel}` : ""}`}
       style={{ aspectRatio: "1 / 1" }}
       className={cn(
         "chapter-number aspect-square flex items-center justify-center rounded-sm bg-highlight-active",

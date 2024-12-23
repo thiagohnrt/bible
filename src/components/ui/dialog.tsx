@@ -21,29 +21,32 @@ interface DialogProps extends DialogPrimitive.DialogProps {
   id: string;
   onClose?: () => void;
 }
-function Dialog({ id, onClose, children, ...props }: DialogProps) {
-  const { register } = React.useContext(DialogContext);
-  const [open, setOpen] = React.useState(false);
+const Dialog = React.forwardRef<HTMLDivElement, DialogProps>(
+  ({ id, onClose, children, ...props }: DialogProps, ref) => {
+    const { register } = React.useContext(DialogContext);
+    const [open, setOpen] = React.useState(false);
 
-  const handleOpenChange = React.useCallback(
-    (open: boolean) => {
-      if (!open && onClose) onClose();
-      setOpen(open);
-      window.dispatchEvent(new CustomEvent(DIALOG_EVENT, { detail: { id, open } }));
-    },
-    [id, onClose]
-  );
+    const handleOpenChange = React.useCallback(
+      (open: boolean) => {
+        if (!open && onClose) onClose();
+        setOpen(open);
+        window.dispatchEvent(new CustomEvent(DIALOG_EVENT, { detail: { id, open } }));
+      },
+      [id, onClose]
+    );
 
-  React.useEffect(() => {
-    register({ ...props, id, onOpenChange: setOpen, onClose });
-  }, [id, onClose, props, register]);
+    React.useEffect(() => {
+      register({ ...props, id, onOpenChange: setOpen, onClose });
+    }, [id, onClose, props, register]);
 
-  return (
-    <DialogPrimitive.Root key={id} open={open} onOpenChange={handleOpenChange} {...props}>
-      {children}
-    </DialogPrimitive.Root>
-  );
-}
+    return (
+      <DialogPrimitive.Root key={id} open={open} onOpenChange={handleOpenChange} {...props}>
+        {children}
+      </DialogPrimitive.Root>
+    );
+  }
+);
+Dialog.displayName = DialogPrimitive.Dialog.displayName;
 
 const DialogOverlay = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Overlay>,

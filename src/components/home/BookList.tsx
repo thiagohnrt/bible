@@ -6,6 +6,7 @@ import { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Container } from "../root/Container";
+import { useSearchParams } from "next/navigation";
 
 interface Props {
   device?: {
@@ -60,13 +61,15 @@ function BooksTestament({
   testament: string;
   books: Book[];
 }) {
+  const searchParams = useSearchParams();
+  const parallel = searchParams.get("parallel");
   return (
     <div>
       <h2 className="font-bold pb-4">{testament}</h2>
       <div className="md:columns-2 lg:columns-3">
         {books.map((book, i) => (
           <Link
-            href={`/bible/${translation.identifier}/${book.book}`}
+            href={`/bible/${translation.identifier}/${book.book}${parallel ? `?parallel=${parallel}` : ""}`}
             className="block leading-7 hover:underline"
             key={i}
           >
