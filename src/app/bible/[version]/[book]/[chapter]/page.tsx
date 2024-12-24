@@ -55,7 +55,7 @@ export default function ChapterPage({ params: { version, book: bookId, chapter, 
         <Skeleton className="w-1/2 h-10 mb-8 bg-highlight" />
         <div className="flex gap-4">
           {repeat(versions.length, (i) => (
-            <div className="flex-1">
+            <div className="flex-1" key={i}>
               {repeat(10, (i) => {
                 return (
                   <div key={i}>
