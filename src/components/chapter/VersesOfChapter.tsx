@@ -3,7 +3,7 @@ import VerseAction from "./VerseAction";
 import { api, Book, Translation, Verse } from "@/services/api";
 import { Skeleton } from "../ui/skeleton";
 import { cn, getBibleHistory, repeat, setBibleHistory } from "@/lib/utils";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { BibleHistory } from "@/app/bible/[version]/[book]/[chapter]/page";
 
 interface Props {
@@ -27,6 +27,7 @@ interface Data {
 export function VersesOfChapter({ version, book, chapter, verse, data, isVersionParallel, showTranslation }: Props) {
   const [{ verses, translation }, setData] = useState<Data>({ verses: [], translation: {} as Translation });
   const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     if (data) {
@@ -47,9 +48,10 @@ export function VersesOfChapter({ version, book, chapter, verse, data, isVersion
 
   useEffect(() => {
     const history = getBibleHistory();
-    if (!isVersionParallel && book && verses?.length && history.url !== pathname) {
+    const url = pathname + `${searchParams.toString() ? `?${searchParams.toString()}` : ""}`;
+    if (!isVersionParallel && book && verses?.length && history.url !== url) {
       const data: BibleHistory = {
-        url: pathname,
+        url: url,
         book: {
           id: book.book,
           name: book.name,
@@ -61,7 +63,7 @@ export function VersesOfChapter({ version, book, chapter, verse, data, isVersion
       };
       setBibleHistory(data);
     }
-  }, [pathname, book, chapter, verses, translation, isVersionParallel]);
+  }, [pathname, book, chapter, verses, translation, isVersionParallel, searchParams]);
 
   const isVerseInInterval = (verse: number, interval?: string): boolean => {
     if (!interval) {
