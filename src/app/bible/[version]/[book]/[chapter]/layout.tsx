@@ -20,7 +20,7 @@ interface Props extends ChapterProps {
   children: React.ReactNode;
 }
 
-export default async function ChapterLayout({ children, params: { version, book, chapter } }: Props) {
+export default function ChapterLayout({ children, params: { version, book, chapter } }: Props) {
   const { device } = userAgent({ headers: headers() });
 
   if (device.type === "mobile") {
@@ -36,16 +36,12 @@ export default async function ChapterLayout({ children, params: { version, book,
     return (
       <Container>
         <div className="flex gap-4">
-          <div className="basis-4/6">
+          <div className="flex-1">
             {children}
             <ChapterNavigationDesktop version={version} book={book} chapter={chapter} />
           </div>
-          <div className="basis-2/6">
-            <div className="sticky top-20">
-              <ChaptersSidebar version={version} book={book} chapter={chapter} />
-            </div>
-            <TopNavigation className="chapter-top-navigation-desktop right-10 bottom-10" />
-          </div>
+          <ChaptersSidebar version={version} book={book} chapter={chapter} />
+          <TopNavigation className="chapter-top-navigation-desktop right-10 bottom-10" />
         </div>
       </Container>
     );
