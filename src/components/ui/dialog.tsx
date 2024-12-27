@@ -5,7 +5,6 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
 
 import { cn } from "@/lib/utils";
-import { DIALOG_EVENT, DialogContext } from "@/providers/dialogProvider";
 import { HiArrowNarrowLeft } from "react-icons/hi";
 import { useRouter } from "next/navigation";
 
@@ -23,21 +22,37 @@ interface DialogProps extends DialogPrimitive.DialogProps {
 }
 const Dialog = React.forwardRef<HTMLDivElement, DialogProps>(
   ({ id, onClose, children, ...props }: DialogProps, ref) => {
-    const { register } = React.useContext(DialogContext);
     const [open, setOpen] = React.useState(false);
+    const router = useRouter();
 
     const handleOpenChange = React.useCallback(
       (open: boolean) => {
-        if (!open && onClose) onClose();
+        if (!open && onClose) {
+          onClose();
+        }
         setOpen(open);
-        window.dispatchEvent(new CustomEvent(DIALOG_EVENT, { detail: { id, open } }));
+        if (open) {
+          router.push(window.location.pathname + window.location.search + window.location.hash + "#" + id);
+        } else {
+          router.back();
+        }
       },
-      [id, onClose]
+      [id, onClose, router]
     );
 
     React.useEffect(() => {
-      register({ ...props, id, onOpenChange: setOpen, onClose });
-    }, [id, onClose, props, register]);
+      const onHashChange = (event: HashChangeEvent) => {
+        const newHash = new URL(event.newURL).hash;
+        const isClose = !newHash.includes(id);
+        if (isClose) {
+          setOpen(false);
+        }
+      };
+      window.addEventListener("hashchange", onHashChange);
+      return () => {
+        window.removeEventListener("hashchange", onHashChange);
+      };
+    }, [id]);
 
     return (
       <DialogPrimitive.Root key={id} open={open} onOpenChange={handleOpenChange} {...props}>

@@ -32,19 +32,6 @@ export default function Header({ className }: Props) {
   const searchParams = useSearchParams();
   const parallels = useMemo(() => searchParams.get("parallel")?.split(" ") || [], [searchParams]);
 
-  useEffect(() => {
-    if (translationCurrent) {
-      const versions = [translationCurrent.identifier, ...parallels];
-      api.getTranslations().then((translations) => {
-        setTranslations(
-          translations
-            .filter((t) => versions.includes(t.identifier))
-            .sort((a, b) => versions.indexOf(a.identifier) - versions.indexOf(b.identifier))
-        );
-      });
-    }
-  }, [parallels, translationCurrent]);
-
   const onTranslationSelected = async (translation: Translation) => {
     // Por algum motivo a navegação não funciona sem esse sleep abaixo
     await new Promise((resolve) => setTimeout(resolve, 100));
@@ -86,6 +73,19 @@ export default function Header({ className }: Props) {
     const newPath = pathname.replace(translationCurrent?.identifier!, translation.identifier);
     router.push(newPath);
   };
+
+  useEffect(() => {
+    if (translationCurrent) {
+      const versions = [translationCurrent.identifier, ...parallels];
+      api.getTranslations().then((translations) => {
+        setTranslations(
+          translations
+            .filter((t) => versions.includes(t.identifier))
+            .sort((a, b) => versions.indexOf(a.identifier) - versions.indexOf(b.identifier))
+        );
+      });
+    }
+  }, [parallels, translationCurrent]);
 
   useEffect(() => {
     const beforeunload = () => {
