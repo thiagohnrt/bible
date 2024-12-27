@@ -15,7 +15,9 @@ export default function MorePage() {
   return (
     <Container className="flex flex-col px-0">
       <ItemTranslation iconSize={iconSize} />
-      <ItemMenu label="Planos de leitura" icon={<RiBookLine size={iconSize} />} />
+      <ItemMenu label="Planos de leitura" icon={<RiBookLine size={iconSize} />}>
+        <small className="opacity-50">(Em breve)</small>
+      </ItemMenu>
       <Separator />
       <ItemMenu label="Aparência" icon={<ThemeToggle />} />
       <Separator />
@@ -30,7 +32,9 @@ export default function MorePage() {
       <Separator />
       <ItemSettings iconSize={iconSize} />
       <ItemShare iconSize={iconSize} />
-      <ItemMenu label="Sobre" icon={<MdInfoOutline size={iconSize} />} />
+      <ItemMenu label="Sobre" icon={<MdInfoOutline size={iconSize} />}>
+        <small className="opacity-50">(Em breve)</small>
+      </ItemMenu>
       <ItemVersion />
     </Container>
   );

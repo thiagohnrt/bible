@@ -105,8 +105,11 @@ function VerseActions({ book, chapter, share, copy }: VerseActionsProps) {
         <CompareVerses book={book} chapter={chapter}>
           <ActionButton>Comparar</ActionButton>
         </CompareVerses>
-        <ActionButton>Imagem</ActionButton>
+        <ActionButton>
+          Imagem <span className="opacity-50">(em breve)</span>
+        </ActionButton>
       </div>
+      <span className="opacity-50">(Em breve)</span>
       <div className="whitespace-nowrap overflow-x-auto mb-4">
         <BookmarkColor color="cadetblue" />
         <BookmarkColor color="chocolate" />

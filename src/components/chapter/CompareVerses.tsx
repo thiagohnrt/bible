@@ -72,7 +72,9 @@ export function CompareVerses({ book, chapter, children }: Props) {
         </div>
         <DialogFooter className="p-6 border-t flex flex-row items-center justify-center sm:justify-center gap-2 cursor-pointer select-none active:bg-neutral-100 dark:active:bg-neutral-900 transition-colors">
           <VscSettings size={20} />
-          <span>Versões</span>
+          <span>
+            Versões <span className="opacity-50">(em breve)</span>
+          </span>
         </DialogFooter>
       </DialogContent>
     </Dialog>
