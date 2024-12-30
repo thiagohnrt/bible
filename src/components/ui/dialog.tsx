@@ -18,41 +18,53 @@ const DialogClose = DialogPrimitive.Close;
 
 interface DialogProps extends DialogPrimitive.DialogProps {
   id: string;
+  onOpen?: () => void;
   onClose?: () => void;
 }
 const Dialog = React.forwardRef<HTMLDivElement, DialogProps>(
-  ({ id, onClose, children, ...props }: DialogProps, ref) => {
+  ({ id, onOpen, onClose, children, ...props }: DialogProps, ref) => {
     const [open, setOpen] = React.useState(false);
     const router = useRouter();
 
-    const handleOpenChange = React.useCallback(
-      (open: boolean) => {
-        if (!open && onClose) {
-          onClose();
-        }
-        setOpen(open);
-        if (open) {
-          router.push(window.location.pathname + window.location.search + window.location.hash + "#" + id);
-        } else {
-          router.back();
-        }
-      },
-      [id, onClose, router]
-    );
-
-    React.useEffect(() => {
-      const onHashChange = (event: HashChangeEvent) => {
+    const onHashChange = React.useCallback(
+      (event: HashChangeEvent) => {
         const newHash = new URL(event.newURL).hash;
         const isClose = !newHash.includes(id);
         if (isClose) {
           setOpen(false);
+          window.removeEventListener("hashchange", onHashChange);
         }
-      };
-      window.addEventListener("hashchange", onHashChange);
+      },
+      [id]
+    );
+
+    const handleOpenChange = React.useCallback(
+      (open: boolean) => {
+        setOpen(open);
+        if (open) {
+          router.push(window.location.pathname + window.location.search + window.location.hash + "#" + id);
+          window.addEventListener("hashchange", onHashChange);
+        } else {
+          router.back();
+          window.removeEventListener("hashchange", onHashChange);
+        }
+      },
+      [id, onHashChange, router]
+    );
+
+    React.useEffect(() => {
+      if (open) {
+        onOpen?.();
+      } else {
+        onClose?.();
+      }
+    }, [open, onClose, onOpen]);
+
+    React.useEffect(() => {
       return () => {
         window.removeEventListener("hashchange", onHashChange);
       };
-    }, [id]);
+    }, [id, onHashChange]);
 
     return (
       <DialogPrimitive.Root key={id} open={open} onOpenChange={handleOpenChange} {...props}>

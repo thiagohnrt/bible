@@ -1,4 +1,9 @@
-import { KEY_LANGUAGES_SAVED, KEY_TRANSLATION_SAVED } from "@/constants/bible";
+import {
+  KEY_LANGUAGES_SAVED,
+  KEY_TRANSLATION_COMPARE,
+  KEY_TRANSLATION_SAVED,
+  TRANSLATION_DEFAULT,
+} from "@/constants/bible";
 import { api, Book, Language, Verse } from "@/services/api";
 import { IDB } from "./indexedDB";
 
@@ -51,6 +56,10 @@ const saveTranslation = async (
     translationsInitial[translationId] = "downloading";
     setTranslationsStatus(translationsInitial);
 
+    const translationsToCompare = getTranslationsToCompare();
+    translationsToCompare.push(translationId);
+    setTranslationsToCompare(translationsToCompare);
+
     try {
       const [verses, books] = await Promise.all([
         // translation data
@@ -73,6 +82,9 @@ const saveTranslation = async (
       const translationsUpdated = getTranslationsOffline();
       translationsUpdated[translationId] = "downloadFailed";
       setTranslationsStatus(translationsUpdated);
+
+      translationsToCompare.splice(translationsToCompare.indexOf(translationId), 1);
+      setTranslationsToCompare(translationsToCompare);
     }
   }
 };
@@ -85,6 +97,10 @@ const deleteTranslation = async (
   if (["downloaded", "downloadFailed", "deleteFailed"].includes(translationsInitial[translationId])) {
     translationsInitial[translationId] = "deleting";
     setTranslationsStatus(translationsInitial);
+
+    const translationsToCompare = getTranslationsToCompare();
+    translationsToCompare.splice(translationsToCompare.indexOf(translationId), 1);
+    setTranslationsToCompare(translationsToCompare);
 
     try {
       await Promise.all([
@@ -136,6 +152,21 @@ const hasTranslationSaved = (translation: string): boolean => {
   return getTranslationsOffline()[translation] === "downloaded";
 };
 const hasLanguagesSaved = (): boolean => localStorage.getItem(KEY_LANGUAGES_SAVED) === "true";
+const getTranslationsToCompare = (): string[] => {
+  let translations: string[] = JSON.parse(localStorage.getItem(KEY_TRANSLATION_COMPARE) || "[]");
+  if (translations.length === 0) {
+    const offline = getTranslationsOffline();
+    translations = Object.keys(offline).filter((key) => offline[key] === "downloaded");
+    if (translations.length === 0) {
+      translations.push(TRANSLATION_DEFAULT);
+    }
+    setTranslationsToCompare(translations);
+  }
+  return translations;
+};
+const setTranslationsToCompare = (translations: string[]) => {
+  localStorage.setItem(KEY_TRANSLATION_COMPARE, JSON.stringify(translations));
+};
 
 const getDBInfo = () => {
   return idb.getIndexedDBInfo();
@@ -151,6 +182,8 @@ export const db = {
   getLanguages,
   getTranslationsOffline,
   setTranslationsOffline,
+  getTranslationsToCompare,
+  setTranslationsToCompare,
   util: {
     hasTranslationSaved,
     hasLanguagesSaved,

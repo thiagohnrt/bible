@@ -6,6 +6,7 @@ import { BibleContext } from "@/providers/bibleProvider";
 import { useRouter } from "next/navigation";
 import { TfiCommentAlt } from "react-icons/tfi";
 import { ChapterContext } from "@/providers/chapterProvider";
+import { Skeleton } from "../ui/skeleton";
 
 interface Props {
   translation: Translation;
@@ -27,13 +28,15 @@ export function CompareVersesItem({ translation, book, chapter, verses }: Props)
   const router = useRouter();
 
   useEffect(() => {
+    setData({ verses: [], comments: [] });
     (async () => {
       const data = await Promise.all(
         verses.map((verse) => api.getVerse(translation.identifier, book.book, chapter, verse))
       );
       setData({ verses: data, comments: data.filter((i) => i.comment) });
     })();
-  }, [book, chapter, translation, verses]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [translation.identifier]);
 
   const onVersesSelected = () => {
     if (translation.identifier !== translationCurrent?.identifier) {
@@ -41,6 +44,18 @@ export function CompareVersesItem({ translation, book, chapter, verses }: Props)
       router.push(`/bible/${translation.identifier}/${book.book}/${chapter}/${formatVerses(data.verses)}`);
     }
   };
+
+  if (data.verses.length === 0) {
+    return (
+      <div className="flex flex-col pb-8">
+        <div className="flex items-center gap-2 pb-2">
+          <div>{translation.short_name}</div>
+          <small className="opacity-50">{translation.full_name}</small>
+        </div>
+        <Skeleton className="h-24" />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col pb-8">
