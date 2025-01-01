@@ -1,14 +1,14 @@
 {
-  "name": "Bíblia",
-  "short_name": "Bíblia",
+  "name": "BibleHonor",
+  "short_name": "BibleHonor",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "description": "Bíblia",
+  "description": "BibleHonor é um aplicativo bíblico gratuito que permite que você leia a Bíblia em vários idiomas e versões.",
   "icons": [
     {
       "sizes": "512x512",
-      "src": "bible_light.png",
+      "src": "biblehonor_logo.png",
       "type": "image/png"
     }
   ]

@@ -10,8 +10,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { FiPlus } from "react-icons/fi";
 import { RiCloseCircleLine } from "react-icons/ri";
-import imgLogoDark from "../../../public/bible_dark.png";
-import imgLogoLight from "../../../public/bible_light.png";
+import imgLogo from "../../../public/biblehonor_logo.png";
 import { Container } from "../root/Container";
 import { DialogConfirm } from "../root/DialogConfirm";
 import { VersionChange } from "./VersionChange";
@@ -134,9 +133,8 @@ export default function Header({ className }: Props) {
       <Container className="flex px-6 items-center justify-between">
         <div className="content-left">
           <Link href="/" className="flex flex-nowrap items-center gap-2">
-            <Image src={imgLogoLight} alt="Bíblia" width={18} className="block dark:hidden" />
-            <Image src={imgLogoDark} alt="Bíblia" width={18} className="hidden dark:block" />
-            <h1 className="text-xl">Bíblia</h1>
+            <Image src={imgLogo} alt="BibleHonor" width={28} />
+            <h1 className="text-xl">BibleHonor</h1>
           </Link>
         </div>
         <div className="content-right flex">

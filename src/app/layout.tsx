@@ -12,8 +12,9 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Bíblia",
-  description: "Bíblia",
+  title: "BibleHonor",
+  description:
+    "BibleHonor é um aplicativo bíblico gratuito que permite que você leia a Bíblia em vários idiomas e versões.",
   manifest: "/manifest.json",
 };
 

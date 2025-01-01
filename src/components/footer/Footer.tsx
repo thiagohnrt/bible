@@ -13,7 +13,7 @@ export function Footer() {
       <footer className="py-6">
         <Container>
           <div className="flex justify-between">
-            <div></div>
+            <div className="text-sm opacity-80">© Copyright {new Date().getFullYear()} BibleHonor.</div>
             <div>
               <ThemeToggle />
             </div>
