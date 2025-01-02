@@ -45,7 +45,7 @@ const AccordionItemFocus = React.forwardRef<
         });
 
         element.focus();
-      }, 1000);
+      }, 750);
     }
   };
 
