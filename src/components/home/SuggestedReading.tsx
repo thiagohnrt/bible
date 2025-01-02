@@ -5,6 +5,7 @@ import { BibleContext } from "@/providers/bibleProvider";
 import Link from "next/link";
 import { useContext } from "react";
 import Verse from "../chapter/Verse";
+import { IoIosArrowDropright } from "react-icons/io";
 
 interface Props {
   className?: string;
@@ -20,7 +21,10 @@ export function SuggestedReading({ className }: Props) {
     >
       <div className="flex justify-between">
         <p>Sugestão de leitura</p>
-        <p className="text-sm leading-6 font-bold">Começar</p>
+        <div className="flex items-center gap-2">
+          <p className="text-sm leading-6 font-bold">Começar</p>
+          <IoIosArrowDropright />
+        </div>
       </div>
       <div className="pt-4">
         <p className="text-lg font-bold pb-3">João 1 {translation?.short_name ?? ""}</p>

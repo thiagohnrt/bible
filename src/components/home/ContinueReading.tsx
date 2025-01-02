@@ -3,6 +3,7 @@
 import { BibleHistory } from "@/app/bible/[version]/[book]/[chapter]/page";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { IoIosArrowDropright } from "react-icons/io";
 import Verse from "../chapter/Verse";
 
 interface Props {
@@ -13,9 +14,9 @@ interface Props {
 export function ContinueReading({ history: bibleHistory, className }: Props) {
   return (
     <Link href={bibleHistory.url} className={cn("block rounded-md p-4 bg-highlight-active", className)}>
-      <div className="flex justify-between">
+      <div className="flex items-center gap-2">
         <p>Continue a leitura</p>
-        <p className="text-sm leading-6 font-medium">Ler</p>
+        <IoIosArrowDropright />
       </div>
       <div className="pt-4">
         <p className="text-lg font-medium pb-3">
