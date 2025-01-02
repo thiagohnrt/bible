@@ -20,9 +20,12 @@ export function ContinueReading({ history: bibleHistory, className }: Props) {
       </div>
       <div className="pt-4">
         <p className="text-lg font-medium pb-3">
-          {bibleHistory.book.name} {bibleHistory.chapter} {bibleHistory.translation}
+          {bibleHistory.book.name} {bibleHistory.chapter}:{bibleHistory.verse?.verse ?? 1} {bibleHistory.translation}
         </p>
-        <Verse text={bibleHistory.firstVerse} className=" line-clamp-2 text-base leading-7" />
+        <Verse
+          text={bibleHistory.verse?.text ?? JSON.parse(JSON.stringify(bibleHistory)).firstVerse}
+          className=" line-clamp-2 text-base leading-7"
+        />
       </div>
     </Link>
   );

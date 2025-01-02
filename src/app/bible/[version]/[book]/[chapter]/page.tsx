@@ -34,7 +34,10 @@ export interface BibleHistory {
     name: string;
   };
   chapter: number;
-  firstVerse: string;
+  verse: {
+    verse: number;
+    text: string;
+  };
   translation: string;
   translationId: string;
 }

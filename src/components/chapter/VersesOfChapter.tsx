@@ -57,13 +57,16 @@ export function VersesOfChapter({ version, book, chapter, verse, data, isVersion
           name: book.name,
         },
         chapter,
-        firstVerse: verses[0].text,
+        verse: {
+          verse: +(verse ?? "1"),
+          text: verses[+(verse ?? "1") - 1].text,
+        },
         translation: translation.short_name,
         translationId: translation.identifier,
       };
       setBibleHistory(data);
     }
-  }, [pathname, book, chapter, verses, translation, isVersionParallel, searchParams]);
+  }, [pathname, book, chapter, verses, translation, isVersionParallel, searchParams, verse]);
 
   const isVerseInInterval = (verse: number, interval?: string): boolean => {
     if (!interval) {
