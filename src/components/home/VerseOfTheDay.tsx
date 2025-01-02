@@ -44,7 +44,7 @@ export function VerseOfTheDay({ className }: Props) {
 
   return (
     <div className={className}>
-      <h1 className="text-lg font-bold mb-2">Versículo do dia</h1>
+      <h1 className="text-lg font-normal mb-2">Versículo do dia</h1>
       <Dialog id="verseOfTheDay">
         <DialogTrigger className="w-full">
           <div className="flex items-center text-left p-8 relative min-h-60">

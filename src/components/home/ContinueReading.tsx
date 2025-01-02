@@ -15,10 +15,10 @@ export function ContinueReading({ history: bibleHistory, className }: Props) {
     <Link href={bibleHistory.url} className={cn("block rounded-md p-4 bg-highlight-active", className)}>
       <div className="flex justify-between">
         <p>Continue a leitura</p>
-        <p className="text-sm leading-6 font-bold">Ler</p>
+        <p className="text-sm leading-6 font-medium">Ler</p>
       </div>
       <div className="pt-4">
-        <p className="text-lg font-bold pb-3">
+        <p className="text-lg font-medium pb-3">
           {bibleHistory.book.name} {bibleHistory.chapter} {bibleHistory.translation}
         </p>
         <Verse text={bibleHistory.firstVerse} className=" line-clamp-2 text-base leading-7" />
