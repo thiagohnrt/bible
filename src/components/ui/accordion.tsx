@@ -35,9 +35,17 @@ const AccordionItemFocus = React.forwardRef<
     const element = localRef.current;
     if (element) {
       setTimeout(() => {
-        element.scrollIntoView({ behavior: "smooth", block: "start" });
+        const headerHeight = 65; // Altura do header fixo
+        const itemTop = element!.getBoundingClientRect().top;
+        const offsetPosition = itemTop + window.scrollY - headerHeight;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth",
+        });
+
         element.focus();
-      }, 250);
+      }, 1000);
     }
   };
 
