@@ -44,7 +44,7 @@ interface PropsChildren {
 
 function ChapterBook({ version, book, chapter }: PropsChildren) {
   return (
-    <Link className="self-stretch flex-auto flex items-center" href={`/bible/${version}?${book.book}`}>
+    <Link className="self-stretch flex-auto flex items-center" href={`/bible/${version}?${book.book}-${chapter}`}>
       <div
         className="chapter-book w-full h-14 text-center text-sm font-bold overflow-hidden bg-highlight-active"
         style={{ lineHeight: "3.5rem" }}

@@ -19,7 +19,7 @@ interface Props {
 
 export function Books({ version, device }: Props) {
   const [books, setBooks] = useState<Book[]>([]);
-  const [bookId, setBookId] = useState("");
+  const [data, setData] = useState<{ bookId: string; chapter: number }>({ bookId: "", chapter: 0 });
   const itemRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const pathname = usePathname();
 
@@ -29,11 +29,12 @@ export function Books({ version, device }: Props) {
 
   useEffect(() => {
     if (books.length) {
-      const bookId = location.search.substring(1);
+      const bookId = location.search.substring(1).split("-")[0];
+      const chapter = +location.search.substring(1).split("-")[1];
       if (itemRefs.current[`${bookId}`]) {
         setTimeout(
           (ref) => {
-            setBookId(bookId);
+            setData({ bookId, chapter });
             ref?.click();
           },
           250,
@@ -58,7 +59,13 @@ export function Books({ version, device }: Props) {
   }
 
   return (
-    <Accordion type="single" collapsible className="w-full" value={bookId} onValueChange={setBookId}>
+    <Accordion
+      type="single"
+      collapsible
+      className="w-full"
+      value={data.bookId}
+      onValueChange={(value) => setData({ ...data, bookId: value })}
+    >
       {books.map((book, i) => {
         return (
           <AccordionItemFocus
@@ -71,7 +78,12 @@ export function Books({ version, device }: Props) {
           >
             <AccordionTrigger className="text-left">{book.name}</AccordionTrigger>
             <AccordionContent>
-              <Chapters version={version} book={book} device={device} />
+              <Chapters
+                version={version}
+                book={book}
+                chapter={book.book === +data.bookId ? data.chapter : 0}
+                device={device}
+              />
             </AccordionContent>
           </AccordionItemFocus>
         );
