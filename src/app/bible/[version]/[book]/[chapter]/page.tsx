@@ -52,6 +52,12 @@ export default function ChapterPage({ params: { version, book: bookId, chapter, 
     getData(version, bookId, chapter).then((data) => setData(data));
   }, [bookId, chapter, version]);
 
+  useEffect(() => {
+    if (book) {
+      document.title = `${book.name} ${chapter} - ${translation.short_name} | BibleHonor`;
+    }
+  }, [book, chapter, translation]);
+
   if (!book) {
     return (
       <>
