@@ -1,11 +1,11 @@
 "use client";
 
-import { Merriweather } from "next/font/google";
+import { cn } from "@/lib/shad";
 import { BibleContext } from "@/providers/bibleProvider";
-import { useContext, useEffect, useState } from "react";
 import { api, Verse as IVerse } from "@/services/api";
+import { Merriweather } from "next/font/google";
+import { useContext, useEffect, useState } from "react";
 import Verse from "../chapter/Verse";
-import { cn } from "@/lib/utils";
 
 const font = Merriweather({ subsets: ["latin"], weight: "400" });
 

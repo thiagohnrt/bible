@@ -10,7 +10,7 @@ import { api, Book, Translation, Verse } from "@/services/api";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ChapterProps } from "./layout";
-import { cn } from "@/lib/classUtils";
+import { cn } from "@/lib/shad";
 
 interface Data {
   translation: Translation;

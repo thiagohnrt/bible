@@ -1,12 +1,11 @@
 "use client";
 
-import * as React from "react";
+import { cn } from "@/lib/shad";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
-
-import { cn } from "@/lib/utils";
-import { HiArrowNarrowLeft } from "react-icons/hi";
 import { useRouter } from "next/navigation";
+import * as React from "react";
+import { HiArrowNarrowLeft } from "react-icons/hi";
 
 const DialogRoot = DialogPrimitive.Root;
 
@@ -158,14 +157,14 @@ DialogDescription.displayName = DialogPrimitive.Description.displayName;
 
 export {
   Dialog,
-  DialogRoot,
-  DialogPortal,
-  DialogOverlay,
-  DialogTrigger,
   DialogClose,
   DialogContent,
-  DialogHeader,
-  DialogFooter,
-  DialogTitle,
   DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogOverlay,
+  DialogPortal,
+  DialogRoot,
+  DialogTitle,
+  DialogTrigger,
 };

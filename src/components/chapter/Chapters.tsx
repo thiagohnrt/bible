@@ -1,6 +1,3 @@
-import { cn } from "@/lib/utils";
-import { Book } from "@/services/api";
-import LinkNext from "next/link";
 import {
   Dialog,
   DialogContent,
@@ -9,8 +6,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Verses } from "./Verses";
+import { cn } from "@/lib/shad";
+import { Book } from "@/services/api";
+import LinkNext from "next/link";
 import { useSearchParams } from "next/navigation";
+import { Verses } from "./Verses";
 
 interface ChaptersProps {
   version: string;

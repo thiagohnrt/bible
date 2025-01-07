@@ -1,7 +1,8 @@
 "use client";
 
 import { db } from "@/database/bibleDB";
-import { cn, sortTranslations } from "@/lib/utils";
+import { cn } from "@/lib/shad";
+import { sortTranslations } from "@/lib/utils";
 import { BibleContext } from "@/providers/bibleProvider";
 import { Language, Translation } from "@/services/api";
 import { forwardRef, useCallback, useContext, useEffect, useState } from "react";

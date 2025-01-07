@@ -1,12 +1,12 @@
 "use client";
 
+import { cn } from "@/lib/shad";
 import { BibleContext } from "@/providers/bibleProvider";
 import { api, Book, Translation } from "@/services/api";
-import { useContext, useEffect, useState } from "react";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
-import { Container } from "../root/Container";
 import { useSearchParams } from "next/navigation";
+import { useContext, useEffect, useState } from "react";
+import { Container } from "../root/Container";
 
 interface Props {
   device?: {

@@ -3,7 +3,7 @@ import { api, Book, Translation, Verse } from "@/services/api";
 import { useEffect, useState } from "react";
 import { Skeleton } from "../ui/skeleton";
 import VerseAction from "./VerseAction";
-import { cn } from "@/lib/classUtils";
+import { cn } from "@/lib/shad";
 
 interface Props {
   version: string;

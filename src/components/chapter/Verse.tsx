@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/shad";
 import { Merriweather } from "next/font/google";
 
 const font = Merriweather({ subsets: ["latin"], weight: "300" });

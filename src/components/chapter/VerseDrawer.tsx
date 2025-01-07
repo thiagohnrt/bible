@@ -1,16 +1,17 @@
 "use client";
 
+import { cn } from "@/lib/shad";
+import { clipboard } from "@/lib/clipboard";
+import { share } from "@/lib/share";
+import { formatVerses } from "@/lib/utils";
+import { BibleContext } from "@/providers/bibleProvider";
 import { ChapterContext } from "@/providers/chapterProvider";
+import { RootContext } from "@/providers/rootProvider";
 import { Book } from "@/services/api";
 import { forwardRef, ReactNode, useContext, useState } from "react";
 import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from "../ui/drawer";
-import { share } from "@/lib/share";
-import { clipboard } from "@/lib/clipboard";
-import { BibleContext } from "@/providers/bibleProvider";
-import { CompareVerses } from "./CompareVerses";
-import { cn, formatVerses } from "@/lib/utils";
-import { RootContext } from "@/providers/rootProvider";
 import { Toast, ToastClose, ToastDescription, ToastProvider, ToastTitle, ToastViewport } from "../ui/toast";
+import { CompareVerses } from "./CompareVerses";
 
 interface Props {
   book: Book;

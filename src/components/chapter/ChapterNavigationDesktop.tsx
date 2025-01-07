@@ -1,11 +1,11 @@
 "use client";
 
-import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/shad";
 import { api, Book } from "@/services/api";
-import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
 
 interface Props {
   version: string;

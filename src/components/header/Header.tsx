@@ -1,7 +1,7 @@
 "use client";
 
 import { db } from "@/database/bibleDB";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/shad";
 import { BibleContext } from "@/providers/bibleProvider";
 import { api, Translation } from "@/services/api";
 import Image from "next/image";

@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/shad";
 import { ChapterContext } from "@/providers/chapterProvider";
 import { Verse as IVerse } from "@/services/api";
 import { Merriweather } from "next/font/google";

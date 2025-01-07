@@ -1,14 +1,15 @@
 "use client";
 
-import { RiHome5Fill, RiHome5Line, RiBookFill, RiBookLine, RiMenuFill, RiMenuLine } from "react-icons/ri";
-import Link from "next/link";
-import { ReactNode, useContext, useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
-import { cn, getBibleHistory, getTranslationPathname } from "@/lib/utils";
 import { EVENT_BIBLE_HISTORY } from "@/constants/bible";
-import { TbMenuDeep } from "react-icons/tb";
+import { cn } from "@/lib/shad";
+import { getBibleHistory, getTranslationPathname } from "@/lib/utils";
 import { BibleContext } from "@/providers/bibleProvider";
 import { Translation } from "@/services/api";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { ReactNode, useContext, useEffect, useState } from "react";
+import { RiBookFill, RiBookLine, RiHome5Fill, RiHome5Line } from "react-icons/ri";
+import { TbMenuDeep } from "react-icons/tb";
 
 export default function BottomNavigator() {
   const { translation: translationContext } = useContext(BibleContext);

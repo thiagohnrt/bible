@@ -8,12 +8,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { cn } from "@/lib/shad";
+import { forwardRef } from "react";
 import { RiSettings3Line } from "react-icons/ri";
 import { ItemMenu } from "./ItemMenu";
-import { cn } from "@/lib/utils";
-import { ManageOfflineTranslations } from "./settings/ManageOfflineTranslations";
-import { forwardRef } from "react";
 import { ClearLocalData } from "./settings/ClearLocalData";
+import { ManageOfflineTranslations } from "./settings/ManageOfflineTranslations";
 
 interface Props {
   iconSize: number;

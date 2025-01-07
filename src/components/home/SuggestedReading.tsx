@@ -1,11 +1,11 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/shad";
 import { BibleContext } from "@/providers/bibleProvider";
 import Link from "next/link";
 import { useContext } from "react";
-import Verse from "../chapter/Verse";
 import { IoIosArrowDropright } from "react-icons/io";
+import Verse from "../chapter/Verse";
 
 interface Props {
   className?: string;

@@ -1,7 +1,7 @@
 "use client";
 
 import { BibleHistory } from "@/app/bible/[version]/[book]/[chapter]/page";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/shad";
 import Link from "next/link";
 import { IoIosArrowDropright } from "react-icons/io";
 import Verse from "../chapter/Verse";
