@@ -4,12 +4,13 @@ import { CommentDrawer } from "@/components/chapter/CommentDrawer";
 import { VerseDrawer } from "@/components/chapter/VerseDrawer";
 import { VersesOfChapter } from "@/components/chapter/VersesOfChapter";
 import { Skeleton } from "@/components/ui/skeleton";
-import { cn, repeat } from "@/lib/utils";
+import * as utils from "@/lib/utils";
 import { ChapterProvider } from "@/providers/chapterProvider";
-import { api, Book, Translation } from "@/services/api";
-import { useSearchParams } from "next/navigation";
+import { api, Book, Translation, Verse } from "@/services/api";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ChapterProps } from "./layout";
+import { cn } from "@/lib/classUtils";
 
 interface Data {
   translation: Translation;
@@ -44,6 +45,7 @@ export interface BibleHistory {
 
 export default function ChapterPage({ params: { version, book: bookId, chapter, verse } }: ChapterProps) {
   const [{ translation, book }, setData] = useState<Data>({} as Data);
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const versions = searchParams.get("parallel")?.split(" ") || [];
   versions.unshift(version);
@@ -58,14 +60,71 @@ export default function ChapterPage({ params: { version, book: bookId, chapter, 
     }
   }, [book, chapter, translation]);
 
+  useEffect(() => {
+    if (!verse) return;
+    const handleScroll = () => {
+      if (document.querySelector("#chapter-container")?.classList.contains("highlight-verse")) {
+        document.querySelector("#chapter-container")?.classList.remove("highlight-verse");
+        window.removeEventListener("scroll", handleScroll);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [verse]);
+
+  const onTranslationReady = (translation: Translation, verses: Verse[]) => {
+    if (translation.identifier == version && verse) {
+      onFocusVerse(verses);
+      onSaveHistory(translation, verses);
+    }
+  };
+
+  const onFocusVerse = (verses: Verse[]) => {
+    if (!verse) return;
+    const num = decodeURIComponent(verse).split(",")[0].split("-")[0];
+    utils.scrollToElement(document.querySelector(`#verse-${num}`)).then(() => {
+      console.log("add highlight");
+      document.querySelector("#chapter-container")?.classList.add("highlight-verse");
+
+      const versesToHighlight = verses.filter((v) => utils.isVerseInInterval(v.verse, verse)).map((v) => v.verse);
+      versesToHighlight.forEach((v) => {
+        document.querySelector(`#verse-${v}`)?.classList.add("verse-to-highlight");
+      });
+    });
+  };
+
+  const onSaveHistory = (translation: Translation, verses: Verse[]) => {
+    const history = utils.getBibleHistory();
+    const url = pathname + (searchParams.toString() ? `?${searchParams.toString()}` : "");
+    if (history.url === url) return;
+
+    const data: BibleHistory = {
+      url: url,
+      book: {
+        id: book.book,
+        name: book.name,
+      },
+      chapter,
+      verse: {
+        verse: +(verse ?? "1"),
+        text: verses[+(verse ?? "1") - 1].text,
+      },
+      translation: translation.short_name,
+      translationId: translation.identifier,
+    };
+    utils.setBibleHistory(data);
+  };
+
   if (!book) {
     return (
       <>
         <Skeleton className="w-1/2 h-10 mb-8 bg-highlight" />
         <div className="flex gap-4">
-          {repeat(versions.length, (i) => (
+          {utils.repeat(versions.length, (i) => (
             <div className="flex-1" key={i}>
-              {repeat(10, (i) => {
+              {utils.repeat(10, (i) => {
                 return (
                   <div key={i}>
                     <Skeleton className="mt-2 h-28 bg-highlight" />
@@ -85,16 +144,16 @@ export default function ChapterPage({ params: { version, book: bookId, chapter, 
       <h1 className={cn("text-3xl pb-8", translation.dir ? "text-right" : "")}>
         {book.name} {chapter}
       </h1>
-      <div className="flex gap-4">
-        {versions.map((v, i) => (
+      <div className="flex gap-4" id="chapter-container">
+        {versions.map((v) => (
           <VersesOfChapter
             version={v}
             book={book}
             chapter={chapter}
             verse={verse}
-            isVersionParallel={i > 0}
-            showTranslation={versions.length > 1}
-            key={i}
+            inComparisonMode={versions.length > 1}
+            onReady={onTranslationReady}
+            key={v}
           />
         ))}
       </div>

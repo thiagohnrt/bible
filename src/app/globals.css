@@ -107,6 +107,12 @@
 .window-scroll-down .chapter-navigation .chapter-next-btn {
   @apply bg-transparent;
 }
+[data-verse] {
+  @apply transition-opacity;
+}
+.highlight-verse [data-verse]:not(.verse-to-highlight) {
+  opacity: 0.3;
+}
 
 /* Verse */
 [data-verse]::before {

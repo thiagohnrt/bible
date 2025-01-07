@@ -1,22 +1,21 @@
-import { useEffect, useState } from "react";
-import VerseAction from "./VerseAction";
+import * as utils from "@/lib/utils";
 import { api, Book, Translation, Verse } from "@/services/api";
+import { useEffect, useState } from "react";
 import { Skeleton } from "../ui/skeleton";
-import { cn, getBibleHistory, repeat, setBibleHistory } from "@/lib/utils";
-import { usePathname, useSearchParams } from "next/navigation";
-import { BibleHistory } from "@/app/bible/[version]/[book]/[chapter]/page";
+import VerseAction from "./VerseAction";
+import { cn } from "@/lib/classUtils";
 
 interface Props {
   version: string;
   book: Book;
   chapter: number;
-  isVersionParallel: boolean;
-  showTranslation: boolean;
+  inComparisonMode: boolean;
   verse?: string;
   data?: {
     translation: Translation;
     verses: Verse[];
   };
+  onReady?: (translation: Translation, verses: Verse[]) => void;
 }
 
 interface Data {
@@ -24,10 +23,8 @@ interface Data {
   verses: Verse[];
 }
 
-export function VersesOfChapter({ version, book, chapter, verse, data, isVersionParallel, showTranslation }: Props) {
+export function VersesOfChapter({ version, book, chapter, verse, data, inComparisonMode, onReady }: Props) {
   const [{ verses, translation }, setData] = useState<Data>({ verses: [], translation: {} as Translation });
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   useEffect(() => {
     if (data) {
@@ -40,66 +37,17 @@ export function VersesOfChapter({ version, book, chapter, verse, data, isVersion
   }, [book, chapter, data, version]);
 
   useEffect(() => {
-    if (!isVersionParallel && verses?.length && verse) {
-      const num = decodeURIComponent(verse).split(",")[0].split("-")[0];
-      document.querySelector(`#verse-${num}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+    if (translation.identifier && verses?.length) {
+      onReady?.(translation, verses);
     }
-  }, [verses, verse, isVersionParallel]);
-
-  useEffect(() => {
-    const history = getBibleHistory();
-    const url = pathname + `${searchParams.toString() ? `?${searchParams.toString()}` : ""}`;
-    if (!isVersionParallel && book && verses?.length && history.url !== url) {
-      const data: BibleHistory = {
-        url: url,
-        book: {
-          id: book.book,
-          name: book.name,
-        },
-        chapter,
-        verse: {
-          verse: +(verse ?? "1"),
-          text: verses[+(verse ?? "1") - 1].text,
-        },
-        translation: translation.short_name,
-        translationId: translation.identifier,
-      };
-      setBibleHistory(data);
-    }
-  }, [pathname, book, chapter, verses, translation, isVersionParallel, searchParams, verse]);
-
-  const isVerseInInterval = (verse: number, interval?: string): boolean => {
-    if (!interval) {
-      return false;
-    }
-
-    const ranges = decodeURIComponent(interval)
-      .split(",")
-      .map((range) => range.trim());
-
-    for (const range of ranges) {
-      if (range.includes("-")) {
-        const [start, end] = range.split("-").map(Number);
-        if (verse >= start && verse <= end) {
-          return true;
-        }
-      } else {
-        const singleNum = Number(range);
-        if (verse == singleNum) {
-          return true;
-        }
-      }
-    }
-
-    return false;
-  };
+  }, [verses, onReady, translation]);
 
   return (
-    <div className="pb-40 md:pb-4 flex-1" dir={translation.dir}>
+    <div className={cn("pb-40 md:pb-4 flex-1")} dir={translation.dir}>
       {verses.length === 0 ? (
         <>
           <Skeleton className="w-1/2 h-10 mb-8 bg-highlight" />
-          {repeat(10, (i) => {
+          {utils.repeat(10, (i) => {
             return (
               <div key={i}>
                 <Skeleton className="mt-2 h-28 bg-highlight" />
@@ -109,14 +57,10 @@ export function VersesOfChapter({ version, book, chapter, verse, data, isVersion
           })}
         </>
       ) : (
-        <div className={cn("pb-4", !showTranslation && "hidden")}>{translation.full_name}</div>
+        <div className={cn("pb-4", !inComparisonMode && "hidden")}>{translation.full_name}</div>
       )}
-      {verses.map((data, i) => (
-        <VerseAction
-          data={data}
-          className={isVerseInInterval(data.verse, verse) ? "[&[data-verse]]:font-bold" : ""}
-          key={i}
-        />
+      {verses.map((data) => (
+        <VerseAction data={data} key={data.verse} />
       ))}
     </div>
   );

@@ -49,7 +49,7 @@ export const setLanguageStorage = (language: string) => {
 };
 export const getLanguageStorage = (): string => {
   const language = localStorage.getItem(KEY_LANGUAGE_CURRENT);
-  return language || LANGUAGE_DEFAULT;
+  return language ?? LANGUAGE_DEFAULT;
 };
 
 export const setTranslationStorage = (translation: Translation) => {
@@ -99,4 +99,63 @@ export const formatVerses = (data: Verse[]): string => {
 };
 
 export const sortTranslations = (translations: Translation[]) =>
-  translations.sort((a, b) => a.short_name.localeCompare(b.short_name));
+  translations.toSorted((a, b) => a.short_name.localeCompare(b.short_name));
+
+export const isVerseInInterval = (verse: number, interval?: string): boolean => {
+  if (!interval) {
+    return false;
+  }
+
+  const ranges = decodeURIComponent(interval)
+    .split(",")
+    .map((range) => range.trim());
+
+  for (const range of ranges) {
+    if (range.includes("-")) {
+      const [start, end] = range.split("-").map(Number);
+      if (verse >= start && verse <= end) {
+        return true;
+      }
+    } else {
+      const singleNum = Number(range);
+      if (verse == singleNum) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+};
+
+export const scrollToElement = (
+  element: Element | null,
+  options: ScrollIntoViewOptions = { behavior: "smooth", block: "center" }
+) => {
+  if (!element) {
+    return Promise.resolve();
+  }
+  return new Promise<void>((resolve) => {
+    const isElementInView = (el: Element) => {
+      const rect = el.getBoundingClientRect();
+      return (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+      );
+    };
+
+    const isScrollingDone = () => isElementInView(element);
+
+    const checkScroll = () => {
+      if (isScrollingDone()) {
+        setTimeout(() => resolve(), 300);
+      } else {
+        requestAnimationFrame(checkScroll);
+      }
+    };
+
+    element.scrollIntoView(options);
+    checkScroll();
+  });
+};
