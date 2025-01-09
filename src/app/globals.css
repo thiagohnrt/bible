@@ -100,11 +100,11 @@
 }
 
 /* Chapter */
-.window-scroll-down .chapter-navigation .chapter-book,
+.window-scroll-down .chapter-navigation .chapter-book:not(:active),
 .window-scroll-down .chapter-navigation .chapter-prev,
 .window-scroll-down .chapter-navigation .chapter-next,
-.window-scroll-down .chapter-navigation .chapter-prev-btn,
-.window-scroll-down .chapter-navigation .chapter-next-btn {
+.window-scroll-down .chapter-navigation .chapter-prev-btn:not(:active),
+.window-scroll-down .chapter-navigation .chapter-next-btn:not(:active) {
   @apply bg-transparent;
 }
 [data-verse] {
