@@ -26,7 +26,7 @@ const AccordionItemFocus = React.forwardRef<
     if (typeof ref === "function") {
       ref(el);
     } else if (ref) {
-      (ref as React.MutableRefObject<HTMLDivElement | null>).current = el;
+      ref.current = el;
     }
   };
 
@@ -35,7 +35,7 @@ const AccordionItemFocus = React.forwardRef<
     if (element) {
       setTimeout(() => {
         const headerHeight = 65; // Altura do header fixo
-        const itemTop = element!.getBoundingClientRect().top;
+        const itemTop = element.getBoundingClientRect().top;
         const offsetPosition = itemTop + window.scrollY - headerHeight;
 
         window.scrollTo({
