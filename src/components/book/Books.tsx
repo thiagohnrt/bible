@@ -73,7 +73,7 @@ export function Books({ version, device }: Props) {
               itemRefs.current[`${book.book}`] = el;
             }}
             value={`${book.book}`}
-            key={i}
+            key={book.book}
             className="border-none"
           >
             <AccordionTrigger className="text-left">{book.name}</AccordionTrigger>
