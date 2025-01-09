@@ -129,6 +129,34 @@ export const scrollToElement = (
     return Promise.resolve();
   }
   return new Promise<void>((resolve) => {
+    const getTargetPosition = () => {
+      const rect = element.getBoundingClientRect();
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+
+      let top = rect.top + scrollTop;
+      let left = rect.left + scrollLeft;
+
+      switch (options.block) {
+        case "start":
+          top = rect.top + scrollTop;
+          break;
+        case "center":
+          top = rect.top + scrollTop - (window.innerHeight / 2 - rect.height / 2);
+          break;
+        case "end":
+          top = rect.top + scrollTop - (window.innerHeight - rect.height);
+          break;
+        case "nearest":
+          // Implement nearest logic if needed
+          break;
+        default:
+          top = rect.top + scrollTop;
+      }
+
+      return { top, left };
+    };
+
     const isElementInView = (el: Element) => {
       const rect = el.getBoundingClientRect();
       return (
@@ -149,7 +177,8 @@ export const scrollToElement = (
       }
     };
 
-    element.scrollIntoView(options);
+    const { top, left } = getTargetPosition();
+    window.scrollTo({ top, left, behavior: options.behavior });
     checkScroll();
   });
 };
