@@ -10,7 +10,6 @@ interface Props {
   book: Book;
   chapter: number;
   inComparisonMode: boolean;
-  verse?: string;
   data?: {
     translation: Translation;
     verses: Verse[];
@@ -23,7 +22,7 @@ interface Data {
   verses: Verse[];
 }
 
-export function VersesOfChapter({ version, book, chapter, verse, data, inComparisonMode, onReady }: Props) {
+export function VersesOfChapter({ version, book, chapter, data, inComparisonMode, onReady }: Props) {
   const [{ verses, translation }, setData] = useState<Data>({ verses: [], translation: {} as Translation });
 
   useEffect(() => {

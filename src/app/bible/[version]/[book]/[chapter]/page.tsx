@@ -97,7 +97,9 @@ export default function ChapterPage({ params: { version, book: bookId, chapter, 
   const onSaveHistory = (translation: Translation, verses: Verse[]) => {
     const history = utils.getBibleHistory();
     const url = pathname + (searchParams.toString() ? `?${searchParams.toString()}` : "");
-    if (history.url === url) return;
+    if (history.url === url || !verse) return;
+
+    const numVerse = decodeURIComponent(verse).split(",")[0].split("-")[0];
 
     const data: BibleHistory = {
       url: url,
@@ -107,8 +109,8 @@ export default function ChapterPage({ params: { version, book: bookId, chapter, 
       },
       chapter,
       verse: {
-        verse: +(verse ?? "1"),
-        text: verses[+(verse ?? "1") - 1].text,
+        verse: +(numVerse ?? "1"),
+        text: verses[+(numVerse ?? "1") - 1].text,
       },
       translation: translation.short_name,
       translationId: translation.identifier,
@@ -149,7 +151,6 @@ export default function ChapterPage({ params: { version, book: bookId, chapter, 
             version={v}
             book={book}
             chapter={chapter}
-            verse={verse}
             inComparisonMode={versions.length > 1}
             onReady={onTranslationReady}
             key={v}
