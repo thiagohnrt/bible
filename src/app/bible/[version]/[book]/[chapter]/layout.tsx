@@ -29,7 +29,7 @@ export default function ChapterLayout({ children, params: { version, book, chapt
         {children}
         <TopNavigation className="chapter-top-navigation right-2 bottom-40" />
         <ChapterNavigationMobile version={version} book={book} chapter={chapter} />
-        {/* <ScrollControl /> */}
+        <ScrollControl />
       </Container>
     );
   } else {
