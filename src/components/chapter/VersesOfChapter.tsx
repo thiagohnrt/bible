@@ -1,6 +1,6 @@
 import * as utils from "@/lib/utils";
 import { api, Book, Translation, Verse } from "@/services/api";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { Skeleton } from "../ui/skeleton";
 import VerseAction from "./VerseAction";
 import { cn } from "@/lib/shad";
@@ -36,7 +36,7 @@ export function VersesOfChapter({ version, book, chapter, verse, data, inCompari
     );
   }, [book, chapter, data, version]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (translation.identifier && verses?.length) {
       onReady?.(translation, verses);
     }

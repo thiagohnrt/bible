@@ -17,7 +17,7 @@ interface VerseProps {
 
 export default function VerseAction({ data, className }: VerseProps) {
   const { verses, setVerses, setVerseComment } = useContext(ChapterContext);
-  const [isSelected, setSelected] = useState(false);
+  const [isSelected, setIsSelected] = useState(false);
   const { verse, text, comment } = data;
 
   useEffect(() => {
@@ -35,7 +35,7 @@ export default function VerseAction({ data, className }: VerseProps) {
 
   useEffect(() => {
     if (!verses.length) {
-      setSelected(false);
+      setIsSelected(false);
     }
   }, [verses]);
 
@@ -49,7 +49,7 @@ export default function VerseAction({ data, className }: VerseProps) {
           "cursor-pointer flex-auto",
           isSelected ? "underline decoration-dashed decoration-1 underline-offset-4" : ""
         )}
-        onClick={() => setSelected(!isSelected)}
+        onClick={() => setIsSelected(!isSelected)}
       />
       <div className="flex flex-grow-0 flex-shrink-0 basis-8">
         {comment ? (
