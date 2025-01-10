@@ -183,7 +183,6 @@ export const scrollToElement = (
     const isScrollingDone = () => isElementInView();
 
     const checkScroll = () => {
-      console.log("checkScroll");
       const { top, left } = getTargetPosition();
       window.scrollTo({ top, left, behavior: options.behavior });
       if (isScrollingDone()) {
