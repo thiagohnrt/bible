@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/shad";
+import { scrollToElement } from "@/lib/utils";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import * as React from "react";
@@ -31,21 +32,18 @@ const AccordionItemFocus = React.forwardRef<
   };
 
   const focus = () => {
-    const element = localRef.current;
-    if (element) {
-      setTimeout(() => {
-        const headerHeight = 65; // Altura do header fixo
-        const itemTop = element.getBoundingClientRect().top;
-        const offsetPosition = itemTop + window.scrollY - headerHeight;
-
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: "smooth",
-        });
-
-        element.focus();
-      }, 750);
-    }
+    setTimeout(
+      (element) => {
+        if (element) {
+          const headerHeight = 65; // Altura do header fixo
+          scrollToElement(element, { behavior: "smooth", block: "start", offset: headerHeight }).then(() => {
+            element.focus();
+          });
+        }
+      },
+      300,
+      localRef.current
+    );
   };
 
   return <AccordionItem ref={setRef} onClick={focus} {...props} />;
