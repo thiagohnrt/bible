@@ -85,12 +85,14 @@ export default function ChapterPage({ params: { version, book: bookId, chapter, 
     if (!verse) return;
     const num = decodeURIComponent(verse).split(",")[0].split("-")[0];
     utils.scrollToElement(document.querySelector(`#verse-${num}`)).then(() => {
-      document.querySelector("#chapter-container")?.classList.add("highlight-verse");
-
       const versesToHighlight = verses.filter((v) => utils.isVerseInInterval(v.verse, verse)).map((v) => v.verse);
       versesToHighlight.forEach((v) => {
         document.querySelector(`#verse-${v}`)?.classList.add("verse-to-highlight");
       });
+
+      setTimeout(() => {
+        document.querySelector("#chapter-container")?.classList.add("highlight-verse");
+      }, 300);
     });
   };
 
