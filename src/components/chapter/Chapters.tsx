@@ -32,9 +32,25 @@ export function Chapters({ version, book, chapter, className, device }: Chapters
         .split(".")
         .map((n, i) => {
           if (device?.type === "mobile") {
-            return <Button version={version} book={book} chapter={i + 1} key={i} chapterCurrent={chapter} />;
+            return (
+              <Button
+                version={version}
+                book={book}
+                chapter={i + 1}
+                key={`${book.book}-${i + 1}`}
+                chapterCurrent={chapter}
+              />
+            );
           } else {
-            return <Link version={version} book={book} chapter={i + 1} key={i} chapterCurrent={chapter} />;
+            return (
+              <Link
+                version={version}
+                book={book}
+                chapter={i + 1}
+                key={`${book.book}-${i + 1}`}
+                chapterCurrent={chapter}
+              />
+            );
           }
         })}
     </div>
@@ -51,9 +67,11 @@ interface LinkProps {
 function Link({ version, book, chapter, chapterCurrent }: LinkProps) {
   const searchParams = useSearchParams();
   const parallel = searchParams.get("parallel");
+  const search = parallel ? `?parallel=${parallel}` : "";
+
   return (
     <LinkNext
-      href={`/bible/${version}/${book.book}/${chapter}${parallel ? `?parallel=${parallel}` : ""}`}
+      href={`/bible/${version}/${book.book}/${chapter}${search}`}
       style={{ aspectRatio: "1 / 1" }}
       className={cn(
         "chapter-number aspect-square flex items-center justify-center rounded-sm bg-highlight-active",
