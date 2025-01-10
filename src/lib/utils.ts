@@ -121,9 +121,13 @@ export const isVerseInInterval = (verse: number, interval?: string): boolean => 
   return false;
 };
 
+interface ScrollToElementOptions extends ScrollIntoViewOptions {
+  offset?: number;
+}
+
 export const scrollToElement = (
   element: Element | null,
-  options: ScrollIntoViewOptions = { behavior: "smooth", block: "center" }
+  options: ScrollToElementOptions = { behavior: "smooth", block: "center", offset: 0 }
 ) => {
   if (!element) {
     return Promise.resolve();
@@ -139,37 +143,49 @@ export const scrollToElement = (
 
       switch (options.block) {
         case "start":
-          top = rect.top + scrollTop;
+          top = rect.top + scrollTop - (options.offset ?? 0);
           break;
         case "center":
-          top = rect.top + scrollTop - (window.innerHeight / 2 - rect.height / 2);
+          top = rect.top + scrollTop - (window.innerHeight / 2 - rect.height / 2) + (options.offset ?? 0);
           break;
         case "end":
-          top = rect.top + scrollTop - (window.innerHeight - rect.height);
+          top = rect.top + scrollTop - (window.innerHeight - rect.height) + (options.offset ?? 0);
           break;
         case "nearest":
           // Implement nearest logic if needed
           break;
         default:
-          top = rect.top + scrollTop;
+          top = rect.top + scrollTop + (options.offset ?? 0);
       }
 
       return { top, left };
     };
 
-    const isElementInView = (el: Element) => {
-      const rect = el.getBoundingClientRect();
-      return (
-        rect.top >= 0 &&
-        rect.left >= 0 &&
-        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-      );
+    const isElementInView = () => {
+      const rect = element.getBoundingClientRect();
+      const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+      const windowWidth = window.innerWidth || document.documentElement.clientWidth;
+
+      switch (options.block) {
+        case "start":
+          return rect.top >= 0 && rect.top <= windowHeight;
+        case "center":
+          return rect.top + rect.height / 2 >= 0 && rect.top + rect.height / 2 <= windowHeight;
+        case "end":
+          return rect.bottom >= 0 && rect.bottom <= windowHeight;
+        case "nearest":
+        // Implement nearest logic if needed
+        default:
+          return rect.top >= 0 && rect.left >= 0 && rect.bottom <= windowHeight && rect.right <= windowWidth;
+      }
     };
 
-    const isScrollingDone = () => isElementInView(element);
+    const isScrollingDone = () => isElementInView();
 
     const checkScroll = () => {
+      console.log("checkScroll");
+      const { top, left } = getTargetPosition();
+      window.scrollTo({ top, left, behavior: options.behavior });
       if (isScrollingDone()) {
         setTimeout(() => resolve(), 300);
       } else {
@@ -177,8 +193,6 @@ export const scrollToElement = (
       }
     };
 
-    const { top, left } = getTargetPosition();
-    window.scrollTo({ top, left, behavior: options.behavior });
     checkScroll();
   });
 };
