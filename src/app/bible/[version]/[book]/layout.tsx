@@ -11,7 +11,7 @@ export default async function BookLayout({ children }: Props) {
   return (
     <>
       {children}
-      <BookList device={device} className="mt-8" />
+      <BookList device={device} className="bg-neutral-200 dark:bg-neutral-800 mt-8" />
     </>
   );
 }

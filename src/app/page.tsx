@@ -17,7 +17,7 @@ export default function HomePage() {
         <DecisionReading className="mb-8" />
         <IntallApp device={device} className="mb-8" />
       </Container>
-      <BookList device={device} />
+      <BookList device={device} className="bg-neutral-200 dark:bg-neutral-800" />
     </>
   );
 }
