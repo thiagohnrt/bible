@@ -32,7 +32,7 @@ export function BookList({ device, className }: Props) {
   }
 
   return (
-    <div className={cn("py-6 bg-highlight", className)}>
+    <div className={cn("py-6", className)}>
       <Container>
         <h1 className="text-lg font-bold mb-6">Livros</h1>
         <div className="grid grid-cols-2">
@@ -67,15 +67,18 @@ function BooksTestament({
     <div>
       <h2 className="font-bold pb-4">{testament}</h2>
       <div className="md:columns-2 lg:columns-3">
-        {books.map((book, i) => (
-          <Link
-            href={`/bible/${translation.identifier}/${book.book}${parallel ? `?parallel=${parallel}` : ""}`}
-            className="block leading-7 hover:underline"
-            key={i}
-          >
-            {book.name}
-          </Link>
-        ))}
+        {books.map((book) => {
+          const search = parallel ? `?parallel=${parallel}` : "";
+          return (
+            <Link
+              href={`/bible/${translation.identifier}/${book.book}${search}`}
+              className="block leading-7 hover:underline"
+              key={book.book}
+            >
+              {book.name}
+            </Link>
+          );
+        })}
       </div>
     </div>
   );
