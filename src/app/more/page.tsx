@@ -6,6 +6,7 @@ import { ItemTranslation } from "@/components/more/ItemTranslation";
 import { ItemVersion } from "@/components/more/ItemVersion";
 import { Container } from "@/components/root/Container";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
+import Link from "next/link";
 import { MdChatBubbleOutline, MdInfoOutline, MdOutlineWarningAmber } from "react-icons/md";
 import { RiBookLine } from "react-icons/ri";
 
@@ -32,9 +33,9 @@ export default function MorePage() {
       <Separator />
       <ItemSettings iconSize={iconSize} />
       <ItemShare iconSize={iconSize} />
-      <ItemMenu label="Sobre" icon={<MdInfoOutline size={iconSize} />}>
-        <small className="opacity-50">(Em breve)</small>
-      </ItemMenu>
+      <Link href="/about">
+        <ItemMenu label="Sobre" icon={<MdInfoOutline size={iconSize} />} />
+      </Link>
       <ItemVersion />
     </Container>
   );
