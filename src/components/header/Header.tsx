@@ -60,7 +60,7 @@ export default function Header({ className }: Props) {
     const versions = searchParams.get("parallel")?.split(" ") || [];
     const index = versions.indexOf(translationId);
     versions.splice(index, 1);
-    const path = `${pathname}${versions.length ? `?parallel=${versions.join("+")}` : ""}`;
+    const path = versions.length ? `${pathname}?parallel=${versions.join("+")}` : pathname;
     router.push(path);
   };
 
@@ -143,7 +143,7 @@ export default function Header({ className }: Props) {
               {translations.map((translation, i) => {
                 return (
                   <div
-                    key={i}
+                    key={translation.identifier}
                     className={cn(
                       "flex items-center hover:bg-primary/20 cursor-pointer transition-colors",
                       i === 0 ? "px-2 rounded-l-full" : ""
