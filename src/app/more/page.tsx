@@ -1,4 +1,4 @@
-import { ItemFeedback } from "@/components/more/ItemFeedback";
+import { SendFeedback } from "@/components/more/SendFeedback";
 import { ItemMenu } from "@/components/more/ItemMenu";
 import { ItemSettings } from "@/components/more/ItemSettings";
 import { ItemShare } from "@/components/more/ItemShare";
@@ -22,14 +22,14 @@ export default function MorePage() {
       <Separator />
       <ItemMenu label="Aparência" icon={<ThemeToggle />} />
       <Separator />
-      <ItemFeedback id="feedback" type="feedback" title="Sugestões e ideias">
+      <SendFeedback id="feedback" type="feedback" title="Sugestões e ideias">
         <ItemMenu label="Feedback" icon={<MdChatBubbleOutline size={iconSize} />}>
           <small className="opacity-50">Sugestões e ideias</small>
         </ItemMenu>
-      </ItemFeedback>
-      <ItemFeedback id="report-a-problem" type="problem" title="Reportar um problema">
+      </SendFeedback>
+      <SendFeedback id="report-a-problem" type="problem" title="Reportar um problema">
         <ItemMenu label="Reportar um problema" icon={<MdOutlineWarningAmber size={iconSize} />} />
-      </ItemFeedback>
+      </SendFeedback>
       <Separator />
       <ItemSettings iconSize={iconSize} />
       <ItemShare iconSize={iconSize} />

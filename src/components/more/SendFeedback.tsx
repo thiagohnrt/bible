@@ -24,9 +24,9 @@ interface Props {
   children: React.ReactNode;
 }
 
-export function ItemFeedback({ id, title, type, children }: Props) {
-  const [isButtonDisabled, setButtonDisabled] = useState(true);
-  const [isSendingForm, setSendingForm] = useState(false);
+export function SendFeedback({ id, title, type, children }: Props) {
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [isSendingForm, setIsSendingForm] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -46,7 +46,7 @@ export function ItemFeedback({ id, title, type, children }: Props) {
     setFormData(updatedFormData);
 
     const allFieldsFilled = Object.values(updatedFormData).every((field) => field.trim() !== "");
-    setButtonDisabled(!allFieldsFilled);
+    setIsButtonDisabled(!allFieldsFilled);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -55,7 +55,7 @@ export function ItemFeedback({ id, title, type, children }: Props) {
   };
 
   const save = () => {
-    setSendingForm(true);
+    setIsSendingForm(true);
     fetch("/api/feedback", {
       method: "post",
       headers: {
@@ -78,7 +78,7 @@ export function ItemFeedback({ id, title, type, children }: Props) {
         }
       })
       .catch(showError)
-      .finally(() => setSendingForm(false));
+      .finally(() => setIsSendingForm(false));
   };
 
   const showError = () => {
@@ -103,7 +103,7 @@ export function ItemFeedback({ id, title, type, children }: Props) {
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>
-        <div className="overflow-y-auto px-6">
+        <div className="overflow-y-auto px-6 pb-6">
           <form onSubmit={handleSubmit} className="flex flex-col gap-4 py-1">
             <Input
               type="text"
