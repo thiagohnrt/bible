@@ -75,7 +75,7 @@ export default function ChapterPage({ params: { version, book: bookId, chapter, 
   }, [verse]);
 
   const onTranslationReady = (translation: Translation, verses: Verse[]) => {
-    if (translation.identifier == version && verse) {
+    if (translation.identifier == version) {
       onFocusVerse(verses);
       onSaveHistory(translation, verses);
     }
@@ -99,9 +99,14 @@ export default function ChapterPage({ params: { version, book: bookId, chapter, 
   const onSaveHistory = (translation: Translation, verses: Verse[]) => {
     const history = utils.getBibleHistory();
     const url = pathname + (searchParams.toString() ? `?${searchParams.toString()}` : "");
-    if (history.url === url || !verse) return;
+    if (history.url === url) return;
 
-    const numVerse = decodeURIComponent(verse).split(",")[0].split("-")[0];
+    let numVerse: number = +decodeURIComponent(verse ?? "")
+      .split(",")[0]
+      .split("-")[0];
+    if (numVerse <= 0) {
+      numVerse = 1;
+    }
 
     const data: BibleHistory = {
       url: url,
@@ -111,8 +116,8 @@ export default function ChapterPage({ params: { version, book: bookId, chapter, 
       },
       chapter,
       verse: {
-        verse: +(numVerse ?? "1"),
-        text: verses[+(numVerse ?? "1") - 1].text,
+        verse: numVerse,
+        text: verses[numVerse - 1].text,
       },
       translation: translation.short_name,
       translationId: translation.identifier,
