@@ -1,3 +1,4 @@
+import { BetaMessage } from "@/components/home/BetaMessage";
 import { BookList } from "@/components/home/BookList";
 import { DecisionReading } from "@/components/home/DecisionReading";
 import { IntallApp } from "@/components/home/IntallApp";
@@ -15,6 +16,7 @@ export default function HomePage() {
       <Container>
         <VerseOfTheDay className="mb-8" />
         <DecisionReading className="mb-8" />
+        <BetaMessage className="mb-8" />
         <IntallApp device={device} className="mb-8" />
       </Container>
       <BookList device={device} className="bg-neutral-200 dark:bg-neutral-800" />
