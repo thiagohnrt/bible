@@ -20,6 +20,11 @@ export default function VerseAction({ data, className }: VerseProps) {
   const [isSelected, setIsSelected] = useState(false);
   const { verse, text, comment } = data;
 
+  const handleVerseSelection = () => {
+    setIsSelected((isSelected) => !isSelected);
+    document.querySelector("#chapter-container")?.classList.remove("highlight-verse");
+  };
+
   useEffect(() => {
     setVerses((verses) => {
       if (isSelected) {
@@ -49,7 +54,7 @@ export default function VerseAction({ data, className }: VerseProps) {
           "cursor-pointer flex-auto",
           isSelected ? "underline decoration-dashed decoration-1 underline-offset-4" : ""
         )}
-        onClick={() => setIsSelected(!isSelected)}
+        onClick={handleVerseSelection}
       />
       <div className="flex flex-grow-0 flex-shrink-0 basis-8">
         {comment ? (
