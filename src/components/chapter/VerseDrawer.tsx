@@ -28,7 +28,7 @@ export function VerseDrawer({ book, chapter }: Props) {
     el.innerHTML = verses.map((verse) => verse.text).join(" ");
     el.querySelectorAll("sup").forEach((sup) => el.removeChild(sup)); // NAA
     el.querySelectorAll("s").forEach((sup) => el.removeChild(sup)); // KJV
-    const versesText = ((el.innerText || el.textContent) ?? "").replace(/\n/g, " ").replace(/  /g, " ").trim();
+    const versesText = ((el.innerText || el.textContent) ?? "").replace(/\n/g, " ").replace(/ {2}/g, " ").trim();
     return `${versesText}\n\n${book.name} ${chapter}:${formatVerses(verses)} ${translation?.short_name}`;
   };
 
@@ -90,11 +90,11 @@ interface VerseActionsProps {
 }
 
 function VerseActions({ book, chapter, share, copy }: VerseActionsProps) {
-  const [isCopied, setCopied] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
   const handleCopy = () => {
     copy();
-    setCopied(true);
-    setTimeout(() => setCopied(false), 3000);
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 3000);
   };
   return (
     <>
