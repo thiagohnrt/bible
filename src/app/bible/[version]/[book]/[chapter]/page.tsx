@@ -65,7 +65,6 @@ export default function ChapterPage({ params: { version, book: bookId, chapter, 
     const handleScroll = () => {
       if (document.querySelector("#chapter-container")?.classList.contains("highlight-verse")) {
         document.querySelector("#chapter-container")?.classList.remove("highlight-verse");
-        window.removeEventListener("scroll", handleScroll);
       }
     };
     window.addEventListener("scroll", handleScroll);
