@@ -40,6 +40,9 @@ export function VerseDrawer({ book, chapter }: Props) {
 
   const handleCopy = async () => {
     await clipboard.writeText(verseFull());
+    if (device.type === "mobile") {
+      closeDrawer();
+    }
   };
 
   const closeDrawer = () => {
@@ -55,7 +58,7 @@ export function VerseDrawer({ book, chapter }: Props) {
               {book.name} {chapter}:{formatVerses(verses)}
             </ToastTitle>
             <ToastDescription>
-              <VerseActions book={book} chapter={chapter} share={handleShare} copy={handleCopy} />
+              <VerseActions book={book} chapter={chapter} share={handleShare} copy={handleCopy} isMobile={false} />
             </ToastDescription>
           </div>
           <ToastClose />
@@ -75,7 +78,7 @@ export function VerseDrawer({ book, chapter }: Props) {
           <DrawerDescription></DrawerDescription>
         </DrawerHeader>
         <DrawerFooter>
-          <VerseActions book={book} chapter={chapter} share={handleShare} copy={handleCopy} />
+          <VerseActions book={book} chapter={chapter} share={handleShare} copy={handleCopy} isMobile={true} />
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
@@ -87,14 +90,17 @@ interface VerseActionsProps {
   chapter: number;
   share: () => void;
   copy: () => void;
+  isMobile: boolean;
 }
 
-function VerseActions({ book, chapter, share, copy }: VerseActionsProps) {
+function VerseActions({ book, chapter, share, copy, isMobile }: VerseActionsProps) {
   const [isCopied, setIsCopied] = useState(false);
   const handleCopy = () => {
     copy();
-    setIsCopied(true);
-    setTimeout(() => setIsCopied(false), 3000);
+    if (!isMobile) {
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 3000);
+    }
   };
   return (
     <>
