@@ -71,27 +71,6 @@ export const repeat = (count: number, callbackfn: (index: number) => ReactNode) 
     .map((v, i) => callbackfn(i));
 };
 
-export const formatVerses = (data: Verse[]): string => {
-  const verses = data.map(({ verse }) => verse);
-  if (verses.length === 0) return "";
-
-  let result: string[] = [];
-  let start = verses[0];
-
-  for (let i = 1; i <= verses.length; i++) {
-    if (verses[i] !== verses[i - 1] + 1) {
-      if (start === verses[i - 1]) {
-        result.push(`${start}`);
-      } else {
-        result.push(`${start}-${verses[i - 1]}`);
-      }
-      start = verses[i];
-    }
-  }
-
-  return result.join(", ");
-};
-
 export const sortTranslations = (translations: Translation[]) =>
   translations.toSorted((a, b) => a.short_name.localeCompare(b.short_name));
 

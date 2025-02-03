@@ -3,7 +3,6 @@
 import { cn } from "@/lib/shad";
 import { clipboard } from "@/lib/clipboard";
 import { share } from "@/lib/share";
-import { formatVerses } from "@/lib/utils";
 import { BibleContext } from "@/providers/bibleProvider";
 import { ChapterContext } from "@/providers/chapterProvider";
 import { RootContext } from "@/providers/rootProvider";
@@ -12,6 +11,7 @@ import { forwardRef, ReactNode, useContext, useState } from "react";
 import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from "../ui/drawer";
 import { Toast, ToastClose, ToastDescription, ToastProvider, ToastTitle, ToastViewport } from "../ui/toast";
 import { CompareVerses } from "./CompareVerses";
+import { bibleUtils } from "@/lib/bibleUtils";
 
 interface Props {
   book: Book;
@@ -24,12 +24,8 @@ export function VerseDrawer({ book, chapter }: Props) {
   const { verses, setVerses } = useContext(ChapterContext);
 
   const verseFull = () => {
-    const el = document.createElement("DIV");
-    el.innerHTML = verses.map((verse) => verse.text).join(" ");
-    el.querySelectorAll("sup").forEach((sup) => el.removeChild(sup)); // NAA
-    el.querySelectorAll("s").forEach((sup) => el.removeChild(sup)); // KJV
-    const versesText = ((el.innerText || el.textContent) ?? "").replace(/\n/g, " ").replace(/ {2}/g, " ").trim();
-    return `${versesText}\n\n${book.name} ${chapter}:${formatVerses(verses)} ${translation?.short_name}`;
+    const versesText = bibleUtils.versesToString(verses);
+    return `${versesText}\n\n${bibleUtils.formatVerseAddress(book, chapter, verses, translation)}`;
   };
 
   const handleShare = () => {
@@ -54,9 +50,7 @@ export function VerseDrawer({ book, chapter }: Props) {
       <ToastProvider swipeDirection="up">
         <Toast open={verses.length > 0} onOpenChange={(open) => !open && closeDrawer()} duration={86400000}>
           <div className="grid gap-3">
-            <ToastTitle className="text-lg">
-              {book.name} {chapter}:{formatVerses(verses)}
-            </ToastTitle>
+            <ToastTitle className="text-lg">{bibleUtils.formatVerseAddress(book, chapter, verses)}</ToastTitle>
             <ToastDescription>
               <VerseActions book={book} chapter={chapter} share={handleShare} copy={handleCopy} isMobile={false} />
             </ToastDescription>
@@ -72,9 +66,7 @@ export function VerseDrawer({ book, chapter }: Props) {
     <Drawer open={verses.length > 0} onClose={() => closeDrawer()} modal={false}>
       <DrawerContent>
         <DrawerHeader>
-          <DrawerTitle>
-            {book.name} {chapter}:{formatVerses(verses)}
-          </DrawerTitle>
+          <DrawerTitle>{bibleUtils.formatVerseAddress(book, chapter, verses)}</DrawerTitle>
           <DrawerDescription></DrawerDescription>
         </DrawerHeader>
         <DrawerFooter>

@@ -1,12 +1,12 @@
 import { api, Book, Translation, Verse as IVerse } from "@/services/api";
 import { useContext, useEffect, useState } from "react";
 import Verse from "./Verse";
-import { formatVerses } from "@/lib/utils";
 import { BibleContext } from "@/providers/bibleProvider";
 import { useRouter } from "next/navigation";
 import { TfiCommentAlt } from "react-icons/tfi";
 import { ChapterContext } from "@/providers/chapterProvider";
 import { Skeleton } from "../ui/skeleton";
+import { bibleUtils } from "@/lib/bibleUtils";
 
 interface Props {
   translation: Translation;
@@ -41,7 +41,9 @@ export function CompareVersesItem({ translation, book, chapter, verses }: Props)
   const onVersesSelected = () => {
     if (translation.identifier !== translationCurrent?.identifier) {
       setTranslationContext(translation);
-      router.push(`/bible/${translation.identifier}/${book.book}/${chapter}/${formatVerses(data.verses)}`);
+      router.push(
+        `/bible/${translation.identifier}/${book.book}/${chapter}/${bibleUtils.formatVerseNumbers(data.verses)}`
+      );
     }
   };
 

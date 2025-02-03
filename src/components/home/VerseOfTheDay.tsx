@@ -1,18 +1,8 @@
 import Image from "next/image";
 import { MdShare } from "react-icons/md";
-import img01 from "../../../public/img/verseOfTheDay/1.jpg";
-import img02 from "../../../public/img/verseOfTheDay/2.jpg";
-import img03 from "../../../public/img/verseOfTheDay/3.jpg";
-import img04 from "../../../public/img/verseOfTheDay/4.jpg";
-import img05 from "../../../public/img/verseOfTheDay/5.jpg";
-import img06 from "../../../public/img/verseOfTheDay/6.jpg";
-import img07 from "../../../public/img/verseOfTheDay/7.jpg";
-import img08 from "../../../public/img/verseOfTheDay/8.jpg";
-import img09 from "../../../public/img/verseOfTheDay/9.jpg";
-import img10 from "../../../public/img/verseOfTheDay/10.jpg";
-import img11 from "../../../public/img/verseOfTheDay/11.jpg";
-import img12 from "../../../public/img/verseOfTheDay/12.jpg";
-import img13 from "../../../public/img/verseOfTheDay/13.jpg";
+
+import { getVerseOfTheDay } from "@/services/verseOfTheDay";
+import {} from "react";
 import {
   Dialog,
   DialogContent,
@@ -28,19 +18,8 @@ interface Props {
   className?: string;
 }
 
-export function VerseOfTheDay({ className }: Props) {
-  const images = [img01, img02, img03, img04, img05, img06, img07, img08, img09, img10, img11, img12, img13];
-
-  const randomImage = () => {
-    const currentDate = new Date();
-    const dayOfYear =
-      (Date.UTC(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate()) -
-        Date.UTC(currentDate.getFullYear(), 0, 0)) /
-      86400000;
-    return images[dayOfYear % images.length] ?? img01;
-  };
-
-  const imgSrc = randomImage();
+export async function VerseOfTheDay({ className }: Props) {
+  const { image: imgSrc } = await getVerseOfTheDay();
 
   return (
     <div className={className}>
@@ -56,7 +35,7 @@ export function VerseOfTheDay({ className }: Props) {
               style={{ objectFit: "cover", zIndex: 1 }}
               className="rounded-lg"
             />
-            <VerseOfTheDayText />
+            <VerseOfTheDayText className="[&>.votd-verse]:text-xl" />
           </div>
         </DialogTrigger>
         <DialogContent className="h-svh w-lvw p-0">
@@ -64,7 +43,10 @@ export function VerseOfTheDay({ className }: Props) {
             <DialogTitle></DialogTitle>
             <DialogDescription></DialogDescription>
           </DialogHeader>
-          <div className="flex items-center p-8 relative">
+          <div className="flex flex-col justify-center p-8 relative">
+            <h1 className="mb-4 text-white" style={{ zIndex: 2 }}>
+              Versículo do dia
+            </h1>
             <Image
               src={imgSrc}
               alt="Versículo do dia"
