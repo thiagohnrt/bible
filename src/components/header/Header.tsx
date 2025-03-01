@@ -75,16 +75,24 @@ export default function Header({ className }: Props) {
 
   useEffect(() => {
     if (translationCurrent) {
-      const versions = [translationCurrent.identifier, ...parallels];
+      const newTranslations = [translationCurrent.identifier, ...parallels];
+
+      if (
+        translations.length === newTranslations.length &&
+        translations.every((t, i) => t.identifier === newTranslations[i])
+      ) {
+        return;
+      }
+
       api.getTranslations().then((translations) => {
         setTranslations(
           translations
-            .filter((t) => versions.includes(t.identifier))
-            .sort((a, b) => versions.indexOf(a.identifier) - versions.indexOf(b.identifier))
+            .filter((t) => newTranslations.includes(t.identifier))
+            .sort((a, b) => newTranslations.indexOf(a.identifier) - newTranslations.indexOf(b.identifier))
         );
       });
     }
-  }, [parallels, translationCurrent]);
+  }, [parallels, translationCurrent, translations]);
 
   useEffect(() => {
     const beforeunload = () => {
