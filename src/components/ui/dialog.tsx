@@ -46,11 +46,11 @@ const Dialog = React.forwardRef<HTMLDivElement, DialogProps>(
           window.addEventListener("hashchange", onHashChange);
           // if (window.location.hash.split("#").includes(id))
         } else {
-          router.back();
+          lifeCycle === "open" && router.back();
           window.removeEventListener("hashchange", onHashChange);
         }
       },
-      [id, onHashChange, router]
+      [id, lifeCycle, onHashChange, router]
     );
 
     React.useEffect(() => {
