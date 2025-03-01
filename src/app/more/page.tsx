@@ -36,7 +36,9 @@ export default function MorePage() {
       <Link href="/about">
         <ItemMenu label="Sobre" icon={<MdInfoOutline size={iconSize} />} />
       </Link>
-      <ItemVersion />
+      <Link href="/admin">
+        <ItemVersion />
+      </Link>
     </Container>
   );
 }

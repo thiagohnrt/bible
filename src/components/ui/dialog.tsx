@@ -21,8 +21,9 @@ interface DialogProps extends DialogPrimitive.DialogProps {
   onClose?: () => void;
 }
 const Dialog = React.forwardRef<HTMLDivElement, DialogProps>(
-  ({ id, onOpen, onClose, children, ...props }: DialogProps, ref) => {
-    const [open, setOpen] = React.useState(false);
+  ({ id, open, onOpen, onClose, children, ...props }: DialogProps, ref) => {
+    const [lifeCycle, setLifeCycle] = React.useState<"built" | "open" | "closed">("built");
+    const [isOpen, setIsOpen] = React.useState(false);
     const router = useRouter();
 
     const onHashChange = React.useCallback(
@@ -30,7 +31,7 @@ const Dialog = React.forwardRef<HTMLDivElement, DialogProps>(
         const newHash = new URL(event.newURL).hash;
         const isClose = !newHash.includes(id);
         if (isClose) {
-          setOpen(false);
+          setIsOpen(false);
           window.removeEventListener("hashchange", onHashChange);
         }
       },
@@ -39,10 +40,11 @@ const Dialog = React.forwardRef<HTMLDivElement, DialogProps>(
 
     const handleOpenChange = React.useCallback(
       (open: boolean) => {
-        setOpen(open);
+        setIsOpen(open);
         if (open) {
           router.push(window.location.pathname + window.location.search + window.location.hash + "#" + id);
           window.addEventListener("hashchange", onHashChange);
+          // if (window.location.hash.split("#").includes(id))
         } else {
           router.back();
           window.removeEventListener("hashchange", onHashChange);
@@ -52,12 +54,20 @@ const Dialog = React.forwardRef<HTMLDivElement, DialogProps>(
     );
 
     React.useEffect(() => {
-      if (open) {
+      if (open !== undefined) {
+        handleOpenChange(open);
+      }
+    }, [handleOpenChange, open]);
+
+    React.useEffect(() => {
+      if (isOpen && lifeCycle !== "open") {
+        setLifeCycle("open");
         onOpen?.();
-      } else {
+      } else if (!isOpen && lifeCycle === "open") {
+        setLifeCycle("closed");
         onClose?.();
       }
-    }, [open, onClose, onOpen]);
+    }, [isOpen, lifeCycle, onClose, onOpen]);
 
     React.useEffect(() => {
       return () => {
@@ -66,7 +76,7 @@ const Dialog = React.forwardRef<HTMLDivElement, DialogProps>(
     }, [id, onHashChange]);
 
     return (
-      <DialogPrimitive.Root key={id} open={open} onOpenChange={handleOpenChange} {...props}>
+      <DialogPrimitive.Root key={id} open={isOpen} onOpenChange={handleOpenChange} {...props}>
         {children}
       </DialogPrimitive.Root>
     );

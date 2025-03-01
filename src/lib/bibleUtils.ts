@@ -8,6 +8,17 @@ const versesToString = (verses: Verse[]) => {
   return ((el.innerText || el.textContent) ?? "").replace(/\n/g, " ").replace(/ {2}/g, " ").trim();
 };
 
+const splitVerse = (verse: string): { bookId: number; chapter: number; verses: number[] } => {
+  const bookId = +verse.split(":")[0];
+  const chapter = +verse.split(":")[1];
+  const verses = verse
+    .split(":")[2]
+    .split(",")
+    .map((v) => +v);
+
+  return { bookId, chapter, verses };
+};
+
 const formatVerseNumbers = (data: Verse[]): string => {
   const verses = data.map(({ verse }) => verse);
   if (verses.length === 0) return "";
@@ -35,6 +46,7 @@ const formatVerseAddress = (book: Book, chapter: number, verses: Verse[], transl
 
 export const bibleUtils = {
   versesToString,
+  splitVerse,
   formatVerseNumbers,
   formatVerseAddress,
 };

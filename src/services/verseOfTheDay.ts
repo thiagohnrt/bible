@@ -32,6 +32,7 @@ import img31 from "../../public/img/verseOfTheDay/31.jpg";
 import img32 from "../../public/img/verseOfTheDay/32.jpg";
 import img33 from "../../public/img/verseOfTheDay/33.jpg";
 import img34 from "../../public/img/verseOfTheDay/34.jpg";
+import { bibleUtils } from "@/lib/bibleUtils";
 
 const images = [
   img01,
@@ -332,4 +333,8 @@ export const getVerseOfTheDay = async () => {
     image: images[dayOfYear % images.length] ?? img01,
     verse: { bookId, chapter, verses },
   };
+};
+
+export const getListOfVersesOfTheDay = async () => {
+  return versesOfTheDay.map(bibleUtils.splitVerse);
 };
