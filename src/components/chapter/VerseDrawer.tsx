@@ -138,7 +138,9 @@ export const ActionButton = forwardRef<
   return (
     <div
       className={cn(
-        "inline-block mr-[10px] px-3 py-2 rounded-full bg-highlight-active text-sm cursor-pointer",
+        "inline-block mr-[10px] px-3 py-2 rounded-full transition-colors text-sm cursor-pointer",
+        "bg-neutral-200 dark:active:bg-neutral-300 dark:hover:bg-neutral-300",
+        "dark:bg-neutral-800 dark:active:bg-neutral-700 dark:hover:bg-neutral-700",
         className
       )}
       ref={ref}
