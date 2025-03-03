@@ -75,8 +75,8 @@ export default function AboutPage() {
           familiares nas redes sociais ou por mensagem.
         </li>
         <li>
-          <strong>Versículo do dia (em breve)</strong>: Receba uma mensagem inspiradora todos os dias, diretamente no
-          seu dispositivo, para fortalecer sua caminhada com Deus.
+          <strong>Versículo do dia</strong>: Receba uma mensagem inspiradora todos os dias, diretamente no seu
+          dispositivo, para fortalecer sua caminhada com Deus.
         </li>
         <li>
           <strong>Vídeo (em breve)</strong>: Assista a conteúdos que tornam a Bíblia ainda mais clara e envolvente, com
