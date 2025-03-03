@@ -71,7 +71,7 @@ function Comment({ verse }: { verse: IVerse }) {
 
   return (
     <>
-      {verse?.text ? <Verse text={verse?.text} comment={true} /> : <></>}
+      {verse?.text ? <Verse text={verse?.text} comment={true} formatting="text" /> : <></>}
       <div className="py-1"></div>
       {verse?.comment ? (
         <div
