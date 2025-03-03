@@ -2,21 +2,24 @@
 
 import { cn } from "@/lib/shad";
 import { ChapterContext } from "@/providers/chapterProvider";
-import { Verse as IVerse } from "@/services/api";
+import { Book, Verse as IVerse } from "@/services/api";
 import { Merriweather } from "next/font/google";
 import { useContext, useEffect, useState } from "react";
 import { TfiCommentAlt } from "react-icons/tfi";
 import Verse from "./Verse";
+import { CommentDrawer } from "./CommentDrawer";
 
 const font = Merriweather({ subsets: ["latin"], weight: "300" });
 
 interface VerseProps {
+  book: Book;
+  chapter: number;
   data: IVerse;
   className?: string;
 }
 
-export default function VerseAction({ data, className }: VerseProps) {
-  const { verses, setVerses, setVerseComment } = useContext(ChapterContext);
+export default function VerseAction({ book, chapter, data, className }: VerseProps) {
+  const { verses, setVerses } = useContext(ChapterContext);
   const [isSelected, setIsSelected] = useState(false);
   const { verse, text, comment } = data;
 
@@ -58,9 +61,11 @@ export default function VerseAction({ data, className }: VerseProps) {
       />
       <div className="flex flex-grow-0 flex-shrink-0 basis-8">
         {comment ? (
-          <div className="flex justify-center flex-1 pt-3 cursor-pointer" onClick={() => setVerseComment(data)}>
-            <TfiCommentAlt size={12} />
-          </div>
+          <CommentDrawer book={book} chapter={chapter} verse={data}>
+            <div className="flex justify-center flex-1 pt-3 cursor-pointer">
+              <TfiCommentAlt size={12} />
+            </div>
+          </CommentDrawer>
         ) : (
           <></>
         )}

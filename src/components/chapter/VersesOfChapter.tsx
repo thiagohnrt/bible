@@ -59,7 +59,7 @@ export function VersesOfChapter({ version, book, chapter, data, inComparisonMode
         <div className={cn("pb-4", !inComparisonMode && "hidden")}>{translation.full_name}</div>
       )}
       {verses.map((data) => (
-        <VerseAction data={data} key={data.verse} />
+        <VerseAction book={book} chapter={chapter} data={data} key={data.verse} />
       ))}
     </div>
   );

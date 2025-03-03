@@ -1,48 +1,58 @@
 "use client";
 
-import { ChapterContext } from "@/providers/chapterProvider";
 import { Book, Verse as IVerse } from "@/services/api";
 import { useContext } from "react";
-import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from "../ui/drawer";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "../ui/drawer";
 import Verse from "./Verse";
 import { RootContext } from "@/providers/rootProvider";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 
 interface Props {
   book: Book;
   chapter: number;
+  verse: IVerse;
+  children: React.ReactNode;
 }
 
-export function CommentDrawer({ book, chapter }: Props) {
+export function CommentDrawer({ book, chapter, verse, children }: Props) {
   const { device } = useContext(RootContext);
-  const { verseComment, setVerseComment } = useContext(ChapterContext);
 
   if (device.type !== "mobile") {
     return (
-      <Dialog id="comment" open={!!verseComment} onOpenChange={() => setVerseComment(null)}>
+      <Dialog id="comment">
+        <DialogTrigger asChild>{children}</DialogTrigger>
         <DialogContent className="flex flex-col h-svh w-lvw p-0 md:max-w-lg md:h-auto md:max-h-[90vh] md:border md:rounded-lg">
           <DialogHeader className="p-6 pb-3">
             <DialogTitle>
-              {book.name} {chapter}:{verseComment?.verse}
+              {book.name} {chapter}:{verse?.verse}
             </DialogTitle>
             <DialogDescription>Comentário</DialogDescription>
           </DialogHeader>
-          <div className="p-6 pt-0 overflow-y-auto">{verseComment && <Comment verse={verseComment} />}</div>
+          <div className="p-6 pt-0 overflow-y-auto">{verse && <Comment verse={verse} />}</div>
         </DialogContent>
       </Dialog>
     );
   }
 
   return (
-    <Drawer open={!!verseComment} onClose={() => setVerseComment(null)}>
+    <Drawer>
+      <DrawerTrigger asChild>{children}</DrawerTrigger>
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>
-            {book.name} {chapter}:{verseComment?.verse}
+            {book.name} {chapter}:{verse?.verse}
           </DrawerTitle>
           <DrawerDescription></DrawerDescription>
         </DrawerHeader>
-        <DrawerFooter>{verseComment && <Comment verse={verseComment} />}</DrawerFooter>
+        <DrawerFooter>{verse && <Comment verse={verse} />}</DrawerFooter>
       </DrawerContent>
     </Drawer>
   );
@@ -66,7 +76,7 @@ function Comment({ verse }: { verse: IVerse }) {
       {verse?.comment ? (
         <div
           className="[&>a]:underline"
-          dangerouslySetInnerHTML={{ __html: addPrefixToLinks(verse?.comment!, "/bible") }}
+          dangerouslySetInnerHTML={{ __html: addPrefixToLinks(verse.comment, "/bible") }}
         ></div>
       ) : (
         <></>

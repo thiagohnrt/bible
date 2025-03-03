@@ -1,6 +1,5 @@
 "use client";
 
-import { CommentDrawer } from "@/components/chapter/CommentDrawer";
 import { VerseDrawer } from "@/components/chapter/VerseDrawer";
 import { VersesOfChapter } from "@/components/chapter/VersesOfChapter";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -164,7 +163,6 @@ export default function ChapterPage({ params: { version, book: bookId, chapter, 
         ))}
       </div>
       <VerseDrawer book={book} chapter={chapter} />
-      <CommentDrawer book={book} chapter={chapter} />
     </ChapterProvider>
   );
 }
