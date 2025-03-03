@@ -25,7 +25,7 @@ interface Props {
 }
 
 export const CompareVerses = forwardRef<HTMLDivElement, Props>(({ book, chapter, children }: Props, ref) => {
-  const { verses, setVerseComment } = useContext(ChapterContext);
+  const { verses } = useContext(ChapterContext);
   const [languages, setLanguages] = useState<Language[]>([]);
   const [translations, setTranslations] = useState<Translation[]>([]);
 
@@ -49,7 +49,7 @@ export const CompareVerses = forwardRef<HTMLDivElement, Props>(({ book, chapter,
   }, [languages, renderTranslations]);
 
   return (
-    <Dialog id="compare" onClose={() => setVerseComment(null)} ref={ref}>
+    <Dialog id="compare" ref={ref}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="flex flex-col h-svh w-lvw p-0 md:max-w-lg md:h-auto md:max-h-[90vh] md:border md:rounded-lg">
         <DialogHeader className="p-6 pb-3">
@@ -67,7 +67,7 @@ export const CompareVerses = forwardRef<HTMLDivElement, Props>(({ book, chapter,
                 book={book}
                 chapter={chapter}
                 verses={verses.map((verse) => verse.verse)}
-                key={i}
+                key={`${translation.identifier}-${i}`}
               />
             );
           })}

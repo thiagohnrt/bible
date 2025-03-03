@@ -4,9 +4,9 @@ import Verse from "./Verse";
 import { BibleContext } from "@/providers/bibleProvider";
 import { useRouter } from "next/navigation";
 import { TfiCommentAlt } from "react-icons/tfi";
-import { ChapterContext } from "@/providers/chapterProvider";
 import { Skeleton } from "../ui/skeleton";
 import { bibleUtils } from "@/lib/bibleUtils";
+import { CommentDrawer } from "./CommentDrawer";
 
 interface Props {
   translation: Translation;
@@ -22,8 +22,6 @@ interface Data {
 
 export function CompareVersesItem({ translation, book, chapter, verses }: Props) {
   const { translation: translationCurrent, setTranslation: setTranslationContext } = useContext(BibleContext);
-  const { setVerseComment } = useContext(ChapterContext);
-
   const [data, setData] = useState<Data>({ verses: [], comments: [] });
   const router = useRouter();
 
@@ -74,7 +72,7 @@ export function CompareVersesItem({ translation, book, chapter, verses }: Props)
                 <Verse
                   number={data.verses.length > 1 ? item.verse : undefined}
                   text={item.text}
-                  key={i}
+                  key={"verse-" + i}
                   className="text-base leading-7 inline mr-1"
                 />
               );
@@ -82,13 +80,11 @@ export function CompareVersesItem({ translation, book, chapter, verses }: Props)
           </div>
           <div className="flex flex-col flex-grow-0 flex-shrink-0 basis-8">
             {data.comments.map((verse, i) => (
-              <div
-                key={i}
-                className="flex flex-1 justify-center pt-3 cursor-pointer"
-                onClick={() => setVerseComment(verse)}
-              >
-                <TfiCommentAlt size={12} />
-              </div>
+              <CommentDrawer book={book} chapter={chapter} verse={verse} key={`comment-${verse.verse}`}>
+                <div className="flex flex-1 justify-center pt-3 cursor-pointer">
+                  <TfiCommentAlt size={12} />
+                </div>
+              </CommentDrawer>
             ))}
           </div>
         </div>
