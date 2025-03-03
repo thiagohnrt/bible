@@ -38,7 +38,7 @@ export async function VerseOfTheDay({ className }: Props) {
             <VerseOfTheDayText className="[&>.votd-verse]:text-xl" />
           </div>
         </DialogTrigger>
-        <DialogContent className="h-svh w-lvw p-0">
+        <DialogContent className="h-svh w-lvw p-0 md:w-96 md:h-[48rem] md:max-h-svh">
           <DialogHeader className="hidden">
             <DialogTitle></DialogTitle>
             <DialogDescription></DialogDescription>
@@ -61,7 +61,7 @@ export async function VerseOfTheDay({ className }: Props) {
             style={{ zIndex: 3 }}
           >
             <div
-              className="flex items-center justify-center w-16 h-16 rounded-full active:shadow-xl transition-shadow"
+              className="hidden flex items-center justify-center w-16 h-16 rounded-full active:shadow-xl transition-shadow"
               style={{ zIndex: 5 }}
             >
               <MdShare size={24} />
