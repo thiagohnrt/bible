@@ -8,7 +8,7 @@ import { Container } from "@/components/root/Container";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import Link from "next/link";
 import { MdChatBubbleOutline, MdInfoOutline, MdOutlineWarningAmber } from "react-icons/md";
-import { RiBookLine } from "react-icons/ri";
+import { RiBookLine, RiGithubFill } from "react-icons/ri";
 
 export default function MorePage() {
   const iconSize = 20;
@@ -30,6 +30,9 @@ export default function MorePage() {
       <SendFeedback id="report-a-problem" type="problem" title="Reportar um problema">
         <ItemMenu label="Reportar um problema" icon={<MdOutlineWarningAmber size={iconSize} />} />
       </SendFeedback>
+      <Link href="https://github.com/thiagohnrt/bible" target="_blank">
+        <ItemMenu label="Repositório" icon={<RiGithubFill size={iconSize} />} />
+      </Link>
       <Separator />
       <ItemSettings iconSize={iconSize} />
       <ItemShare iconSize={iconSize} />

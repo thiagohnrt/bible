@@ -34,7 +34,7 @@ export function Footer() {
             </div>
             <div className="flex flex-col space-y-2 pr-10">
               <h3 className="uppercase text-sm font-bold">Projeto</h3>
-              <Link href="#">Repositório</Link>
+              <Link href="https://github.com/thiagohnrt/bible">Repositório</Link>
               <Link href="#">Sugestões e ideias</Link>
               <Link href="#">Reportar um problema</Link>
             </div>
