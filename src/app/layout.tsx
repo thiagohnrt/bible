@@ -5,7 +5,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { Providers } from "@/providers/providers";
 import { Analytics } from "@vercel/analytics/next";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
@@ -16,6 +16,10 @@ export const metadata: Metadata = {
   description:
     "BibleHonor é um aplicativo bíblico gratuito que permite que você leia a Bíblia em vários idiomas e versões.",
   manifest: "/manifest.json",
+};
+
+export const viewport: Viewport = {
+  userScalable: false,
 };
 
 export default function RootLayout({
