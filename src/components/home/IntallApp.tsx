@@ -73,7 +73,7 @@ export function IntallApp({ className, device }: Props) {
   }
 
   return (
-    <div className={cn("install-app block -mx-6 px-10 py-4 bg-highlight", className)}>
+    <div className={cn("install-app rounded-md p-4 bg-highlight-active", className)}>
       <p className="text-lg font-medium">Melhore a experiência com o app!</p>
       <p className="py-4">Experimente um carregamento mais rápido durante a leitura da Bíblia sagrada.</p>
       <Button type="button" className="block w-full" onClick={handleInstallClick}>
