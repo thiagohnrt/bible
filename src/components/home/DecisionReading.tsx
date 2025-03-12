@@ -18,7 +18,7 @@ export function DecisionReading({ className }: Props) {
   }, []);
 
   if (bibleHistory.url === "nothing") {
-    return <></>;
+    return <div className="rounded-md bg-highlight h-[140px]"></div>;
   } else if (!bibleHistory.url) {
     return <SuggestedReading className={className}></SuggestedReading>;
   } else {
