@@ -9,7 +9,7 @@ import {
   TRANSLATION_NAME_DEFAULT,
 } from "@/constants/bible";
 import * as bolls from "@/custom/bolls";
-import { Translation, Verse } from "@/services/api";
+import { Translation } from "@/services/api";
 import { ReactNode } from "react";
 
 export function getTranslationPathname(pathname: string): Translation {
@@ -72,7 +72,7 @@ export const repeat = (count: number, callbackfn: (index: number) => ReactNode) 
 };
 
 export const sortTranslations = (translations: Translation[]) =>
-  translations.toSorted((a, b) => a.short_name.localeCompare(b.short_name));
+  translations.toSorted((a, b) => a.full_name.localeCompare(b.full_name));
 
 export const isVerseInInterval = (verse: number, interval?: string): boolean => {
   if (!interval) {
@@ -173,4 +173,8 @@ export const scrollToElement = (
 
     checkScroll();
   });
+};
+
+export const stringToNumber = (str: string): number => {
+  return str.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
 };

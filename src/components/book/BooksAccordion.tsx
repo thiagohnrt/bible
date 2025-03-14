@@ -17,7 +17,7 @@ interface Props {
   };
 }
 
-export function Books({ version, device }: Props) {
+export function BooksAccordion({ version, device }: Props) {
   const [books, setBooks] = useState<Book[]>([]);
   const [data, setData] = useState<{ book: string; current: { book: number; chapter: number } }>({
     book: "",

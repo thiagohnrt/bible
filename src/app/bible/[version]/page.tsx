@@ -1,7 +1,7 @@
 "use client";
 
-import { Books } from "@/components/book/Books";
-import { BookList } from "@/components/home/BookList";
+import { BooksAccordion } from "@/components/book/BooksAccordion";
+import { BooksList } from "@/components/book/BooksList";
 import { Container } from "@/components/root/Container";
 import { RootContext } from "@/providers/rootProvider";
 import { useContext } from "react";
@@ -15,10 +15,10 @@ export default function VersionPage({ params: { version } }: Props) {
   if (device.type === "mobile") {
     return (
       <Container>
-        <Books version={version} device={device} />
+        <BooksAccordion version={version} device={device} />
       </Container>
     );
   } else {
-    return <BookList device={device} />;
+    return <BooksList version={version} device={device} />;
   }
 }

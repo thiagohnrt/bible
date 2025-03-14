@@ -1,4 +1,4 @@
-import { BookList } from "@/components/home/BookList";
+import { BooksList } from "@/components/book/BooksList";
 import { headers } from "next/headers";
 import { userAgent } from "next/server";
 
@@ -11,7 +11,7 @@ export default async function BookLayout({ children }: Props) {
   return (
     <>
       {children}
-      <BookList device={device} className="bg-neutral-200 dark:bg-neutral-800 mt-8" />
+      <BooksList device={device} className="bg-neutral-200 dark:bg-neutral-800 mt-8" />
     </>
   );
 }

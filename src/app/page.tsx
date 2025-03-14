@@ -1,5 +1,5 @@
 import { BetaMessage } from "@/components/home/BetaMessage";
-import { BookList } from "@/components/home/BookList";
+import { BooksList } from "@/components/book/BooksList";
 import { DecisionReading } from "@/components/home/DecisionReading";
 import { IntallApp } from "@/components/home/IntallApp";
 import { TranslationsCounter } from "@/components/home/TranslationsCounter";
@@ -21,7 +21,7 @@ export default function HomePage() {
         <BetaMessage />
         <IntallApp device={device} />
       </Container>
-      <BookList device={device} className="bg-neutral-200 dark:bg-neutral-800" />
+      <BooksList device={device} className="bg-neutral-200 dark:bg-neutral-800" />
     </>
   );
 }
