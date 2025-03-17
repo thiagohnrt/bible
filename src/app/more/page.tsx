@@ -9,6 +9,7 @@ import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import Link from "next/link";
 import { MdChatBubbleOutline, MdInfoOutline, MdOutlineWarningAmber } from "react-icons/md";
 import { RiBookLine, RiGithubFill } from "react-icons/ri";
+import { IoDocumentTextOutline } from "react-icons/io5";
 
 export default function MorePage() {
   const iconSize = 20;
@@ -38,6 +39,9 @@ export default function MorePage() {
       <ItemShare iconSize={iconSize} />
       <Link href="/about">
         <ItemMenu label="Sobre" icon={<MdInfoOutline size={iconSize} />} />
+      </Link>
+      <Link href="/terms">
+        <ItemMenu label="Termos e Privacidade" icon={<IoDocumentTextOutline size={iconSize} />} />
       </Link>
       <Link href="/admin">
         <ItemVersion />

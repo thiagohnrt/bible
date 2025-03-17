@@ -41,7 +41,7 @@ export function Footer() {
             </div>
             <div className="flex flex-col space-y-2 pr-10">
               <h3 className="uppercase text-sm font-bold">Legal</h3>
-              <Link href="#">Termos e Privacidade</Link>
+              <Link href="/terms">Termos e Privacidade</Link>
             </div>
           </div>
           <div className="flex justify-between items-center">
