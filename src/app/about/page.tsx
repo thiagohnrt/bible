@@ -1,5 +1,11 @@
 import { Container } from "@/components/root/Container";
 import { cn } from "@/lib/shad";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Sobre | BibleHonor",
+  description: "Sobre o aplicativo BibleHonor.",
+};
 
 export default function AboutPage() {
   return (
