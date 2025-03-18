@@ -6,6 +6,7 @@ import { ThemeToggle } from "../theme/ThemeToggle";
 import imgLogo from "../../../public/biblehonor_logo.png";
 import Image from "next/image";
 import Link from "next/link";
+import { SendFeedback } from "../more/SendFeedback";
 
 export function Footer() {
   const { device } = userAgent({ headers: headers() });
@@ -36,8 +37,12 @@ export function Footer() {
             <div className="flex flex-col space-y-2 pr-10">
               <h3 className="uppercase text-sm font-bold">Projeto</h3>
               <Link href="https://github.com/thiagohnrt/bible">Repositório</Link>
-              <Link href="#">Sugestões e ideias</Link>
-              <Link href="#">Reportar um problema</Link>
+              <SendFeedback id="feedback" type="feedback" title="Sugestões e ideias">
+                <a href="#feedback">Sugestões e ideias</a>
+              </SendFeedback>
+              <SendFeedback id="report-a-problem" type="problem" title="Reportar um problema">
+                <a href="#report-a-problem">Reportar um problema</a>
+              </SendFeedback>
             </div>
             <div className="flex flex-col space-y-2 pr-10">
               <h3 className="uppercase text-sm font-bold">Legal</h3>
