@@ -1,17 +1,16 @@
-# BibleHonor
-
-O BibleHonor é um app feito para quem quer ler e estudar a Bíblia de um jeito simples e prático. Seu objetivo é facilitar o acesso às Escrituras e ajudar as pessoas a conhecerem mais sobre Deus por meio da Sua Palavra.
-
-<p align="left">
-  <img alt="PRs welcome!" src="https://img.shields.io/static/v1?label=PRs&message=WELCOME&style=for-the-badge&color=4A90E2&labelColor=222222" />
-  <img alt="Stars" src="https://img.shields.io/github/stars/thiagohnrt/bible?color=4A90E2&label=STARS&logo=3C424B&logoColor=3C424B&style=for-the-badge&labelColor=222222" />
-  <img alt="Forks" src="https://img.shields.io/github/forks/thiagohnrt/bible?color=4A90E2&label=FORKS&logo=3C424B&logoColor=3C424B&style=for-the-badge&labelColor=222222" />
-  <img alt="Issues" src="https://img.shields.io/github/issues/thiagohnrt/bible?color=4A90E2&label=ISSUES&logo=3C424B&logoColor=3C424B&style=for-the-badge&labelColor=222222" />
-  <img alt="GitHub license" src="https://img.shields.io/github/license/thiagohnrt/bible?color=4A90E2&label=LICENSE&logo=3C424B&logoColor=3C424B&style=for-the-badge&labelColor=222222" />
-  <a href="https://github.com/thiagohnrt">
-    <img alt="Follow thiagohnrt" src="https://img.shields.io/static/v1?label=Follow&message=thiagohnrt&style=for-the-badge&color=4A90E2&labelColor=222222" />
-  </a>
+<p align="center">
+  <img src="https://github.com/thiagohnrt/bible/blob/master/public/biblehonor_logo.png" width="150"/>
+  <p align="center">
+    <img alt="PRs welcome!" src="https://img.shields.io/static/v1?label=PRs&message=WELCOME&style=flat&color=4A90E2&labelColor=222222" />
+    <img alt="Stars" src="https://img.shields.io/github/stars/thiagohnrt/bible?color=4A90E2&label=STARS&logo=3C424B&logoColor=3C424B&style=flat&labelColor=222222" />
+    <img alt="Forks" src="https://img.shields.io/github/forks/thiagohnrt/bible?color=4A90E2&label=FORKS&logo=3C424B&logoColor=3C424B&style=flat&labelColor=222222" />
+    <img alt="Issues" src="https://img.shields.io/github/issues/thiagohnrt/bible?color=4A90E2&label=ISSUES&logo=3C424B&logoColor=3C424B&style=flat&labelColor=222222" />
+    <img alt="GitHub license" src="https://img.shields.io/github/license/thiagohnrt/bible?color=4A90E2&label=LICENSE&logo=3C424B&logoColor=3C424B&style=flat&labelColor=222222" />
+  </p>
 </p>
+
+## Sobre o BibleHonor
+O BibleHonor é um app feito para quem quer ler e estudar a Bíblia de um jeito simples e prático. Seu objetivo é facilitar o acesso às Escrituras e ajudar as pessoas a conhecerem mais sobre Deus por meio da Sua Palavra.
 
 ## 📋 Funcionalidades
 
