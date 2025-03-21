@@ -10,6 +10,7 @@ import Link from "next/link";
 import { MdChatBubbleOutline, MdInfoOutline, MdOutlineWarningAmber } from "react-icons/md";
 import { RiBookLine, RiGithubFill } from "react-icons/ri";
 import { IoDocumentTextOutline } from "react-icons/io5";
+import { GoVideo } from "react-icons/go";
 
 export default function MorePage() {
   const iconSize = 20;
@@ -18,6 +19,9 @@ export default function MorePage() {
     <Container className="flex flex-col px-0">
       <ItemTranslation iconSize={iconSize} />
       <ItemMenu label="Planos de leitura" icon={<RiBookLine size={iconSize} />}>
+        <small className="opacity-50">(Em breve)</small>
+      </ItemMenu>
+      <ItemMenu label="Vídeos" icon={<GoVideo size={iconSize} />}>
         <small className="opacity-50">(Em breve)</small>
       </ItemMenu>
       <Separator />
