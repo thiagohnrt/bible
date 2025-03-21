@@ -26,12 +26,14 @@ export function Footer() {
               <h3 className="uppercase text-sm font-bold">Recursos</h3>
               <Link href="/bible">Livros</Link>
               <Link href="/languages">Idiomas</Link>
-              <Link href="#">Vídeos</Link>
-              <Link href="#">Planos de leitura</Link>
+              <Link href="/videos">Vídeos</Link>
+              <Link href="/reading-plans">Planos de leitura</Link>
             </div>
             <div className="flex flex-col space-y-2 pr-10">
               <h3 className="uppercase text-sm font-bold">Nós</h3>
-              <Link href="#">Contato</Link>
+              <SendFeedback id="contact" type="contact" title="Contato">
+                <a href="#contact">Contato</a>
+              </SendFeedback>
               <Link href="/about">Sobre</Link>
             </div>
             <div className="flex flex-col space-y-2 pr-10">
