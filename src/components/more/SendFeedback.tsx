@@ -20,7 +20,7 @@ import { useRouter } from "next/navigation";
 interface Props {
   id: string;
   title: string;
-  type: "feedback" | "problem";
+  type: "feedback" | "problem" | "contact";
   children: React.ReactNode;
 }
 
