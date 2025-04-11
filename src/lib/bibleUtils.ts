@@ -1,11 +1,21 @@
+import { CopyVerseOptions } from "@/interfaces/CopyVerseOptions";
 import { Book, Translation, Verse } from "@/services/api";
 
-const versesToString = (verses: Verse[]) => {
-  const el = document.createElement("DIV");
-  el.innerHTML = verses.map((verse) => verse.text).join(" ");
-  el.querySelectorAll("sup").forEach((sup) => el.removeChild(sup)); // NAA
-  el.querySelectorAll("s").forEach((sup) => el.removeChild(sup)); // KJV
-  return ((el.innerText || el.textContent) ?? "").replace(/\n/g, " ").replace(/ {2}/g, " ").trim();
+const versesToString = (
+  verses: Verse[],
+  options: CopyVerseOptions = { wrapText: true, withNumb: true, bookName: true }
+) => {
+  const els = verses.map((verse) => {
+    const el = document.createElement("DIV");
+    el.innerHTML = `${options.withNumb ? verse.verse + " " : ""}${verse.text}`;
+    el.querySelectorAll("sup").forEach((sup) => el.removeChild(sup)); // NAA
+    el.querySelectorAll("s").forEach((sup) => el.removeChild(sup)); // KJV
+    return el;
+  });
+
+  return els
+    .map((el) => ((el.innerText || el.textContent) ?? "").replace(/ {2}/g, " ").trim())
+    .join(options.wrapText ? "\n" : " ");
 };
 
 const splitVerse = (verse: string): { bookId: number; chapter: number; verses: number[] } => {

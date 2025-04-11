@@ -1,17 +1,25 @@
 "use client";
 
-import { cn } from "@/lib/shad";
+import { bibleUtils } from "@/lib/bibleUtils";
 import { clipboard } from "@/lib/clipboard";
+import { cn } from "@/lib/shad";
 import { share } from "@/lib/share";
 import { BibleContext } from "@/providers/bibleProvider";
 import { ChapterContext } from "@/providers/chapterProvider";
 import { RootContext } from "@/providers/rootProvider";
-import { Book } from "@/services/api";
-import { forwardRef, ReactNode, useContext, useState } from "react";
+import { Book, Verse as IVerse } from "@/services/api";
+import { forwardRef, ReactNode, useContext, useEffect, useState } from "react";
+import { IoTextOutline } from "react-icons/io5";
+import { MdArrowDropDown } from "react-icons/md";
+import { PiListNumbers, PiTextAlignJustifyLight, PiTextAlignLeftLight } from "react-icons/pi";
 import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from "../ui/drawer";
 import { Toast, ToastClose, ToastDescription, ToastProvider, ToastTitle, ToastViewport } from "../ui/toast";
 import { CompareVerses } from "./CompareVerses";
-import { bibleUtils } from "@/lib/bibleUtils";
+import Cookies from "js-cookie";
+import { Checkbox } from "../ui/checkbox";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import Verse from "./Verse";
+import { CopyVerseOptions } from "@/interfaces/CopyVerseOptions";
 
 interface Props {
   book: Book;
@@ -24,8 +32,15 @@ export function VerseDrawer({ book, chapter }: Props) {
   const { verses, setVerses } = useContext(ChapterContext);
 
   const verseFull = () => {
-    const versesText = bibleUtils.versesToString(verses);
-    return `${versesText}\n\n${bibleUtils.formatVerseAddress(book, chapter, verses, translation)}`;
+    Cookies.get("copy_verse_options");
+    const options = Cookies.get("copy_verse_options");
+    const parsedValue = options ? JSON.parse(options) : undefined;
+    const versesText = bibleUtils.versesToString(verses, parsedValue);
+    if (parsedValue?.bookName ?? true) {
+      return `${versesText}\n\n${bibleUtils.formatVerseAddress(book, chapter, verses, translation)}`;
+    } else {
+      return versesText;
+    }
   };
 
   const handleShare = () => {
@@ -86,21 +101,11 @@ interface VerseActionsProps {
 }
 
 function VerseActions({ book, chapter, share, copy, isMobile }: VerseActionsProps) {
-  const [isCopied, setIsCopied] = useState(false);
-  const handleCopy = () => {
-    copy();
-    if (!isMobile) {
-      setIsCopied(true);
-      setTimeout(() => setIsCopied(false), 3000);
-    }
-  };
   return (
     <>
       <div className="whitespace-nowrap overflow-x-auto mb-4">
         <ActionButton onClick={share}>Compartilhar</ActionButton>
-        <ActionButton className={cn(isCopied && "bg-green-500")} onClick={handleCopy}>
-          {isCopied ? "Copiado" : "Copiar"}
-        </ActionButton>
+        <CopyButton copy={copy} isMobile={isMobile} />
         <CompareVerses book={book} chapter={chapter}>
           <ActionButton>Comparar</ActionButton>
         </CompareVerses>
@@ -139,7 +144,7 @@ export const ActionButton = forwardRef<
     <div
       className={cn(
         "inline-block mr-[10px] px-3 py-2 rounded-full transition-colors text-sm cursor-pointer",
-        "bg-neutral-200 dark:active:bg-neutral-300 dark:hover:bg-neutral-300",
+        "bg-neutral-200 active:bg-neutral-300 hover:bg-neutral-300",
         "dark:bg-neutral-800 dark:active:bg-neutral-700 dark:hover:bg-neutral-700",
         className
       )}
@@ -151,6 +156,149 @@ export const ActionButton = forwardRef<
   );
 });
 ActionButton.displayName = "ActionButton";
+
+export const CopyButton = forwardRef<
+  HTMLButtonElement,
+  {
+    copy: () => void;
+    isMobile: boolean;
+  }
+>(({ copy, isMobile, ...props }, ref) => {
+  const [isCopied, setIsCopied] = useState(false);
+  const [data, setData] = useState<CopyVerseOptions>({
+    wrapText: true,
+    withNumb: true,
+    bookName: true,
+  });
+
+  useEffect(() => {
+    const options = Cookies.get("copy_verse_options");
+    if (options) {
+      const parsedValue = JSON.parse(options) as CopyVerseOptions;
+      setData(parsedValue);
+    }
+  }, []);
+
+  const onCheckedChange = (att: string, checked: boolean) => {
+    setData((prev) => ({ ...prev, [att]: checked }));
+    const cookieValue = JSON.stringify({ ...data, [att]: checked });
+    Cookies.set("copy_verse_options", cookieValue, { expires: 365, path: "/" });
+    const el = document.body;
+    el.setAttribute(`data-copy-${att.toLowerCase()}`, checked.toString());
+  };
+
+  const handleCopy = () => {
+    copy();
+    if (!isMobile) {
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 3000);
+    }
+  };
+
+  const versesFake: IVerse[] = [
+    {
+      pk: 1,
+      verse: 1,
+      text: "No princípio Deus criou os céus e a terra.",
+    },
+    {
+      pk: 2,
+      verse: 2,
+      text: "A terra era vazia e sem forma definida, e o Espírito de Deus se movia por sobre as águas.",
+    },
+  ];
+
+  return (
+    <div
+      className={cn(
+        "inline-flex rounded-full cursor-pointer text-sm",
+        "mr-[10px] [&>*]:px-3 [&>*]:py-2",
+        "bg-neutral-200 dark:bg-neutral-800 transition-colors"
+      )}
+    >
+      <button
+        ref={ref}
+        type="button"
+        className={cn(
+          "rounded-s-full",
+          "active:bg-neutral-300 hover:bg-neutral-300",
+          "dark:active:bg-neutral-700 dark:hover:bg-neutral-700",
+          isCopied && "bg-green-500 active:bg-green-500 hover:bg-green-500",
+          isCopied && "dark:bg-green-500 dark:active:bg-green-500 dark:hover:bg-green-500"
+        )}
+        onClick={handleCopy}
+        {...props}
+      >
+        {isCopied ? "Copiado" : "Copiar"}
+      </button>
+      <Popover>
+        <PopoverTrigger asChild>
+          <div
+            dir="rtl"
+            className={cn(
+              "rounded-s-full flex items-center justify-center",
+              "active:bg-neutral-300 hover:bg-neutral-300",
+              "dark:active:bg-neutral-700 dark:hover:bg-neutral-700"
+            )}
+          >
+            <MdArrowDropDown />
+          </div>
+        </PopoverTrigger>
+        <PopoverContent align="end" side="top" className="w-[350px]">
+          <div className="border rounded-md p-2 mb-4">
+            {versesFake.map((verse) => (
+              <Verse
+                text={verse.text}
+                number={data.withNumb ? verse.verse : undefined}
+                key={verse.pk}
+                className={cn(
+                  "[&>.verse-txt]:text-xs [&>.verse-txt]:leading-6 [&>.verse-num]:text-[.5rem] mr-1",
+                  !data.wrapText && "inline"
+                )}
+              />
+            ))}
+            {data.bookName && <div className="text-xs mt-4">Gênesis 1:1-2 NBV-P</div>}
+          </div>
+          <div className="space-y-2">
+            <div className="flex w-full items-center space-x-2">
+              <Checkbox
+                id="wrapText"
+                checked={data.wrapText}
+                onCheckedChange={(e) => onCheckedChange("wrapText", !!e.valueOf())}
+              />
+              <label htmlFor="wrapText" className="cursor-pointer flex-1">
+                Quebra de texto
+              </label>
+              {data.wrapText ? <PiTextAlignLeftLight /> : <PiTextAlignJustifyLight />}
+            </div>
+            <div className="flex w-full items-center space-x-2">
+              <Checkbox
+                id="text-only"
+                checked={data.withNumb}
+                onCheckedChange={(e) => onCheckedChange("withNumb", !!e.valueOf())}
+              />
+              <label htmlFor="text-only" className="cursor-pointer flex-1">
+                Copiar com a numeração
+              </label>
+              {data.withNumb ? <PiListNumbers /> : <IoTextOutline />}
+            </div>
+            <div className="flex w-full items-center space-x-2">
+              <Checkbox
+                id="bookName"
+                checked={data.bookName}
+                onCheckedChange={(e) => onCheckedChange("bookName", !!e.valueOf())}
+              />
+              <label htmlFor="bookName" className="cursor-pointer flex-1">
+                Nome do livro
+              </label>
+            </div>
+          </div>
+        </PopoverContent>
+      </Popover>
+    </div>
+  );
+});
+CopyButton.displayName = "CopyButton";
 
 function BookmarkColor({ color }: { color: string }) {
   return <div className="inline-block mr-[15px] w-[30px] h-[30px] rounded" style={{ backgroundColor: color }}></div>;
