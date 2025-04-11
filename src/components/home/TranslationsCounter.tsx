@@ -28,7 +28,7 @@ export function TranslationsCounter() {
         </div>
         <div className="flex flex-col items-center">
           <div className="text-5xl">{isInView ? <CountUp end={totalTranslations} duration={3} /> : <span>0</span>}</div>
-          <h3>Traduções</h3>
+          <h3>Versões</h3>
         </div>
       </div>
     </div>
