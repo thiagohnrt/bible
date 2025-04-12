@@ -18,7 +18,7 @@ export default function HomePage() {
         <VerseOfTheDay />
         <DecisionReading />
         <TranslationsCounter />
-        <BetaMessage />
+        <BetaMessage device={device} />
         <IntallApp device={device} />
       </Container>
       <BooksList device={device} className="bg-neutral-200 dark:bg-neutral-800" />
