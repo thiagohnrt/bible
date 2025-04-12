@@ -153,9 +153,7 @@ export default function Header({ className }: Props) {
         <div className="content-left">
           <Link href="/" className="flex flex-nowrap items-center gap-2">
             <Image src={imgLogo} alt="BibleHonor" width={28} />
-            <h1 className="text-xl">
-              BibleHonor <span className="text-xs">(BETA)</span>
-            </h1>
+            <h1 className="text-xl">BibleHonor</h1>
           </Link>
         </div>
         <div className="content-right flex">
