@@ -126,3 +126,19 @@
 .toaster .toast .action-button[data-button] {
   @apply bg-neutral-300 text-neutral-950 text-base h-auto px-3 py-2;
 }
+
+/* There is news */
+.there-is-news {
+  position: relative;
+}
+.there-is-news::after {
+  content: " ";
+  display: block;
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: blue;
+  border-radius: 9999px;
+  position: absolute;
+  top: 0;
+  right: 0;
+}

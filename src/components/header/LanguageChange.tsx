@@ -9,6 +9,10 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { HiCheck } from "react-icons/hi";
+import { useEffect, useState } from "react";
+import { KEY_NEW_TRANSLATIONS_AVAILABLE } from "@/constants/bible";
+import { Available } from "@/interfaces/available";
+import { cn } from "@/lib/shad";
 
 interface Props {
   children: React.ReactNode;
@@ -19,6 +23,14 @@ interface Props {
 }
 
 export function LanguageChange({ children, languages, current, onLanguageSelected, className }: Props) {
+  const [languagesAvailable, setLanguagesAvailable] = useState<string[]>([]);
+  useEffect(() => {
+    const { languages: languagesAvailable }: Available = JSON.parse(
+      localStorage.getItem(KEY_NEW_TRANSLATIONS_AVAILABLE) ??
+        JSON.stringify({ languages: [], translations: [] } as Available)
+    );
+    setLanguagesAvailable(languagesAvailable);
+  }, []);
   return (
     <Dialog id="languages">
       <DialogTrigger asChild className={className}>
@@ -31,18 +43,20 @@ export function LanguageChange({ children, languages, current, onLanguageSelecte
         </DialogHeader>
         <div className="p-6 pt-0 overflow-y-auto">
           {languages
-            .sort((a, b) => a.language.localeCompare(b.language))
-            .sort((a, b) => (a.language === current?.language ? -1 : 1))
+            .toSorted((a, b) => a.language.localeCompare(b.language))
+            .toSorted((a, b) => (a.language === current?.language ? -1 : 1))
             .map((language, i) => {
               return (
-                <DialogClose asChild key={i}>
+                <DialogClose asChild key={language.language}>
                   <button
                     type="button"
                     className="py-3 w-full text-left outline-none"
                     onClick={() => onLanguageSelected(language)}
                   >
                     <div className="w-full flex justify-between items-center">
-                      <span>{language.language}</span>
+                      <span className={cn("pr-3", languagesAvailable.includes(language.language) && "there-is-news")}>
+                        {language.language}
+                      </span>
                       {language.language === current?.language ? <HiCheck /> : <></>}
                     </div>
                   </button>
