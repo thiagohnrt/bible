@@ -14,7 +14,7 @@ export default function HomePage() {
   const { device } = userAgent({ headers: headers() });
   return (
     <>
-      <Container className="space-y-8 pb-8">
+      <Container className="px-4 space-y-4 pb-8">
         <VerseOfTheDay />
         <DecisionReading />
         <TranslationsCounter />
