@@ -43,8 +43,8 @@ async function apiBible<T = any>(path: string): Promise<T> {
   throw new Error(response.statusText);
 }
 
-async function getLanguages(): Promise<Language[]> {
-  if (db.util.hasLanguagesSaved()) {
+async function getLanguages(force: "yes" | "no" = "no"): Promise<Language[]> {
+  if (db.util.hasLanguagesSaved() && force === "no") {
     return await db.getLanguages();
   } else {
     const languages = await apiBible<Language[]>("/static/bolls/app/views/languages.json");

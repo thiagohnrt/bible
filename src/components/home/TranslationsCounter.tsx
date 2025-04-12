@@ -1,5 +1,6 @@
 "use client";
 
+import { db } from "@/database/bibleDB";
 import { api } from "@/services/api";
 import { useInView } from "motion/react";
 import { useEffect, useRef, useState } from "react";
@@ -12,11 +13,17 @@ export function TranslationsCounter() {
   const [totalLanguages, setTotalLanguages] = useState(0);
   const [totalTranslations, setTotalTranslations] = useState(0);
 
+  const fetchTranslations = async () => {
+    const languages = await api.getLanguages();
+    setTotalLanguages(languages.length);
+    setTotalTranslations(languages.flatMap((language) => language.translations).length);
+  };
+
   useEffect(() => {
-    api.getLanguages().then((languages) => {
-      setTotalLanguages(languages.length);
-      setTotalTranslations(languages.flatMap((language) => language.translations).length);
+    db.updateLanguages().then((hasNew) => {
+      if (hasNew) fetchTranslations();
     });
+    fetchTranslations();
   }, []);
 
   return (
