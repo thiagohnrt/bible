@@ -1,5 +1,5 @@
 export class IDB {
-  private settings: SettingsIDB;
+  private readonly settings: SettingsIDB;
 
   constructor(settings: SettingsIDB) {
     this.settings = settings;
@@ -18,9 +18,7 @@ export class IDB {
         this.settings.stores.forEach((store) => {
           if (!db.objectStoreNames.contains(store.name)) {
             const objStore = db.createObjectStore(store.name, store);
-            store.indexs?.forEach((index) => {
-              objStore.createIndex(index.name, index.keyPath, index.options);
-            });
+            store.indexs?.forEach((index) => objStore.createIndex(index.name, index.keyPath, index.options));
           }
         });
       };
@@ -30,7 +28,7 @@ export class IDB {
       };
 
       request.onerror = (event) => {
-        reject((event.target as IDBOpenDBRequest).error);
+        reject(new Error((event.target as IDBOpenDBRequest).error?.message ?? "Unknown error occurred"));
       };
     });
   }
@@ -48,7 +46,7 @@ export class IDB {
       };
 
       request.onerror = () => {
-        reject(request.error);
+        reject(new Error(request.error?.message ?? "An error occurred"));
       };
     });
   }
@@ -61,11 +59,11 @@ export class IDB {
 
       values.forEach((value) => {
         const request = store.add(value);
-        request.onerror = () => reject(request.error);
+        request.onerror = () => reject(new Error(request.error?.message ?? "An error occurred"));
       });
 
       transaction.oncomplete = () => resolve();
-      transaction.onerror = () => reject(transaction.error);
+      transaction.onerror = () => reject(new Error(transaction.error?.message ?? "Transaction error occurred"));
     });
   }
 
@@ -82,7 +80,7 @@ export class IDB {
       };
 
       request.onerror = () => {
-        reject(request.error);
+        reject(new Error(request.error?.message ?? "An unknown error occurred"));
       };
     });
   }
@@ -113,7 +111,7 @@ export class IDB {
       };
 
       request.onerror = () => {
-        reject(request.error);
+        reject(new Error(request.error?.message ?? "An unknown error occurred"));
       };
     });
   }
@@ -131,7 +129,7 @@ export class IDB {
       };
 
       request.onerror = () => {
-        reject(request.error);
+        reject(new Error(request.error?.message ?? "An unknown error occurred"));
       };
     });
   }
@@ -144,11 +142,11 @@ export class IDB {
 
       values.forEach((value) => {
         const request = store.put(value);
-        request.onerror = () => reject(request.error);
+        request.onerror = () => reject(new Error(request.error?.message ?? "An unknown error occurred"));
       });
 
       transaction.oncomplete = () => resolve();
-      transaction.onerror = () => reject(transaction.error);
+      transaction.onerror = () => reject(new Error(transaction.error?.message ?? "Transaction error occurred"));
     });
   }
 
@@ -172,7 +170,25 @@ export class IDB {
       };
 
       request.onerror = () => {
-        reject(request.error);
+        reject(new Error(request.error?.message ?? "An unknown error occurred"));
+      };
+    });
+  }
+
+  async deleteAll(storeName: string): Promise<void> {
+    const db = await this.openDatabase();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction([storeName], "readwrite");
+      const store = transaction.objectStore(storeName);
+
+      const request = store.clear();
+
+      request.onsuccess = () => {
+        resolve();
+      };
+
+      request.onerror = () => {
+        reject(new Error(request.error?.message ?? "An unknown error occurred"));
       };
     });
   }
@@ -200,7 +216,7 @@ export class IDB {
         db.close();
         resolve(dbInfo);
       } catch (error) {
-        reject(error);
+        reject(error instanceof Error ? error : new Error(String(error)));
       }
     });
   }
@@ -228,7 +244,8 @@ export class IDB {
       };
 
       cursorRequest.onerror = (event) => {
-        reject(`Error reading store ${storeName}: ${(event.target as IDBRequest).error}`);
+        const error = (event.target as IDBRequest).error;
+        reject(new Error(`Error reading store ${storeName}: ${error?.message ?? "Unknown error"}`));
       };
     });
   }

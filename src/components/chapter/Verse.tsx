@@ -22,20 +22,27 @@ export default function Verse({
   style,
   formatting = "html",
 }: VerseProps) {
-  const props: React.HTMLAttributes<HTMLDivElement> = {
-    id: `verse-${number}`,
-    className: cn(font.className, "text-lg leading-9 [&>s]:hidden", !comment ? "[&>sup]:hidden" : "", className),
-    onClick,
-    style,
-  };
-  if (formatting === "html") {
-    return <div {...props} data-verse={number} dangerouslySetInnerHTML={{ __html: text }}></div>;
-  } else {
-    text = text.replace(/<[^>]*>/g, "");
-    return (
-      <div {...props} data-verse={number}>
-        {text}
-      </div>
-    );
-  }
+  return (
+    <div
+      id={`verse-${number}`}
+      className={cn(
+        font.className,
+        "[&>.verse-txt]:text-lg [&>.verse-txt]:leading-9",
+        "[&>.verse-num]:text-xs [&>.verse-num]:align-super [&>.verse-num]:opacity-70",
+        className
+      )}
+      onClick={onClick}
+      style={style}
+    >
+      {number && <span className="verse-num">{number}&nbsp;</span>}
+      {formatting === "html" ? (
+        <span
+          className={cn("verse-txt [&>s]:hidden", !comment && "[&>sup]:hidden")}
+          dangerouslySetInnerHTML={{ __html: text }}
+        ></span>
+      ) : (
+        <span className="verse-txt">{text.replace(/<[^>]*>/g, "")}</span>
+      )}
+    </div>
+  );
 }

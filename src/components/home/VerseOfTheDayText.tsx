@@ -30,7 +30,14 @@ export function VerseOfTheDayText({ className }: Props) {
           Promise.all(verses.map((verse) => api.getVerse(translation.identifier, bookId, chapter, verse))),
         ]);
 
-        setData({ book, chapter, verses: versesArr.map((v) => ({ ...v, text: bibleUtils.versesToString([v]) })) });
+        setData({
+          book,
+          chapter,
+          verses: versesArr.map((v) => ({
+            ...v,
+            text: bibleUtils.versesToString([v], { withNumb: verses.length > 1 }),
+          })),
+        });
       })();
     }
   }, [translation]);

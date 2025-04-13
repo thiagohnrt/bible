@@ -14,6 +14,8 @@ import imgLogo from "../../../public/biblehonor_logo.png";
 import { Container } from "../root/Container";
 import { DialogConfirm } from "../root/DialogConfirm";
 import { VersionChange } from "./VersionChange";
+import { KEY_NEW_TRANSLATIONS_AVAILABLE } from "@/constants/bible";
+import { Available } from "@/interfaces/available";
 
 interface Props {
   className?: string;
@@ -30,6 +32,7 @@ export default function Header({ className }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const parallels = useMemo(() => searchParams.get("parallel")?.split(" ") || [], [searchParams]);
+  const [thereIsNews, setThereIsNews] = useState(false);
 
   const onTranslationSelected = async (translation: Translation) => {
     // Por algum motivo a navegação não funciona sem esse sleep abaixo
@@ -130,6 +133,14 @@ export default function Header({ className }: Props) {
     };
   }, [setTranslationsOffline, translationCurrent]);
 
+  useEffect(() => {
+    const { languages: languagesAvailable, translations: translationsAvailable }: Available = JSON.parse(
+      localStorage.getItem(KEY_NEW_TRANSLATIONS_AVAILABLE) ??
+        JSON.stringify({ languages: [], translations: [] } as Available)
+    );
+    setThereIsNews(languagesAvailable.length > 0 || translationsAvailable.length > 0);
+  }, [pathname]);
+
   return (
     <header
       className={cn(
@@ -142,14 +153,17 @@ export default function Header({ className }: Props) {
         <div className="content-left">
           <Link href="/" className="flex flex-nowrap items-center gap-2">
             <Image src={imgLogo} alt="BibleHonor" width={28} />
-            <h1 className="text-xl">
-              BibleHonor <span className="text-xs">(BETA)</span>
-            </h1>
+            <h1 className="text-xl">BibleHonor</h1>
           </Link>
         </div>
         <div className="content-right flex">
           {pathname.includes("/bible") && translationCurrent ? (
-            <div className="flex items-stretch border border-neutral-600 rounded-full">
+            <div
+              className={cn(
+                "flex items-stretch border border-neutral-600 rounded-full",
+                thereIsNews && "there-is-news"
+              )}
+            >
               {translations.map((translation, i) => {
                 return (
                   <div

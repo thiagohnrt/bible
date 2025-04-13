@@ -20,6 +20,9 @@ import {
 } from "../ui/dialog";
 import { DeleteVersionConfirm } from "./DeleteVersionConfirm";
 import { LanguageChange } from "./LanguageChange";
+import { Available } from "@/interfaces/available";
+import { KEY_NEW_TRANSLATIONS_AVAILABLE } from "@/constants/bible";
+import { cn } from "@/lib/shad";
 
 interface Props {
   children: React.ReactNode;
@@ -40,6 +43,7 @@ interface Data {
 export const VersionChange = forwardRef<HTMLDivElement, Props>(
   ({ children, className, onTranslationSelected, onTranslationDeleted }: Props, ref) => {
     const { translation: translationContext, translationsOffline } = useContext(BibleContext);
+    const [newsAvailable, setNewsAvailable] = useState<Available>({ languages: [], translations: [] });
     const [data, setData] = useState<Data>({
       current: {
         language: {} as Language,
@@ -86,8 +90,35 @@ export const VersionChange = forwardRef<HTMLDivElement, Props>(
       setData({ ...data, current: { ...data.current, language } });
     };
 
+    const isTranslationAvailable = (translation: Translation): boolean => {
+      const isNew = newsAvailable.translations.filter((t) => t.identifier === translation.identifier).length > 0;
+      if (isNew) {
+        const available: Available = JSON.parse(
+          localStorage.getItem(KEY_NEW_TRANSLATIONS_AVAILABLE) ??
+            JSON.stringify({ languages: [], translations: [] } as Available)
+        );
+        available.translations = available.translations.filter((t) => t.identifier !== translation.identifier);
+        available.languages = available.languages.filter(
+          (lang) => available.translations.findIndex((t) => t.language === lang) > -1
+        );
+
+        localStorage.setItem(KEY_NEW_TRANSLATIONS_AVAILABLE, JSON.stringify(available));
+      }
+
+      return isNew;
+    };
+
+    const handleOpen = () => {
+      setNewsAvailable(
+        JSON.parse(
+          localStorage.getItem(KEY_NEW_TRANSLATIONS_AVAILABLE) ??
+            JSON.stringify({ languages: [], translations: [] } as Available)
+        )
+      );
+    };
+
     return (
-      <Dialog id="translations">
+      <Dialog id="translations" onOpen={handleOpen}>
         <DialogTrigger asChild className={className}>
           {children}
         </DialogTrigger>
@@ -99,7 +130,18 @@ export const VersionChange = forwardRef<HTMLDivElement, Props>(
               <div className="pt-4">
                 <div className="rounded-full flex justify-between gap-4 px-4 py-3 items-center bg-highlight-active cursor-pointer [&>*]:cursor-pointer">
                   <IoLanguage />
-                  <label className="flex-auto">{data.current.language?.language}</label>
+                  <div className="flex-auto">
+                    <label
+                      className={cn(
+                        "pr-3",
+                        newsAvailable.languages?.length > 0 &&
+                          !newsAvailable.languages?.includes(data.current.language?.language ?? "") &&
+                          "there-is-news"
+                      )}
+                    >
+                      {data.current.language?.language}
+                    </label>
+                  </div>
                   <MdOutlineFilterList />
                 </div>
               </div>
@@ -161,7 +203,9 @@ export const VersionChange = forwardRef<HTMLDivElement, Props>(
                               className="py-2 mb-1 flex flex-col w-full text-left outline-none"
                             >
                               <div className="w-full flex justify-between items-end">
-                                <span>{translation.short_name}</span>
+                                <span className={cn("pr-3", isTranslationAvailable(translation) && "there-is-news")}>
+                                  {translation.short_name}
+                                </span>
                                 {!translationsOffline[translation.identifier] ? <HiDownload /> : <></>}
                                 {translationsOffline[translation.identifier] === "downloading" ? (
                                   <CgSpinner className="animate-spin" />

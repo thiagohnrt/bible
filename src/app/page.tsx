@@ -14,11 +14,11 @@ export default function HomePage() {
   const { device } = userAgent({ headers: headers() });
   return (
     <>
-      <Container className="space-y-8 pb-8">
+      <Container className="px-4 space-y-4 pb-8">
         <VerseOfTheDay />
         <DecisionReading />
         <TranslationsCounter />
-        <BetaMessage />
+        <BetaMessage device={device} />
         <IntallApp device={device} />
       </Container>
       <BooksList device={device} className="bg-neutral-200 dark:bg-neutral-800" />

@@ -11,6 +11,7 @@ export const KEY_LANGUAGES_SAVED = "languages_saved";
 export const KEY_COOKIE_CONSENT = "cookie_consent";
 export const KEY_TRANSLATION_CURRENT = "translation_current";
 export const KEY_LANGUAGE_CURRENT = "language_current";
+export const KEY_NEW_TRANSLATIONS_AVAILABLE = "new_translations_available";
 
 // Events
 export const EVENT_BIBLE_HISTORY = "bibleNavigationChange";
