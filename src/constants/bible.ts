@@ -12,6 +12,7 @@ export const KEY_COOKIE_CONSENT = "cookie_consent";
 export const KEY_TRANSLATION_CURRENT = "translation_current";
 export const KEY_LANGUAGE_CURRENT = "language_current";
 export const KEY_NEW_TRANSLATIONS_AVAILABLE = "new_translations_available";
+export const KEY_TRANSLATIONS_AVAILABLE_VERIFIED = "translations_available_verified";
 
 // Events
 export const EVENT_BIBLE_HISTORY = "bibleNavigationChange";
