@@ -73,7 +73,8 @@ export function CompareVersesItem({ translation, book, chapter, verses }: Props)
                   number={data.verses.length > 1 ? item.verse : undefined}
                   text={item.text}
                   key={"verse-" + i}
-                  className="text-base leading-7 inline mr-1"
+                  className="inline mr-1"
+                  classNameVerse="text-base leading-7"
                 />
               );
             })}

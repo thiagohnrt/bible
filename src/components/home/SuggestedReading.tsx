@@ -30,7 +30,7 @@ export function SuggestedReading({ className }: Props) {
         <p className="text-lg font-bold pb-3">João 1 {translation?.short_name ?? ""}</p>
         <Verse
           text={"No princípio era aquele que é a Palavra. Ele estava com Deus, e era Deus..."}
-          className=" line-clamp-2 text-base leading-7"
+          classNameVerse="line-clamp-2 text-base leading-7"
         />
       </div>
     </Link>

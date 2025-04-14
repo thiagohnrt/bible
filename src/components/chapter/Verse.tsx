@@ -9,6 +9,7 @@ interface VerseProps {
   comment?: boolean;
   onClick?: () => void;
   className?: string;
+  classNameVerse?: string;
   style?: { [key: string]: string };
   formatting?: "html" | "text";
 }
@@ -19,29 +20,20 @@ export default function Verse({
   comment = false,
   onClick,
   className,
+  classNameVerse,
   style,
   formatting = "html",
 }: VerseProps) {
   return (
-    <div
-      id={`verse-${number}`}
-      className={cn(
-        font.className,
-        "[&>.verse-txt]:text-lg [&>.verse-txt]:leading-9",
-        "[&>.verse-num]:text-xs [&>.verse-num]:align-super [&>.verse-num]:opacity-70",
-        className
-      )}
-      onClick={onClick}
-      style={style}
-    >
-      {number && <span className="verse-num">{number}&nbsp;</span>}
+    <div id={`verse-${number}`} className={cn(font.className, className)} onClick={onClick} style={style}>
+      {number && <span className="verse-num text-xs align-super opacity-70">{number}&nbsp;</span>}
       {formatting === "html" ? (
         <span
-          className={cn("verse-txt [&>s]:hidden", !comment && "[&>sup]:hidden")}
+          className={cn("verse-txt text-lg leading-9 [&>s]:hidden", !comment && "[&>sup]:hidden", classNameVerse)}
           dangerouslySetInnerHTML={{ __html: text }}
         ></span>
       ) : (
-        <span className="verse-txt">{text.replace(/<[^>]*>/g, "")}</span>
+        <span className={cn("verse-txt text-lg leading-9", classNameVerse)}>{text.replace(/<[^>]*>/g, "")}</span>
       )}
     </div>
   );

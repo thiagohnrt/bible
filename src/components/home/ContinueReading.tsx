@@ -28,7 +28,7 @@ export function ContinueReading({ history: bibleHistory, className }: Props) {
         <Verse
           text={bibleUtils.versesToString([{ text: verseText } as IVerse], { withNumb: false })}
           formatting="text"
-          className=" line-clamp-2 text-base leading-7"
+          classNameVerse="line-clamp-2 text-base leading-7"
         />
       </div>
     </Link>
