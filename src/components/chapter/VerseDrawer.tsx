@@ -251,10 +251,8 @@ export const CopyButton = forwardRef<
                 text={verse.text}
                 number={data.withNumb ? verse.verse : undefined}
                 key={verse.pk}
-                className={cn(
-                  "[&>.verse-txt]:text-xs [&>.verse-txt]:leading-6 [&>.verse-num]:text-[.5rem] mr-1",
-                  !data.wrapText && "inline"
-                )}
+                classNameVerse="text-xs leading-6"
+                className={cn("[&>.verse-num]:text-[.5rem] mr-1", !data.wrapText && "inline")}
               />
             ))}
             {data.bookName && <div className="text-xs mt-4">Gênesis 1:1-2 NBV-P</div>}

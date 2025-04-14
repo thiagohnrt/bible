@@ -54,7 +54,7 @@ export default function VerseAction({ book, chapter, data, className }: VersePro
         text={text}
         className={cn(
           className,
-          "cursor-pointer flex-auto",
+          "verse cursor-pointer flex-auto",
           isSelected ? "underline decoration-dashed decoration-1 underline-offset-4" : ""
         )}
         onClick={handleVerseSelection}

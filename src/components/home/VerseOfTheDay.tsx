@@ -35,7 +35,7 @@ export async function VerseOfTheDay({ className }: Props) {
               style={{ objectFit: "cover", zIndex: 1 }}
               className="rounded-lg"
             />
-            <VerseOfTheDayText className="[&>.votd-verse]:text-xl" />
+            <VerseOfTheDayText className="[&>.votd-verse>.verse-txt]:text-xl" />
           </div>
         </DialogTrigger>
         <DialogContent className="h-svh w-lvw p-0 md:w-96 md:h-[48rem] md:max-h-svh">
@@ -54,7 +54,7 @@ export async function VerseOfTheDay({ className }: Props) {
               fill={true}
               style={{ objectFit: "cover", zIndex: 1 }}
             />
-            <VerseOfTheDayText className="[&>.votd-verse]:text-2xl [&>.votd-verse]:leading-10 [&>.votd-book]:text-base" />
+            <VerseOfTheDayText className="[&>.votd-verse>.verse-txt]:text-2xl [&>.votd-verse>.verse-txt]:leading-10 [&>.votd-book]:text-base" />
           </div>
           <DialogFooter
             className="absolute left-0 right-0 bottom-0 flex flex-row justify-center gap-8 p-6 text-white"

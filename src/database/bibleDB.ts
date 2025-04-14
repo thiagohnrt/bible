@@ -3,11 +3,13 @@ import {
   KEY_NEW_TRANSLATIONS_AVAILABLE,
   KEY_TRANSLATION_COMPARE,
   KEY_TRANSLATION_SAVED,
+  KEY_TRANSLATIONS_AVAILABLE_VERIFIED,
   TRANSLATION_DEFAULT,
 } from "@/constants/bible";
 import { api, Book, Language, Verse } from "@/services/api";
 import { IDB } from "./indexedDB";
 import { Available } from "@/interfaces/available";
+import Cookies from "js-cookie";
 
 export interface TranslationsOffline {
   [translation: string]: "downloading" | "downloaded" | "downloadFailed" | "deleting" | "deleteFailed";
@@ -130,6 +132,10 @@ const saveLanguages = async () => {
   localStorage.setItem(KEY_LANGUAGES_SAVED, "true");
 };
 const updateLanguages = async (): Promise<boolean> => {
+  if (Cookies.get(KEY_TRANSLATIONS_AVAILABLE_VERIFIED) === "true") {
+    return false;
+  }
+
   if (hasLanguagesSaved()) {
     const [oldData, newData] = await Promise.all([api.getLanguages("no"), api.getLanguages("yes")]);
     if (hasNewTranslationsAvailable(oldData, newData)) {
@@ -141,6 +147,8 @@ const updateLanguages = async (): Promise<boolean> => {
   } else {
     await saveLanguages();
   }
+
+  Cookies.set(KEY_TRANSLATIONS_AVAILABLE_VERIFIED, "true", { expires: 1 });
   return true;
 };
 
