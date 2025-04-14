@@ -110,10 +110,10 @@
 .window-scroll-down .chapter-navigation .chapter-next-btn:not(:active) {
   @apply bg-transparent;
 }
-[data-verse] {
+.verse {
   @apply transition-opacity;
 }
-.highlight-verse [data-verse]:not(.verse-to-highlight) {
+.highlight-verse .verse:not(.verse-to-highlight) {
   opacity: 0.3;
 }
 
