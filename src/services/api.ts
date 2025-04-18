@@ -35,6 +35,15 @@ export interface Verse {
   comment?: string;
 }
 
+export interface Story {
+  translation: string;
+  book: number;
+  chapter: number;
+  verse: number;
+  order_if_several: number;
+  title: string;
+}
+
 async function apiBible<T = any>(path: string): Promise<T> {
   const response = await fetch(`/api/bible?path=${path}`);
   if (response.status === 200) {
@@ -132,6 +141,28 @@ async function getVerse(translationId: string, book: number, chapter: number, ve
   }
 }
 
+async function getStories(translationId: string) {
+  if (db.util.hasTranslationSaved(translationId)) {
+    return await db.getStories(translationId);
+  }
+  const response = await fetch(`/api/stories/${translationId}`);
+  if (response.status === 200) {
+    return await response.json();
+  }
+  throw new Error(response.statusText);
+}
+
+async function getStoriesByChapter(translationId: string, book: number, chapter: number) {
+  if (db.util.hasTranslationSaved(translationId)) {
+    return await db.getStoriesByChapter(translationId, +book, +chapter);
+  }
+  const response = await fetch(`/api/stories/${translationId}/${book}/${chapter}`);
+  if (response.status === 200) {
+    return await response.json();
+  }
+  throw new Error(response.statusText);
+}
+
 export const api = {
   getLanguages,
   getTranslations,
@@ -141,4 +172,6 @@ export const api = {
   getBook,
   getVerses,
   getVerse,
+  getStories,
+  getStoriesByChapter,
 };

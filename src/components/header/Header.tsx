@@ -167,7 +167,7 @@ export default function Header({ className }: Props) {
               {translations.map((translation, i) => {
                 return (
                   <div
-                    key={translation.identifier}
+                    key={`hdr-translation-${translation.identifier}-${i}`}
                     className={cn(
                       "flex items-center hover:bg-primary/20 cursor-pointer transition-colors",
                       i === 0 ? "px-2 rounded-l-full" : ""

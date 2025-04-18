@@ -30,7 +30,9 @@ export default function BookPage({ params: { version, book } }: { params: { vers
         <Skeleton className="w-1/3 h-9 mb-4" />
         <div className="grid grid-cols-6 md:grid-cols-10 lg:grid-cols-15 gap-4">
           {repeat(12, (i) => {
-            return <Skeleton style={{ aspectRatio: "1 / 1" }} className="aspect-square rounded-sm" />;
+            return (
+              <Skeleton key={`skltn-book-${i}`} style={{ aspectRatio: "1 / 1" }} className="aspect-square rounded-sm" />
+            );
           })}
         </div>
       </Container>

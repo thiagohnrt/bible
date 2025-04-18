@@ -17,7 +17,7 @@ export interface TranslationsOffline {
 
 export const idb = new IDB({
   name: "bible",
-  version: 2,
+  version: 3,
   stores: [
     {
       name: "verses",
@@ -48,6 +48,21 @@ export const idb = new IDB({
       keyPath: "id",
       autoIncrement: true,
     },
+    {
+      name: "stories",
+      keyPath: "id",
+      autoIncrement: true,
+      indexs: [
+        {
+          name: "translationIndex",
+          keyPath: "translation",
+        },
+        {
+          name: "chapterIndex",
+          keyPath: ["translation", "book", "chapter"],
+        },
+      ],
+    },
   ],
 });
 
@@ -65,11 +80,13 @@ const saveTranslation = async (
     setTranslationsToCompare(translationsToCompare);
 
     try {
-      const [verses, books] = await Promise.all([
+      const [verses, books, stories] = await Promise.all([
         // translation data
         api.getTranslationData(translationId),
         // books
         api.getBooks(translationId),
+        // Stories
+        api.getStories(translationId),
       ]);
 
       await Promise.all([
@@ -77,6 +94,8 @@ const saveTranslation = async (
         idb.addAll("verses", verses),
         // books
         idb.addAll("books", books),
+        // stories
+        idb.addAll("stories", stories),
       ]);
 
       const translationsUpdated = getTranslationsOffline();
@@ -112,6 +131,8 @@ const deleteTranslation = async (
         idb.delete("verses", "translationIndex", translationId),
         // books
         idb.delete("books", "translationIndex", translationId),
+        // stories
+        idb.delete("stories", "translationIndex", translationId),
       ]);
 
       const translationsUpdated = getTranslationsOffline();
@@ -210,6 +231,13 @@ const getLanguages = async () => {
   return idb.getAll<Language>("languages");
 };
 
+const getStories = async (translation: string) => {
+  return idb.getAll("stories", "translationIndex", [translation]);
+};
+const getStoriesByChapter = async (translation: string, book: number, chapter: number) => {
+  return idb.getAll("stories", "chapterIndex", [translation, book, chapter]);
+};
+
 const getTranslationsOffline = (): TranslationsOffline =>
   JSON.parse(localStorage.getItem(KEY_TRANSLATION_SAVED) ?? "{}");
 const setTranslationsOffline = (item: TranslationsOffline) =>
@@ -247,6 +275,8 @@ export const db = {
   getVerse,
   getBooks,
   getLanguages,
+  getStories,
+  getStoriesByChapter,
   getTranslationsOffline,
   setTranslationsOffline,
   getTranslationsToCompare,
