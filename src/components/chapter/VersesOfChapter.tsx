@@ -80,9 +80,9 @@ export function VersesOfChapter({ version, book, chapter, data, inComparisonMode
                 <div
                   key={`story-${story.verse}-${story.order_if_several}`}
                   className={cn(
-                    "verse-story text-xl font-bold pb-2",
+                    "verse-story text-lg font-bold pb-2",
                     i === 0 && data.verse > 1 ? "pt-5" : "",
-                    "[&>x]:text-base [&>x]:font-normal [&>x]:italic"
+                    "[&>i]:text-base [&>i]:font-normal [&>i]:italic"
                   )}
                   dangerouslySetInnerHTML={{ __html: story.title }}
                 ></div>
