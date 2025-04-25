@@ -147,7 +147,7 @@ async function getStories(translationId: string) {
   }
   const response = await fetch(`/api/stories/${translationId}`);
   if (response.status === 200) {
-    return await response.json();
+    return await response.json() as Story[];
   }
   throw new Error(response.statusText);
 }
@@ -158,7 +158,7 @@ async function getStoriesByChapter(translationId: string, book: number, chapter:
   }
   const response = await fetch(`/api/stories/${translationId}/${book}/${chapter}`);
   if (response.status === 200) {
-    return await response.json();
+    return await response.json() as Story[];
   }
   throw new Error(response.statusText);
 }

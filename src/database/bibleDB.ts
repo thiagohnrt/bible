@@ -6,7 +6,7 @@ import {
   KEY_TRANSLATIONS_AVAILABLE_VERIFIED,
   TRANSLATION_DEFAULT,
 } from "@/constants/bible";
-import { api, Book, Language, Verse } from "@/services/api";
+import { api, Book, Language, Story, Verse } from "@/services/api";
 import { IDB } from "./indexedDB";
 import { Available } from "@/interfaces/available";
 import Cookies from "js-cookie";
@@ -232,10 +232,10 @@ const getLanguages = async () => {
 };
 
 const getStories = async (translation: string) => {
-  return idb.getAll("stories", "translationIndex", [translation]);
+  return idb.getAll<Story>("stories", "translationIndex", [translation]);
 };
 const getStoriesByChapter = async (translation: string, book: number, chapter: number) => {
-  return idb.getAll("stories", "chapterIndex", [translation, book, chapter]);
+  return idb.getAll<Story>("stories", "chapterIndex", [translation, book, chapter]);
 };
 
 const getTranslationsOffline = (): TranslationsOffline =>

@@ -78,6 +78,7 @@ export function VersesOfChapter({ version, book, chapter, data, inComparisonMode
             {getStoriesByVerse(data, stories).map((story, i) => {
               return (
                 <div
+                  id={`story-${story.verse}-${story.order_if_several}`}
                   key={`story-${story.verse}-${story.order_if_several}`}
                   className={cn(
                     "verse-story text-lg font-bold pb-2",
