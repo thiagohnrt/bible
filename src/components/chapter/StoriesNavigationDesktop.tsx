@@ -21,7 +21,7 @@ export function StoriesNavigationDesktop({ version, book, chapter, className }: 
   useEffect(() => {
     api
       .getStoriesByChapter(version, book, chapter)
-      .then((data) => setStories(data.filter((s) => !s.title.startsWith("<r"))));
+      .then((data) => setStories(data.filter((s) => !s.title.startsWith("<i"))));
   }, [book, chapter, version]);
 
   const navigateToStory = (story: Story) => () => {
