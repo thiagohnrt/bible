@@ -11,8 +11,6 @@ interface ContextProps {
   setTranslation: Dispatch<SetStateAction<Translation | null>> | (() => void);
   translationsOffline: TranslationsOffline;
   setTranslationsOffline: Dispatch<SetStateAction<TranslationsOffline>> | (() => void);
-  isLoading: boolean;
-  setLoading: Dispatch<SetStateAction<boolean>> | (() => void);
 }
 
 export const BibleContext = createContext<ContextProps>({
@@ -20,14 +18,11 @@ export const BibleContext = createContext<ContextProps>({
   setTranslation: () => null,
   translationsOffline: {},
   setTranslationsOffline: () => null,
-  isLoading: false,
-  setLoading: () => null,
 });
 
 export function BibleProvider({ children }: { children: ReactNode }) {
   const [translationCurrent, setTranslationCurrent] = useState<Translation | null>(null);
   const [translationsOffline, setTranslationsOffline] = useState<TranslationsOffline>({ INITIAL: "deleteFailed" });
-  const [isLoading, setLoading] = useState(false);
   const [isVerified, setVerified] = useState(false);
   const pathname = usePathname();
 
@@ -66,17 +61,8 @@ export function BibleProvider({ children }: { children: ReactNode }) {
         setTranslation: setTranslationCurrent,
         translationsOffline,
         setTranslationsOffline,
-        isLoading,
-        setLoading,
       }}
     >
-      {isLoading ? (
-        <div className="z-50 bg-background fixed left-0 top-0 right-0 bottom-0 flex items-center justify-center">
-          Carregando...
-        </div>
-      ) : (
-        <></>
-      )}
       {children}
     </BibleContext.Provider>
   );
