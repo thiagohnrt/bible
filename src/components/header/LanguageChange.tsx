@@ -57,7 +57,10 @@ export function LanguageChange({ children, languages, current, onLanguageSelecte
                       <span className={cn("pr-3", languagesAvailable.includes(language.language) && "there-is-news")}>
                         {language.language}
                       </span>
-                      {language.language === current?.language ? <HiCheck /> : <></>}
+                      <div className="flex items-center gap-2">
+                        {language.language === current?.language ? <HiCheck /> : <></>}
+                        <span className="opacity-70">{language.translations.length}</span>
+                      </div>
                     </div>
                   </button>
                 </DialogClose>

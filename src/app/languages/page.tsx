@@ -35,7 +35,8 @@ export default function LanguagesPage() {
               className="block leading-7 hover:underline"
               key={language.language}
             >
-              {`${language.language} (${language.translations.length})`}
+              <span>{language.language}</span>
+              <span className="opacity-70">({language.translations.length})</span>
             </Link>
           ))}
       </div>
