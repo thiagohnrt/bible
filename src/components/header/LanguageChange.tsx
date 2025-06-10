@@ -1,4 +1,9 @@
+import { KEY_NEW_TRANSLATIONS_AVAILABLE } from "@/constants/bible";
+import { Available } from "@/interfaces/available";
+import { cn } from "@/lib/shad";
 import { Language } from "@/services/api";
+import { useEffect, useState } from "react";
+import { HiCheck } from "react-icons/hi";
 import {
   Dialog,
   DialogClose,
@@ -8,11 +13,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import { HiCheck } from "react-icons/hi";
-import { useEffect, useState } from "react";
-import { KEY_NEW_TRANSLATIONS_AVAILABLE } from "@/constants/bible";
-import { Available } from "@/interfaces/available";
-import { cn } from "@/lib/shad";
 
 interface Props {
   children: React.ReactNode;

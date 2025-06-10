@@ -1,12 +1,13 @@
+import { getVersion } from "@/lib/utils";
 import { headers } from "next/headers";
-import { userAgent } from "next/server";
-import BottomNavigator from "./BottomNavigator";
-import { Container } from "../root/Container";
-import { ThemeToggle } from "../theme/ThemeToggle";
-import imgLogo from "../../../public/biblehonor_logo.png";
 import Image from "next/image";
 import Link from "next/link";
+import { userAgent } from "next/server";
+import imgLogo from "../../../public/biblehonor_logo.png";
 import { SendFeedback } from "../more/SendFeedback";
+import { Container } from "../root/Container";
+import { ThemeToggle } from "../theme/ThemeToggle";
+import BottomNavigator from "./BottomNavigator";
 
 export function Footer() {
   const { device } = userAgent({ headers: headers() });
@@ -52,7 +53,9 @@ export function Footer() {
             </div>
           </div>
           <div className="flex justify-between items-center">
-            <div className="text-sm opacity-80">© Copyright {new Date().getFullYear()} BibleHonor.</div>
+            <div className="text-sm opacity-80">
+              © Copyright {new Date().getFullYear()} BibleHonor. Versão {getVersion()}
+            </div>
             <div>
               <ThemeToggle />
             </div>

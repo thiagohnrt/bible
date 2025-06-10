@@ -1,9 +1,10 @@
 "use client";
 
 import { cn } from "@/lib/shad";
-import { api, Book } from "@/services/api";
+import { BibleContext } from "@/providers/bibleProvider";
+import { Book } from "@/services/api";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
 import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
 
 interface Props {
@@ -13,11 +14,12 @@ interface Props {
 }
 
 export function ChapterNavigationMobile({ version, book: bookId, chapter }: Props) {
-  const [book, setBook] = useState<Book>({} as Book);
+  const { getBook } = useContext(BibleContext);
+  const [book, setBook] = useState<Book | null>(null);
 
-  useEffect(() => {
-    api.getBook(version, bookId).then((data) => setBook(data));
-  }, [bookId, version]);
+  useLayoutEffect(() => {
+    getBook(version, bookId).then(setBook);
+  }, [bookId, getBook, version]);
 
   return (
     <div
@@ -29,9 +31,15 @@ export function ChapterNavigationMobile({ version, book: bookId, chapter }: Prop
       )}
       style={{ bottom: "calc(4rem - 1px)" }}
     >
-      <ChapterPrev version={version} book={book} chapter={chapter} />
-      <ChapterBook version={version} book={book} chapter={chapter} />
-      <ChapterNext version={version} book={book} chapter={chapter} />
+      {!book ? (
+        <></>
+      ) : (
+        <>
+          <ChapterPrev version={version} book={book} chapter={chapter} />
+          <ChapterBook version={version} book={book} chapter={chapter} />
+          <ChapterNext version={version} book={book} chapter={chapter} />
+        </>
+      )}
     </div>
   );
 }

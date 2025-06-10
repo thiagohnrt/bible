@@ -1,44 +1,43 @@
 "use client";
 
 import { cn } from "@/lib/shad";
+import { ChapterContext } from "@/providers/chapterProvider";
 import { api, Book } from "@/services/api";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
 
 interface Props {
   version: string;
-  book: number;
-  chapter: number;
 }
 
-export function ChapterNavigationDesktop({ version, book: bookId, chapter }: Props) {
-  const [book, setBook] = useState<Book>({} as Book);
+export function ChapterNavigationDesktop({ version }: Props) {
+  const { data } = useContext(ChapterContext);
   const searchParams = useSearchParams();
   const parallel = searchParams.get("parallel");
 
-  useEffect(() => {
-    api.getBook(version, bookId).then((data) => setBook(data));
-  }, [bookId, version]);
+  if (!data.length) {
+    return <></>;
+  }
 
-  let linkPrev = `/bible/${version}/${book.book}/${+chapter - 1}`;
-  let chapterPrev = `${book.name ?? ""} ${+chapter - 1}`;
-  if (chapter == 1) {
-    if (book.bookPrev) {
-      linkPrev = `/bible/${version}/${book.bookPrev.book}/${book.bookPrev.chapters}`;
-      chapterPrev = `${book.bookPrev.name ?? ""} ${book.bookPrev.chapters}`;
+  let linkPrev = `/bible/${version}/${data[0].book.book}/${+data[0].chapter - 1}`;
+  let chapterPrev = `${data[0].book.name ?? ""} ${+data[0].chapter - 1}`;
+  if (data[0].chapter == 1) {
+    if (data[0].book.bookPrev) {
+      linkPrev = `/bible/${version}/${data[0].book.bookPrev.book}/${data[0].book.bookPrev.chapters}`;
+      chapterPrev = `${data[0].book.bookPrev.name ?? ""} ${data[0].book.bookPrev.chapters}`;
     } else {
       linkPrev = "#";
     }
   }
 
-  let linkNext = `/bible/${version}/${book.book}/${+chapter + 1}`;
-  let chapterNext = `${book.name ?? ""} ${+chapter + 1}`;
-  if (book.chapters == chapter) {
-    if (book.bookNext) {
-      linkNext = `/bible/${version}/${book.bookNext.book}/1`;
-      chapterNext = `${book.bookNext.name ?? ""} 1`;
+  let linkNext = `/bible/${version}/${data[0].book.book}/${+data[0].chapter + 1}`;
+  let chapterNext = `${data[0].book.name ?? ""} ${+data[0].chapter + 1}`;
+  if (data[0].book.chapters == data[0].chapter) {
+    if (data[0].book.bookNext) {
+      linkNext = `/bible/${version}/${data[0].book.bookNext.book}/1`;
+      chapterNext = `${data[0].book.bookNext.name ?? ""} 1`;
     } else {
       linkNext = "#";
     }

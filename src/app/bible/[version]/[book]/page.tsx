@@ -1,30 +1,32 @@
 "use client";
 
 import { Chapters } from "@/components/chapter/Chapters";
-import { Skeleton } from "@/components/ui/skeleton";
-import { api, Book, Translation } from "@/services/api";
-import { useEffect, useState } from "react";
 import { Container } from "@/components/root/Container";
+import { Skeleton } from "@/components/ui/skeleton";
 import * as bolls from "@/custom/bolls";
 import { repeat } from "@/lib/utils";
+import { BibleContext } from "@/providers/bibleProvider";
+import { Book, Translation } from "@/services/api";
+import { useContext, useEffect, useLayoutEffect, useState } from "react";
 
-export default function BookPage({ params: { version, book } }: { params: { version: string; book: number } }) {
-  const [bookData, setBookData] = useState<Book | null>(null);
+export default function BookPage({ params: { version, book: bookId } }: { params: { version: string; book: number } }) {
+  const { books, getBook } = useContext(BibleContext);
+  const [book, setBook] = useState<Book | null>(null);
 
-  useEffect(() => {
-    if (!bookData) {
-      api.getBook(version, book).then((b) => setBookData(b));
+  useLayoutEffect(() => {
+    if (books.length) {
+      getBook(version, bookId).then((b) => setBook(b));
     }
-  }, [book, bookData, version]);
+  }, [bookId, books, getBook, version]);
 
   useEffect(() => {
-    if (bookData) {
+    if (book) {
       const translation: Translation = { identifier: version, short_name: version, full_name: version };
-      document.title = `${bookData.name} - ${bolls.translation(translation).short_name} | BibleHonor`;
+      document.title = `${book.name} - ${bolls.translation(translation).short_name} | BibleHonor`;
     }
-  }, [bookData, version]);
+  }, [book, version]);
 
-  if (!bookData) {
+  if (!book) {
     return (
       <Container>
         <Skeleton className="w-1/3 h-9 mb-4" />
@@ -41,8 +43,8 @@ export default function BookPage({ params: { version, book } }: { params: { vers
 
   return (
     <Container>
-      <h1 className="text-3xl pb-4">{bookData.name}</h1>
-      <Chapters version={version} book={bookData} />
+      <h1 className="text-3xl pb-4">{book.name}</h1>
+      <Chapters version={version} book={book} />
     </Container>
   );
 }

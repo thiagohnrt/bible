@@ -1,13 +1,13 @@
 "use client";
 
+import { bibleUtils } from "@/lib/bibleUtils";
 import { cn } from "@/lib/shad";
 import { BibleContext } from "@/providers/bibleProvider";
 import { api, Book, Verse as IVerse } from "@/services/api";
+import { getVerseOfTheDay } from "@/services/verseOfTheDay";
 import { Merriweather } from "next/font/google";
 import { useContext, useEffect, useState } from "react";
 import Verse from "../chapter/Verse";
-import { bibleUtils } from "@/lib/bibleUtils";
-import { getVerseOfTheDay } from "@/services/verseOfTheDay";
 
 const font = Merriweather({ subsets: ["latin"], weight: "400" });
 
@@ -16,7 +16,7 @@ interface Props {
 }
 
 export function VerseOfTheDayText({ className }: Props) {
-  const { translation } = useContext(BibleContext);
+  const { translation, getBook } = useContext(BibleContext);
   const [data, setData] = useState<{ book: Book; chapter: number; verses: IVerse[] } | null>(null);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ export function VerseOfTheDayText({ className }: Props) {
           verse: { bookId, chapter, verses },
         } = await getVerseOfTheDay();
         const [book, versesArr] = await Promise.all([
-          api.getBook(translation.identifier, bookId),
+          getBook(translation.identifier, bookId),
           Promise.all(verses.map((verse) => api.getVerse(translation.identifier, bookId, chapter, verse))),
         ]);
 
@@ -40,7 +40,7 @@ export function VerseOfTheDayText({ className }: Props) {
         });
       })();
     }
-  }, [translation]);
+  }, [getBook, translation]);
 
   return (
     <div

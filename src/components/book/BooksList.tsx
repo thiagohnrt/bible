@@ -1,12 +1,13 @@
 "use client";
 
 import { cn } from "@/lib/shad";
-import { api, Book } from "@/services/api";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
-import { Container } from "../root/Container";
 import { BibleContext } from "@/providers/bibleProvider";
+import { Book } from "@/services/api";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useContext, useEffect, useState } from "react";
+import { HiArrowNarrowLeft } from "react-icons/hi";
+import { Container } from "../root/Container";
 import { Skeleton } from "../ui/skeleton";
 
 interface Props {
@@ -17,12 +18,13 @@ interface Props {
     vendor?: string;
   };
   className?: string;
+  backIcon?: boolean;
 }
 
-export function BooksList({ version, device, className }: Props) {
-  const [books, setBooks] = useState<Book[]>([]);
-  const { translation } = useContext(BibleContext);
+export function BooksList({ version, device, className, backIcon = false }: Props) {
+  const { translation, books: booksContext } = useContext(BibleContext);
   const [currentVersion, setCurrentVersion] = useState<string>(version ?? "");
+  const router = useRouter();
   const oldTestament = "Antigo Testamento";
   const newTestament = "Novo Testamento";
 
@@ -32,21 +34,21 @@ export function BooksList({ version, device, className }: Props) {
     }
   }, [currentVersion, translation]);
 
-  useEffect(() => {
-    if (device?.type !== "mobile" && currentVersion) {
-      api.getBooks(currentVersion).then((books) => setBooks(books));
-    }
-  }, [device, currentVersion]);
-
   if (device?.type === "mobile") {
     return <></>;
   }
+
+  const translationBooks = booksContext.filter((book) => book.translation === currentVersion);
+  const books = translationBooks.filter((book, i) => {
+    return translationBooks.findIndex((b) => b.book === book.book) === i;
+  });
 
   if (books.length === 0) {
     return (
       <div className={cn("py-6", className)}>
         <Container>
           <h1 className="text-lg font-bold mb-6">Livros</h1>
+          <Skeleton className="mb-6 h-9 w-64"></Skeleton>
           <div className="grid grid-cols-2">
             {<BooksSkeleton testament={oldTestament} totalBooks={39} />}
             {<BooksSkeleton testament={newTestament} totalBooks={27} />}
@@ -60,6 +62,16 @@ export function BooksList({ version, device, className }: Props) {
     <div className={cn("py-6", className)}>
       <Container>
         <h1 className="text-lg font-bold mb-6">Livros</h1>
+        <h2 className="mb-6 flex items-center">
+          {backIcon && (
+            <HiArrowNarrowLeft
+              size={36}
+              className="p-2 -ml-2 rounded-full cursor-pointer hover:bg-neutral-800 transition-all"
+              onClick={() => router.back()}
+            />
+          )}
+          <span className="font-semibold">{`${translation?.short_name} - ${translation?.full_name}`}</span>
+        </h2>
         <div className="grid grid-cols-2">
           <BooksTestament
             translation={currentVersion}
@@ -106,7 +118,7 @@ function BooksTestament({ translation, testament, books }: { translation: string
             <Link
               href={`/bible/${translation}/${book.book}${search}`}
               className="block leading-7 hover:underline"
-              key={book.book}
+              key={testament + book.book}
             >
               {book.name}
             </Link>

@@ -1,12 +1,12 @@
 "use client";
 
-import { api, Book } from "@/services/api";
-import { Accordion, AccordionContent, AccordionItemFocus, AccordionTrigger } from "../ui/accordion";
-import { Chapters } from "../chapter/Chapters";
-import { useEffect, useRef, useState } from "react";
-import { Skeleton } from "../ui/skeleton";
-import { usePathname } from "next/navigation";
 import { repeat } from "@/lib/utils";
+import { BibleContext } from "@/providers/bibleProvider";
+import { usePathname } from "next/navigation";
+import { useContext, useEffect, useRef, useState } from "react";
+import { Chapters } from "../chapter/Chapters";
+import { Accordion, AccordionContent, AccordionItemFocus, AccordionTrigger } from "../ui/accordion";
+import { Skeleton } from "../ui/skeleton";
 
 interface Props {
   version: string;
@@ -18,17 +18,13 @@ interface Props {
 }
 
 export function BooksAccordion({ version, device }: Props) {
-  const [books, setBooks] = useState<Book[]>([]);
+  const { books } = useContext(BibleContext);
   const [data, setData] = useState<{ book: string; current: { book: number; chapter: number } }>({
     book: "",
     current: { book: 0, chapter: 0 },
   });
   const itemRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const pathname = usePathname();
-
-  useEffect(() => {
-    api.getBooks(version).then((data) => setBooks(data));
-  }, [version]);
 
   useEffect(() => {
     if (books.length) {

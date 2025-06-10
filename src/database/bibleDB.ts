@@ -6,10 +6,10 @@ import {
   KEY_TRANSLATIONS_AVAILABLE_VERIFIED,
   TRANSLATION_DEFAULT,
 } from "@/constants/bible";
-import { api, Book, Language, Story, Verse } from "@/services/api";
-import { IDB } from "./indexedDB";
 import { Available } from "@/interfaces/available";
+import { api, Book, Language, Story, Verse } from "@/services/api";
 import Cookies from "js-cookie";
+import { IDB } from "./indexedDB";
 
 export interface TranslationsOffline {
   [translation: string]: "downloading" | "downloaded" | "downloadFailed" | "deleting" | "deleteFailed";
@@ -151,26 +151,29 @@ const saveLanguages = async () => {
   const languages = await api.getLanguages();
   await idb.addAll("languages", languages);
   localStorage.setItem(KEY_LANGUAGES_SAVED, "true");
+  return languages;
 };
-const updateLanguages = async (): Promise<boolean> => {
+const updateLanguages = async (): Promise<{ hasNew: boolean; languages?: Language[] }> => {
   if (Cookies.get(KEY_TRANSLATIONS_AVAILABLE_VERIFIED) === "true") {
-    return false;
+    return { hasNew: false };
   }
 
+  let languagesNew: Language[] = [];
   if (hasLanguagesSaved()) {
     const [oldData, newData] = await Promise.all([api.getLanguages("no"), api.getLanguages("yes")]);
     if (hasNewTranslationsAvailable(oldData, newData)) {
       await idb.deleteAll("languages");
       await idb.addAll("languages", newData);
+      languagesNew = newData;
     } else {
-      return false;
+      return { hasNew: false };
     }
   } else {
-    await saveLanguages();
+    languagesNew = await saveLanguages();
   }
 
   Cookies.set(KEY_TRANSLATIONS_AVAILABLE_VERIFIED, "true", { expires: 1 });
-  return true;
+  return { hasNew: true, languages: languagesNew };
 };
 
 const hasNewTranslationsAvailable = (oldData: Language[], newData: Language[]): boolean => {

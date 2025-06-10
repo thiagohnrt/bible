@@ -1,8 +1,9 @@
 "use client";
 
 import { cn } from "@/lib/shad";
-import { api, Book } from "@/services/api";
-import { useEffect, useState } from "react";
+import { BibleContext } from "@/providers/bibleProvider";
+import { Book } from "@/services/api";
+import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { TbLayoutSidebarRightCollapse, TbLayoutSidebarRightExpand } from "react-icons/tb";
 import { Skeleton } from "../ui/skeleton";
 import { Chapters } from "./Chapters";
@@ -14,12 +15,13 @@ interface Props {
 }
 
 export function ChaptersSidebar({ version, book: bookId, chapter }: Props) {
-  const [book, setBook] = useState<Book>({} as Book);
+  const { getBook } = useContext(BibleContext);
+  const [book, setBook] = useState<Book | null>(null);
   const [collapsed, setCollapsed] = useState(false);
 
-  useEffect(() => {
-    api.getBook(version, bookId).then((b) => setBook(b));
-  }, [bookId, version]);
+  useLayoutEffect(() => {
+    getBook(version, bookId).then(setBook);
+  }, [bookId, getBook, version]);
 
   useEffect(() => {
     const collapsed = localStorage.getItem("chapter_sidebar_collapsed");
@@ -31,7 +33,7 @@ export function ChaptersSidebar({ version, book: bookId, chapter }: Props) {
     setCollapsed(!collapsed);
   };
 
-  if (!book.chapters) {
+  if (!book) {
     return (
       <div className={collapsed ? "basis-7" : "basis-2/6"}>
         <Skeleton className={cn("w-full h-6 bg-highlight", !collapsed && "hidden")} />

@@ -1,9 +1,11 @@
 "use client";
 
+import { KEY_NEW_TRANSLATIONS_AVAILABLE } from "@/constants/bible";
 import { db } from "@/database/bibleDB";
+import { Available } from "@/interfaces/available";
 import { cn } from "@/lib/shad";
 import { BibleContext } from "@/providers/bibleProvider";
-import { api, Translation } from "@/services/api";
+import { Translation } from "@/services/api";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -14,8 +16,6 @@ import imgLogo from "../../../public/biblehonor_logo.png";
 import { Container } from "../root/Container";
 import { DialogConfirm } from "../root/DialogConfirm";
 import { VersionChange } from "./VersionChange";
-import { KEY_NEW_TRANSLATIONS_AVAILABLE } from "@/constants/bible";
-import { Available } from "@/interfaces/available";
 
 interface Props {
   className?: string;
@@ -26,8 +26,9 @@ export default function Header({ className }: Props) {
     translation: translationCurrent,
     setTranslation: setTranslationContext,
     setTranslationsOffline,
+    translations,
   } = useContext(BibleContext);
-  const [translations, setTranslations] = useState<Translation[]>([]);
+  const [translationsSelected, setTranslationsSelected] = useState<Translation[]>([]);
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -77,25 +78,22 @@ export default function Header({ className }: Props) {
   };
 
   useEffect(() => {
-    if (translationCurrent) {
+    if (translationCurrent && translations.length > 0) {
       const newTranslations = [translationCurrent.identifier, ...parallels];
 
-      if (
-        translations.length === newTranslations.length &&
-        translations.every((t, i) => t.identifier === newTranslations[i])
-      ) {
+      const selecteds = Array.from(new Set(translationsSelected.map((t) => t.identifier)));
+
+      if (selecteds.length === newTranslations.length && selecteds.every((t, i) => t === newTranslations[i])) {
         return;
       }
 
-      api.getTranslations().then((translations) => {
-        setTranslations(
-          translations
-            .filter((t) => newTranslations.includes(t.identifier))
-            .sort((a, b) => newTranslations.indexOf(a.identifier) - newTranslations.indexOf(b.identifier))
-        );
-      });
+      setTranslationsSelected(
+        translations
+          .filter((t) => newTranslations.includes(t.identifier))
+          .sort((a, b) => newTranslations.indexOf(a.identifier) - newTranslations.indexOf(b.identifier))
+      );
     }
-  }, [parallels, translationCurrent, translations]);
+  }, [parallels, translationCurrent, translations, translationsSelected]);
 
   useEffect(() => {
     const beforeunload = () => {
@@ -164,7 +162,7 @@ export default function Header({ className }: Props) {
                 thereIsNews && "there-is-news"
               )}
             >
-              {translations.map((translation, i) => {
+              {translationsSelected.map((translation, i) => {
                 return (
                   <div
                     key={`hdr-translation-${translation.identifier}-${i}`}
@@ -221,7 +219,9 @@ export default function Header({ className }: Props) {
                   onTranslationSelected={onTranslationParallelSelected}
                   onTranslationDeleted={onTranslationDeleted}
                 >
-                  <FiPlus />
+                  <div>
+                    <FiPlus />
+                  </div>
                 </VersionChange>
               </div>
             </div>

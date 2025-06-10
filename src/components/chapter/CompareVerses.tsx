@@ -1,6 +1,8 @@
 import { db } from "@/database/bibleDB";
+import { bibleUtils } from "@/lib/bibleUtils";
+import { BibleContext } from "@/providers/bibleProvider";
 import { ChapterContext } from "@/providers/chapterProvider";
-import { api, Book, Language, Translation } from "@/services/api";
+import { Book, Translation } from "@/services/api";
 import { forwardRef, ReactNode, useCallback, useContext, useEffect, useState } from "react";
 import { FiPlus } from "react-icons/fi";
 import { HiOutlineSwitchVertical } from "react-icons/hi";
@@ -16,7 +18,6 @@ import {
 import { CompareVersesItem } from "./CompareVersesItem";
 import { CompareVersesManager } from "./CompareVersesManager";
 import { CompareVersesVersions } from "./CompareVersesVersions";
-import { bibleUtils } from "@/lib/bibleUtils";
 
 interface Props {
   book: Book;
@@ -25,8 +26,8 @@ interface Props {
 }
 
 export const CompareVerses = forwardRef<HTMLDivElement, Props>(({ book, chapter, children }: Props, ref) => {
-  const { verses } = useContext(ChapterContext);
-  const [languages, setLanguages] = useState<Language[]>([]);
+  const { languages } = useContext(BibleContext);
+  const { versesSelected } = useContext(ChapterContext);
   const [translations, setTranslations] = useState<Translation[]>([]);
 
   const renderTranslations = useCallback(() => {
@@ -41,10 +42,6 @@ export const CompareVerses = forwardRef<HTMLDivElement, Props>(({ book, chapter,
   }, [languages]);
 
   useEffect(() => {
-    api.getLanguages().then(setLanguages);
-  }, []);
-
-  useEffect(() => {
     renderTranslations();
   }, [languages, renderTranslations]);
 
@@ -56,7 +53,7 @@ export const CompareVerses = forwardRef<HTMLDivElement, Props>(({ book, chapter,
           <DialogTitle>Comparar Versículo</DialogTitle>
           <DialogDescription></DialogDescription>
           <div>
-            <h3 className="text-2xl my-2">{bibleUtils.formatVerseAddress(book, chapter, verses)}</h3>
+            <h3 className="text-2xl my-2">{bibleUtils.formatVerseAddress(book, chapter, versesSelected)}</h3>
           </div>
         </DialogHeader>
         <div className="p-6 pt-0 flex-1 overflow-y-auto">
@@ -66,7 +63,7 @@ export const CompareVerses = forwardRef<HTMLDivElement, Props>(({ book, chapter,
                 translation={translation}
                 book={book}
                 chapter={chapter}
-                verses={verses.map((verse) => verse.verse)}
+                verses={versesSelected.map((verse) => verse.verse)}
                 key={`${translation.identifier}-${i}`}
               />
             );

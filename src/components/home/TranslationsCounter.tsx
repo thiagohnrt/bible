@@ -1,30 +1,31 @@
 "use client";
 
 import { db } from "@/database/bibleDB";
-import { api } from "@/services/api";
+import { BibleContext } from "@/providers/bibleProvider";
 import { useInView } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
 import CountUp from "react-countup";
 
 export function TranslationsCounter() {
+  const { languages, setLanguages } = useContext(BibleContext);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
 
   const [totalLanguages, setTotalLanguages] = useState(0);
   const [totalTranslations, setTotalTranslations] = useState(0);
 
-  const fetchTranslations = async () => {
-    const languages = await api.getLanguages();
+  useLayoutEffect(() => {
     setTotalLanguages(languages.length);
     setTotalTranslations(languages.flatMap((language) => language.translations).length);
-  };
+  }, [languages]);
 
   useEffect(() => {
-    db.updateLanguages().then((hasNew) => {
-      if (hasNew) fetchTranslations();
+    db.updateLanguages().then(({ hasNew, languages }) => {
+      if (hasNew) {
+        // setLanguages(languages!);
+      }
     });
-    fetchTranslations();
-  }, []);
+  }, [setLanguages]);
 
   return (
     <div ref={ref} className="block rounded-md p-4 bg-highlight-active">

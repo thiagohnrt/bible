@@ -3,16 +3,12 @@
 import { Container } from "@/components/root/Container";
 import { Skeleton } from "@/components/ui/skeleton";
 import { stringToNumber } from "@/lib/utils";
-import { api, Language } from "@/services/api";
+import { BibleContext } from "@/providers/bibleProvider";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useContext } from "react";
 
 export default function LanguagesPage() {
-  const [languages, setLanguages] = useState<Language[]>([]);
-
-  useEffect(() => {
-    api.getLanguages().then((languages) => setLanguages(languages));
-  }, []);
+  const { languages } = useContext(BibleContext);
 
   if (languages.length === 0) {
     return (
@@ -39,7 +35,7 @@ export default function LanguagesPage() {
               className="block leading-7 hover:underline"
               key={language.language}
             >
-              {language.language}
+              {`${language.language} (${language.translations.length})`}
             </Link>
           ))}
       </div>

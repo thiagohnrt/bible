@@ -19,6 +19,6 @@ export default function VersionPage({ params: { version } }: Props) {
       </Container>
     );
   } else {
-    return <BooksList version={version} device={device} />;
+    return <BooksList version={version} device={device} backIcon={true} />;
   }
 }

@@ -6,28 +6,21 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { BibleContext } from "@/providers/bibleProvider";
-import { api, Translation } from "@/services/api";
-import React, { useContext, useEffect, useState } from "react";
-import { HiCheck, HiOutlineMinusCircle } from "react-icons/hi";
-import { CgSpinner } from "react-icons/cg";
-import { RiErrorWarningLine } from "react-icons/ri";
 import { db } from "@/database/bibleDB";
+import { BibleContext } from "@/providers/bibleProvider";
+import { Translation } from "@/services/api";
+import React, { useContext } from "react";
+import { CgSpinner } from "react-icons/cg";
+import { HiOutlineMinusCircle } from "react-icons/hi";
+import { RiErrorWarningLine } from "react-icons/ri";
 
 interface Props {
   children: React.ReactNode;
 }
 
 export function ManageOfflineTranslations({ children }: Props) {
-  const { translationsOffline, setTranslationsOffline } = useContext(BibleContext);
-  const [translations, setTranslations] = useState<Translation[]>([]);
+  const { translationsOffline, setTranslationsOffline, translations } = useContext(BibleContext);
   const iconSize = 20;
-
-  useEffect(() => {
-    (async () => {
-      setTranslations(await api.getTranslations());
-    })();
-  }, []);
 
   const onDeleteTranslation = (transition: Translation) => {
     const msg = `Tem certeza que deseja remover essa versão offline?\n\n${transition.short_name} - ${transition.full_name}`;
