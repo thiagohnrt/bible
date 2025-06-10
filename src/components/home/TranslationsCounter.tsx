@@ -3,6 +3,7 @@
 import { db } from "@/database/bibleDB";
 import { BibleContext } from "@/providers/bibleProvider";
 import { useInView } from "motion/react";
+import Link from "next/link";
 import { useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
 import CountUp from "react-countup";
 
@@ -28,7 +29,7 @@ export function TranslationsCounter() {
   }, [setLanguages]);
 
   return (
-    <div ref={ref} className="block rounded-md p-4 bg-highlight-active">
+    <Link href="/languages" ref={ref} className="block rounded-md p-4 bg-highlight-active">
       <div className="flex justify-around">
         <div className="flex flex-col items-center">
           <div className="text-5xl">{isInView ? <CountUp end={totalLanguages} duration={3} /> : <span>0</span>}</div>
@@ -39,6 +40,6 @@ export function TranslationsCounter() {
           <h3>Versões</h3>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

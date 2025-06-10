@@ -26,13 +26,13 @@ export default function LanguagesPage() {
   return (
     <Container className="py-6">
       <h2 className="text-lg font-bold mb-6">Idiomas</h2>
-      <div className="columns-2 lg:columns-3 space-y-2">
+      <div className="columns-1 sm:columns-2 lg:columns-3 space-y-2">
         {languages
           .toSorted((a, b) => a.language.localeCompare(b.language))
           .map((language) => (
             <Link
               href={`/languages/${stringToNumber(language.language)}`}
-              className="block leading-7 hover:underline"
+              className="flex justify-between sm:justify-start leading-7 hover:underline"
               key={language.language}
             >
               <span>{language.language}</span>

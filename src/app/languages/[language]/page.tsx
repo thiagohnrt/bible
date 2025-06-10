@@ -58,7 +58,7 @@ export default function LanguagePage({ params: { language } }: Props) {
         />
         {lang?.language}
       </h3>
-      <div className="columns-2 lg:columns-3 space-y-2">
+      <div className="columns-1 sm:columns-2 lg:columns-3 space-y-2">
         {sortTranslations(lang?.translations ?? []).map((translation) => (
           <a
             href={`/bible/${translation.identifier}`}
