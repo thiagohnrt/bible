@@ -2,20 +2,22 @@
 
 import { cn } from "@/lib/shad";
 import { scrollToElement } from "@/lib/utils";
-import { Story } from "@/services/api";
+import { Story, Translation } from "@/services/api";
 import { RefObject, useContext, useEffect, useState } from "react";
 import { PiList } from "react-icons/pi";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 
+import { ChapterContext } from "@/providers/chapterProvider";
 import { RootContext } from "@/providers/rootProvider";
 import { PopoverClose } from "@radix-ui/react-popover";
 
 interface Props {
-  stories: Story[];
+  translation: Translation;
   parent: RefObject<HTMLDivElement>;
 }
 
-export function StoriesNavigation({ stories: storiesParam, parent }: Props) {
+export function StoriesNavigation({ translation, parent }: Props) {
+  const { data } = useContext(ChapterContext);
   const { device } = useContext(RootContext);
   const [parentWidth, setParentWidth] = useState<number>(0);
 
@@ -29,7 +31,12 @@ export function StoriesNavigation({ stories: storiesParam, parent }: Props) {
     scrollToElement(document.getElementById(`story-${story.verse}-${story.order_if_several}`));
   };
 
-  const stories = storiesParam.filter((story) => !story.title.startsWith("<i>")).toSorted((a, b) => a.verse - b.verse);
+  if (!data.length) return <></>;
+
+  const chapterData = data.find((d) => d.translation.identifier === translation.identifier)!;
+  const stories = chapterData.stories
+    .filter((story) => !story.title.startsWith("<i>"))
+    .toSorted((a, b) => a.verse - b.verse);
 
   if (!stories.length) return <></>;
 
@@ -72,7 +79,7 @@ export function StoriesNavigation({ stories: storiesParam, parent }: Props) {
             <div
               onClick={navigateToStory(story)}
               key={`story-link-${story.translation}-${story.book}-${story.chapter}-${story.verse}-${story.order_if_several}`}
-              className="line-clamp-2 text-sm p-2 rounded-sm hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all cursor-pointer"
+              className="text-sm p-2 rounded-sm hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all cursor-pointer"
               dangerouslySetInnerHTML={{ __html: story.title }}
             ></div>
           ))}
