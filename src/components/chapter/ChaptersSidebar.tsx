@@ -4,7 +4,7 @@ import { cn } from "@/lib/shad";
 import { BibleContext } from "@/providers/bibleProvider";
 import { Book } from "@/services/api";
 import { useContext, useEffect, useLayoutEffect, useState } from "react";
-import { TbLayoutSidebarRightCollapse, TbLayoutSidebarRightExpand } from "react-icons/tb";
+import { BsLayoutSidebarReverse } from "react-icons/bs";
 import { Skeleton } from "../ui/skeleton";
 import { Chapters } from "./Chapters";
 
@@ -48,7 +48,7 @@ export function ChaptersSidebar({ version, book: bookId, chapter }: Props) {
       <div className="sticky top-20">
         <div className={cn("flex items-center pb-4")}>
           <div className={cn("transition-opacity", collapsed ? "opacity-0" : "opacity-100 delay-300")}>
-            <h2 className={collapsed ? "hidden" : ""}>{book.name}</h2>
+            <h2 className={collapsed ? "hidden" : "leading-4"}>{book.name}</h2>
           </div>
           <div className="flex-1 flex justify-end">
             <div
@@ -56,7 +56,7 @@ export function ChaptersSidebar({ version, book: bookId, chapter }: Props) {
               title={collapsed ? "Exibir menu de capítulos" : "Fechar menu de capítulos"}
               onClick={onCollapse}
             >
-              {collapsed ? <TbLayoutSidebarRightExpand size={24} /> : <TbLayoutSidebarRightCollapse size={24} />}
+              <BsLayoutSidebarReverse size={18} />
             </div>
           </div>
         </div>

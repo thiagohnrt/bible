@@ -5,7 +5,7 @@ import * as utils from "@/lib/utils";
 import { BibleContext } from "@/providers/bibleProvider";
 import { useSearchParams } from "next/navigation";
 import { useContext, useEffect, useRef, useState } from "react";
-import { TbLayoutSidebarRightCollapse, TbLayoutSidebarRightExpand } from "react-icons/tb";
+import { BsLayoutSidebar } from "react-icons/bs";
 import { Skeleton } from "../ui/skeleton";
 import { StoriesNavigation } from "./StoriesNavigation";
 
@@ -50,11 +50,11 @@ export function VersionsSidebar() {
               title={collapsed ? "Exibir menu de versões" : "Fechar menu de versões"}
               onClick={onCollapse}
             >
-              {collapsed ? <TbLayoutSidebarRightCollapse size={24} /> : <TbLayoutSidebarRightExpand size={24} />}
+              <BsLayoutSidebar size={18} />
             </div>
           </div>
           <div className={cn("transition-opacity", collapsed ? "opacity-0" : "opacity-100 delay-300")}>
-            <h2 className={collapsed ? "hidden" : ""}>Versões</h2>
+            <h2 className={collapsed ? "hidden" : "leading-4"}>Versões</h2>
           </div>
         </div>
         <div className={cn("transition-opacity", collapsed ? "opacity-0" : "opacity-100 delay-300")}>
