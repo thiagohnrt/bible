@@ -33,7 +33,7 @@ export function StoriesNavigation({ translation, parent }: Props) {
 
   if (!data.length) return <></>;
 
-  const chapterData = data.find((d) => d.translation.identifier === translation.identifier)!;
+  const chapterData = data.find((d) => d.translation.identifier === translation.identifier) ?? { stories: [] };
   const stories = chapterData.stories
     .filter((story) => !story.title.startsWith("<i>"))
     .toSorted((a, b) => a.verse - b.verse);
