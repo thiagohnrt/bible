@@ -1,6 +1,7 @@
-import { BibleHistory } from "@/app/bible/[version]/[book]/[chapter]/page";
+import { ChapterRead } from "@/app/bible/[version]/[book]/[chapter]/page";
 import {
   EVENT_BIBLE_HISTORY,
+  KEY_BIBLE_HISTORY,
   KEY_LANGUAGE_CURRENT,
   KEY_LAST_CHAPTER_READ,
   KEY_TRANSLATION_CURRENT,
@@ -31,11 +32,19 @@ export function getTranslationPathname(pathname: string): Translation {
   });
 }
 
-export const setBibleHistory = (data: BibleHistory): void => {
+export const setBibleHistory = (data: ChapterRead): void => {
+  // Last chapter read
   localStorage.setItem(KEY_LAST_CHAPTER_READ, JSON.stringify(data));
   window.dispatchEvent(new Event(EVENT_BIBLE_HISTORY));
+  // Bible history
+  const history = JSON.parse(localStorage.getItem(KEY_BIBLE_HISTORY) ?? "[]");
+  if (history.length >= 50) {
+    history.shift();
+  }
+  history.push(data);
+  localStorage.setItem(KEY_BIBLE_HISTORY, JSON.stringify(history));
 };
-export const getLastChapterRead = (): BibleHistory => {
+export const getLastChapterRead = (): ChapterRead => {
   return JSON.parse(localStorage.getItem(KEY_LAST_CHAPTER_READ) ?? "{}");
 };
 

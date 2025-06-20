@@ -11,7 +11,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useCallback, useContext, useEffect } from "react";
 import { ChapterProps } from "./layout";
 
-export interface BibleHistory {
+export interface ChapterRead {
   url: string;
   book: {
     id: number;
@@ -62,7 +62,7 @@ export default function ChapterPage({ params: { verse } }: Readonly<ChapterProps
         numVerse = 1;
       }
 
-      const history: BibleHistory = {
+      const history: ChapterRead = {
         url: url,
         book: {
           id: data[0].book.book,

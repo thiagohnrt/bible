@@ -1,6 +1,6 @@
 "use client";
 
-import { BibleHistory } from "@/app/bible/[version]/[book]/[chapter]/page";
+import { ChapterRead } from "@/app/bible/[version]/[book]/[chapter]/page";
 import { getLastChapterRead } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { ContinueReading } from "./ContinueReading";
@@ -11,17 +11,17 @@ interface Props {
 }
 
 export function DecisionReading({ className }: Props) {
-  const [bibleHistory, setBibleHistory] = useState<BibleHistory>({ url: "nothing" } as BibleHistory);
+  const [lastChapterRead, setLastChapterRead] = useState<ChapterRead>({ url: "nothing" } as ChapterRead);
 
   useEffect(() => {
-    setBibleHistory(getLastChapterRead());
+    setLastChapterRead(getLastChapterRead());
   }, []);
 
-  if (bibleHistory.url === "nothing") {
+  if (lastChapterRead.url === "nothing") {
     return <div className="rounded-md bg-highlight h-[140px]"></div>;
-  } else if (!bibleHistory.url) {
+  } else if (!lastChapterRead.url) {
     return <SuggestedReading className={className}></SuggestedReading>;
   } else {
-    return <ContinueReading history={bibleHistory} className={className}></ContinueReading>;
+    return <ContinueReading history={lastChapterRead} className={className}></ContinueReading>;
   }
 }
