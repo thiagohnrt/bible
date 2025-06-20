@@ -1,8 +1,8 @@
 import { BibleHistory } from "@/app/bible/[version]/[book]/[chapter]/page";
 import {
   EVENT_BIBLE_HISTORY,
-  KEY_BIBLE_HISTORY,
   KEY_LANGUAGE_CURRENT,
+  KEY_LAST_CHAPTER_READ,
   KEY_TRANSLATION_CURRENT,
   LANGUAGE_DEFAULT,
   TRANSLATION_DEFAULT,
@@ -32,11 +32,11 @@ export function getTranslationPathname(pathname: string): Translation {
 }
 
 export const setBibleHistory = (data: BibleHistory): void => {
-  localStorage.setItem(KEY_BIBLE_HISTORY, JSON.stringify(data));
+  localStorage.setItem(KEY_LAST_CHAPTER_READ, JSON.stringify(data));
   window.dispatchEvent(new Event(EVENT_BIBLE_HISTORY));
 };
 export const getBibleHistory = (): BibleHistory => {
-  return JSON.parse(localStorage.getItem(KEY_BIBLE_HISTORY) ?? "{}");
+  return JSON.parse(localStorage.getItem(KEY_LAST_CHAPTER_READ) ?? "{}");
 };
 
 export const setLanguageStorage = (language: string) => {
