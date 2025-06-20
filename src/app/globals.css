@@ -111,7 +111,8 @@
 .window-scroll-down .chapter-navigation .chapter-prev,
 .window-scroll-down .chapter-navigation .chapter-next,
 .window-scroll-down .chapter-navigation .chapter-prev-btn:not(:active),
-.window-scroll-down .chapter-navigation .chapter-next-btn:not(:active) {
+.window-scroll-down .chapter-navigation .chapter-next-btn:not(:active),
+.window-scroll-down .chapter-navigation .chapter-stories {
   @apply bg-transparent;
 }
 .verse {

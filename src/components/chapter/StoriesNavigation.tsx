@@ -44,10 +44,10 @@ export function StoriesNavigation({ translation, parent }: Props) {
     return (
       <Popover>
         <PopoverTrigger asChild>
-          <div className={cn("fixed h-14 w-14 z-10 cursor-pointer", "transition-all duration-500")}>
+          <div className="h-14 w-14 cursor-pointer">
             <div
               className={cn(
-                "flex h-full w-full rounded-full items-center justify-center bg-highlight shadow-sm shadow-black "
+                "chapter-stories flex h-full w-full rounded-full items-center justify-center bg-highlight transition-colors"
               )}
             >
               <PiList size={24} />
