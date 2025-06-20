@@ -2,7 +2,7 @@
 
 import { EVENT_BIBLE_HISTORY } from "@/constants/bible";
 import { cn } from "@/lib/shad";
-import { getBibleHistory, getTranslationPathname } from "@/lib/utils";
+import { getLastChapterRead, getTranslationPathname } from "@/lib/utils";
 import { BibleContext } from "@/providers/bibleProvider";
 import { Translation } from "@/services/api";
 import Link from "next/link";
@@ -17,7 +17,7 @@ export default function BottomNavigator() {
   const [bibleLink, setBibleLink] = useState(`/bible`);
 
   const getBibleLink = (translation: Translation): string => {
-    const history = getBibleHistory();
+    const history = getLastChapterRead();
     let book = "";
     if (history.book?.id) {
       book = `?${history.book.id}-${history.chapter}`;

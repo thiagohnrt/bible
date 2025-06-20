@@ -1,7 +1,7 @@
 "use client";
 
 import { BibleHistory } from "@/app/bible/[version]/[book]/[chapter]/page";
-import { getBibleHistory } from "@/lib/utils";
+import { getLastChapterRead } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { ContinueReading } from "./ContinueReading";
 import { SuggestedReading } from "./SuggestedReading";
@@ -14,7 +14,7 @@ export function DecisionReading({ className }: Props) {
   const [bibleHistory, setBibleHistory] = useState<BibleHistory>({ url: "nothing" } as BibleHistory);
 
   useEffect(() => {
-    setBibleHistory(getBibleHistory());
+    setBibleHistory(getLastChapterRead());
   }, []);
 
   if (bibleHistory.url === "nothing") {

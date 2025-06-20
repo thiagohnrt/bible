@@ -51,9 +51,9 @@ export default function ChapterPage({ params: { verse } }: Readonly<ChapterProps
 
   const onSaveHistory = useCallback(
     (translation: Translation, verses: Verse[]) => {
-      const historyLast = utils.getBibleHistory();
+      const lastChapter = utils.getLastChapterRead();
       const url = pathname + (searchParams.toString() ? `?${searchParams.toString()}` : "");
-      if (historyLast.url === url || !data.length) return;
+      if (lastChapter.url === url || !data.length) return;
 
       let numVerse: number = +decodeURIComponent(verse ?? "")
         .split(",")[0]

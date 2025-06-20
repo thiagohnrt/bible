@@ -35,7 +35,7 @@ export const setBibleHistory = (data: BibleHistory): void => {
   localStorage.setItem(KEY_LAST_CHAPTER_READ, JSON.stringify(data));
   window.dispatchEvent(new Event(EVENT_BIBLE_HISTORY));
 };
-export const getBibleHistory = (): BibleHistory => {
+export const getLastChapterRead = (): BibleHistory => {
   return JSON.parse(localStorage.getItem(KEY_LAST_CHAPTER_READ) ?? "{}");
 };
 
