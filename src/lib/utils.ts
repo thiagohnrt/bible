@@ -44,6 +44,13 @@ export const setBibleHistory = (data: ChapterRead): void => {
   history.push(data);
   localStorage.setItem(KEY_BIBLE_HISTORY, JSON.stringify(history));
 };
+export const getBibleHistory = (): ChapterRead[] => {
+  const history = localStorage.getItem(KEY_BIBLE_HISTORY);
+  if (history) {
+    return JSON.parse(history);
+  }
+  return [];
+};
 export const getLastChapterRead = (): ChapterRead => {
   return JSON.parse(localStorage.getItem(KEY_LAST_CHAPTER_READ) ?? "{}");
 };
