@@ -33,6 +33,7 @@ export function getTranslationPathname(pathname: string): Translation {
 }
 
 export const setBibleHistory = (data: ChapterRead): void => {
+  data.date = new Date().toISOString();
   // Last chapter read
   localStorage.setItem(KEY_LAST_CHAPTER_READ, JSON.stringify(data));
   window.dispatchEvent(new Event(EVENT_BIBLE_HISTORY));

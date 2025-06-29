@@ -24,6 +24,7 @@ export interface ChapterRead {
   };
   translation: string;
   translationId: string;
+  date?: string;
 }
 
 export default function ChapterPage({ params: { verse } }: Readonly<ChapterProps>) {
