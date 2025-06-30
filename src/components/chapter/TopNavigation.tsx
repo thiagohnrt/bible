@@ -22,7 +22,7 @@ export function TopNavigation({ className }: Props) {
     >
       <div
         className={cn(
-          "flex h-full w-full rounded-full items-center justify-center bg-highlight-active shadow-md shadow-black "
+          "flex h-full w-full rounded-full items-center justify-center bg-highlight-active shadow-sm shadow-black "
         )}
       >
         <RiArrowUpSLine size={24} />

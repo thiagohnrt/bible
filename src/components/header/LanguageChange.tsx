@@ -1,4 +1,9 @@
+import { KEY_NEW_TRANSLATIONS_AVAILABLE } from "@/constants/bible";
+import { Available } from "@/interfaces/available";
+import { cn } from "@/lib/shad";
 import { Language } from "@/services/api";
+import { useEffect, useState } from "react";
+import { HiCheck } from "react-icons/hi";
 import {
   Dialog,
   DialogClose,
@@ -8,11 +13,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import { HiCheck } from "react-icons/hi";
-import { useEffect, useState } from "react";
-import { KEY_NEW_TRANSLATIONS_AVAILABLE } from "@/constants/bible";
-import { Available } from "@/interfaces/available";
-import { cn } from "@/lib/shad";
 
 interface Props {
   children: React.ReactNode;
@@ -57,7 +57,10 @@ export function LanguageChange({ children, languages, current, onLanguageSelecte
                       <span className={cn("pr-3", languagesAvailable.includes(language.language) && "there-is-news")}>
                         {language.language}
                       </span>
-                      {language.language === current?.language ? <HiCheck /> : <></>}
+                      <div className="flex items-center gap-2">
+                        {language.language === current?.language ? <HiCheck /> : <></>}
+                        <span className="opacity-70">{language.translations.length}</span>
+                      </div>
                     </div>
                   </button>
                 </DialogClose>

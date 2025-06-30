@@ -6,10 +6,10 @@ import {
   KEY_TRANSLATIONS_AVAILABLE_VERIFIED,
   TRANSLATION_DEFAULT,
 } from "@/constants/bible";
-import { api, Book, Language, Verse } from "@/services/api";
-import { IDB } from "./indexedDB";
 import { Available } from "@/interfaces/available";
+import { api, Book, Language, Story, Verse } from "@/services/api";
 import Cookies from "js-cookie";
+import { IDB } from "./indexedDB";
 
 export interface TranslationsOffline {
   [translation: string]: "downloading" | "downloaded" | "downloadFailed" | "deleting" | "deleteFailed";
@@ -17,7 +17,7 @@ export interface TranslationsOffline {
 
 export const idb = new IDB({
   name: "bible",
-  version: 2,
+  version: 3,
   stores: [
     {
       name: "verses",
@@ -48,6 +48,21 @@ export const idb = new IDB({
       keyPath: "id",
       autoIncrement: true,
     },
+    {
+      name: "stories",
+      keyPath: "id",
+      autoIncrement: true,
+      indexs: [
+        {
+          name: "translationIndex",
+          keyPath: "translation",
+        },
+        {
+          name: "chapterIndex",
+          keyPath: ["translation", "book", "chapter"],
+        },
+      ],
+    },
   ],
 });
 
@@ -65,11 +80,13 @@ const saveTranslation = async (
     setTranslationsToCompare(translationsToCompare);
 
     try {
-      const [verses, books] = await Promise.all([
+      const [verses, books, stories] = await Promise.all([
         // translation data
         api.getTranslationData(translationId),
         // books
         api.getBooks(translationId),
+        // Stories
+        api.getStories(translationId),
       ]);
 
       await Promise.all([
@@ -77,6 +94,8 @@ const saveTranslation = async (
         idb.addAll("verses", verses),
         // books
         idb.addAll("books", books),
+        // stories
+        idb.addAll("stories", stories),
       ]);
 
       const translationsUpdated = getTranslationsOffline();
@@ -112,6 +131,8 @@ const deleteTranslation = async (
         idb.delete("verses", "translationIndex", translationId),
         // books
         idb.delete("books", "translationIndex", translationId),
+        // stories
+        idb.delete("stories", "translationIndex", translationId),
       ]);
 
       const translationsUpdated = getTranslationsOffline();
@@ -130,26 +151,29 @@ const saveLanguages = async () => {
   const languages = await api.getLanguages();
   await idb.addAll("languages", languages);
   localStorage.setItem(KEY_LANGUAGES_SAVED, "true");
+  return languages;
 };
-const updateLanguages = async (): Promise<boolean> => {
+const updateLanguages = async (): Promise<{ hasNew: boolean; languages?: Language[] }> => {
   if (Cookies.get(KEY_TRANSLATIONS_AVAILABLE_VERIFIED) === "true") {
-    return false;
+    return { hasNew: false };
   }
 
+  let languagesNew: Language[] = [];
   if (hasLanguagesSaved()) {
     const [oldData, newData] = await Promise.all([api.getLanguages("no"), api.getLanguages("yes")]);
     if (hasNewTranslationsAvailable(oldData, newData)) {
       await idb.deleteAll("languages");
       await idb.addAll("languages", newData);
+      languagesNew = newData;
     } else {
-      return false;
+      return { hasNew: false };
     }
   } else {
-    await saveLanguages();
+    languagesNew = await saveLanguages();
   }
 
   Cookies.set(KEY_TRANSLATIONS_AVAILABLE_VERIFIED, "true", { expires: 1 });
-  return true;
+  return { hasNew: true, languages: languagesNew };
 };
 
 const hasNewTranslationsAvailable = (oldData: Language[], newData: Language[]): boolean => {
@@ -210,6 +234,13 @@ const getLanguages = async () => {
   return idb.getAll<Language>("languages");
 };
 
+const getStories = async (translation: string) => {
+  return idb.getAll<Story>("stories", "translationIndex", [translation]);
+};
+const getStoriesByChapter = async (translation: string, book: number, chapter: number) => {
+  return idb.getAll<Story>("stories", "chapterIndex", [translation, book, chapter]);
+};
+
 const getTranslationsOffline = (): TranslationsOffline =>
   JSON.parse(localStorage.getItem(KEY_TRANSLATION_SAVED) ?? "{}");
 const setTranslationsOffline = (item: TranslationsOffline) =>
@@ -247,6 +278,8 @@ export const db = {
   getVerse,
   getBooks,
   getLanguages,
+  getStories,
+  getStoriesByChapter,
   getTranslationsOffline,
   setTranslationsOffline,
   getTranslationsToCompare,

@@ -46,10 +46,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <Container>
         <form action={login} className="flex flex-col gap-4">
           <h1 className="text-2xl font-bold border-b">Login</h1>
-          <Input type="username" placeholder="Usuário" name="username" required />
+          <Input type="text" placeholder="Usuário" name="username" required />
           <Input type="password" placeholder="Senha" name="password" required />
           <Button type="submit" className="w-full">
-            Entrar
+            Entrar.
           </Button>
         </form>
       </Container>

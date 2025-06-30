@@ -1,5 +1,6 @@
 "use client";
 
+import { CopyVerseOptions } from "@/interfaces/CopyVerseOptions";
 import { bibleUtils } from "@/lib/bibleUtils";
 import { clipboard } from "@/lib/clipboard";
 import { cn } from "@/lib/shad";
@@ -8,36 +9,35 @@ import { BibleContext } from "@/providers/bibleProvider";
 import { ChapterContext } from "@/providers/chapterProvider";
 import { RootContext } from "@/providers/rootProvider";
 import { Book, Verse as IVerse } from "@/services/api";
+import Cookies from "js-cookie";
 import { forwardRef, ReactNode, useContext, useEffect, useState } from "react";
 import { IoTextOutline } from "react-icons/io5";
 import { MdArrowDropDown } from "react-icons/md";
 import { PiListNumbers, PiTextAlignJustifyLight, PiTextAlignLeftLight } from "react-icons/pi";
+import { Checkbox } from "../ui/checkbox";
 import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from "../ui/drawer";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Toast, ToastClose, ToastDescription, ToastProvider, ToastTitle, ToastViewport } from "../ui/toast";
 import { CompareVerses } from "./CompareVerses";
-import Cookies from "js-cookie";
-import { Checkbox } from "../ui/checkbox";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import Verse from "./Verse";
-import { CopyVerseOptions } from "@/interfaces/CopyVerseOptions";
 
-interface Props {
-  book: Book;
-  chapter: number;
-}
-
-export function VerseDrawer({ book, chapter }: Props) {
+export function VerseDrawer() {
   const { device } = useContext(RootContext);
   const { translation } = useContext(BibleContext);
-  const { verses, setVerses } = useContext(ChapterContext);
+  const { data, versesSelected, setVersesSelected } = useContext(ChapterContext);
 
   const verseFull = () => {
     Cookies.get("copy_verse_options");
     const options = Cookies.get("copy_verse_options");
     const parsedValue = options ? JSON.parse(options) : undefined;
-    const versesText = bibleUtils.versesToString(verses, parsedValue);
+    const versesText = bibleUtils.versesToString(versesSelected, parsedValue);
     if (parsedValue?.bookName ?? true) {
-      return `${versesText}\n\n${bibleUtils.formatVerseAddress(book, chapter, verses, translation)}`;
+      return `${versesText}\n\n${bibleUtils.formatVerseAddress(
+        data[0].book,
+        data[0].chapter,
+        versesSelected,
+        translation
+      )}`;
     } else {
       return versesText;
     }
@@ -57,17 +57,29 @@ export function VerseDrawer({ book, chapter }: Props) {
   };
 
   const closeDrawer = () => {
-    setVerses([]);
+    setVersesSelected([]);
   };
+
+  if (!data.length) {
+    return <></>;
+  }
 
   if (device.type !== "mobile") {
     return (
       <ToastProvider swipeDirection="up">
-        <Toast open={verses.length > 0} onOpenChange={(open) => !open && closeDrawer()} duration={86400000}>
+        <Toast open={versesSelected.length > 0} onOpenChange={(open) => !open && closeDrawer()} duration={86400000}>
           <div className="grid gap-3">
-            <ToastTitle className="text-lg">{bibleUtils.formatVerseAddress(book, chapter, verses)}</ToastTitle>
+            <ToastTitle className="text-lg">
+              {bibleUtils.formatVerseAddress(data[0].book, data[0].chapter, versesSelected)}
+            </ToastTitle>
             <ToastDescription>
-              <VerseActions book={book} chapter={chapter} share={handleShare} copy={handleCopy} isMobile={false} />
+              <VerseActions
+                book={data[0].book}
+                chapter={data[0].chapter}
+                share={handleShare}
+                copy={handleCopy}
+                isMobile={false}
+              />
             </ToastDescription>
           </div>
           <ToastClose />
@@ -78,14 +90,20 @@ export function VerseDrawer({ book, chapter }: Props) {
   }
 
   return (
-    <Drawer open={verses.length > 0} onClose={() => closeDrawer()} modal={false}>
+    <Drawer open={versesSelected.length > 0} onClose={() => closeDrawer()} modal={false}>
       <DrawerContent>
         <DrawerHeader>
-          <DrawerTitle>{bibleUtils.formatVerseAddress(book, chapter, verses)}</DrawerTitle>
+          <DrawerTitle>{bibleUtils.formatVerseAddress(data[0].book, data[0].chapter, versesSelected)}</DrawerTitle>
           <DrawerDescription></DrawerDescription>
         </DrawerHeader>
         <DrawerFooter>
-          <VerseActions book={book} chapter={chapter} share={handleShare} copy={handleCopy} isMobile={true} />
+          <VerseActions
+            book={data[0].book}
+            chapter={data[0].chapter}
+            share={handleShare}
+            copy={handleCopy}
+            isMobile={true}
+          />
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
@@ -198,11 +216,15 @@ export const CopyButton = forwardRef<
   const versesFake: IVerse[] = [
     {
       pk: 1,
+      book: 1,
+      chapter: 1,
       verse: 1,
       text: "No princípio Deus criou os céus e a terra.",
     },
     {
       pk: 2,
+      book: 1,
+      chapter: 1,
       verse: 2,
       text: "A terra era vazia e sem forma definida, e o Espírito de Deus se movia por sobre as águas.",
     },

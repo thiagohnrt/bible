@@ -1,9 +1,10 @@
 "use client";
 
 import { cn } from "@/lib/shad";
-import { api, Book } from "@/services/api";
-import { useEffect, useState } from "react";
-import { TbLayoutSidebarRightCollapse, TbLayoutSidebarRightExpand } from "react-icons/tb";
+import { BibleContext } from "@/providers/bibleProvider";
+import { Book } from "@/services/api";
+import { useContext, useEffect, useLayoutEffect, useState } from "react";
+import { BsLayoutSidebarReverse } from "react-icons/bs";
 import { Skeleton } from "../ui/skeleton";
 import { Chapters } from "./Chapters";
 
@@ -14,12 +15,13 @@ interface Props {
 }
 
 export function ChaptersSidebar({ version, book: bookId, chapter }: Props) {
-  const [book, setBook] = useState<Book>({} as Book);
+  const { getBook } = useContext(BibleContext);
+  const [book, setBook] = useState<Book | null>(null);
   const [collapsed, setCollapsed] = useState(false);
 
-  useEffect(() => {
-    api.getBook(version, bookId).then((b) => setBook(b));
-  }, [bookId, version]);
+  useLayoutEffect(() => {
+    getBook(version, bookId).then(setBook);
+  }, [bookId, getBook, version]);
 
   useEffect(() => {
     const collapsed = localStorage.getItem("chapter_sidebar_collapsed");
@@ -31,7 +33,7 @@ export function ChaptersSidebar({ version, book: bookId, chapter }: Props) {
     setCollapsed(!collapsed);
   };
 
-  if (!book.chapters) {
+  if (!book) {
     return (
       <div className={collapsed ? "basis-7" : "basis-2/6"}>
         <Skeleton className={cn("w-full h-6 bg-highlight", !collapsed && "hidden")} />
@@ -46,7 +48,7 @@ export function ChaptersSidebar({ version, book: bookId, chapter }: Props) {
       <div className="sticky top-20">
         <div className={cn("flex items-center pb-4")}>
           <div className={cn("transition-opacity", collapsed ? "opacity-0" : "opacity-100 delay-300")}>
-            <h2 className={collapsed ? "hidden" : ""}>{book.name}</h2>
+            <h2 className={collapsed ? "hidden" : "leading-4"}>{book.name}</h2>
           </div>
           <div className="flex-1 flex justify-end">
             <div
@@ -54,7 +56,7 @@ export function ChaptersSidebar({ version, book: bookId, chapter }: Props) {
               title={collapsed ? "Exibir menu de capítulos" : "Fechar menu de capítulos"}
               onClick={onCollapse}
             >
-              {collapsed ? <TbLayoutSidebarRightExpand size={24} /> : <TbLayoutSidebarRightCollapse size={24} />}
+              <BsLayoutSidebarReverse size={18} />
             </div>
           </div>
         </div>

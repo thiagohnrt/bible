@@ -1,12 +1,12 @@
-import { api, Book, Translation, Verse as IVerse } from "@/services/api";
-import { useContext, useEffect, useState } from "react";
-import Verse from "./Verse";
+import { bibleUtils } from "@/lib/bibleUtils";
 import { BibleContext } from "@/providers/bibleProvider";
+import { api, Book, Verse as IVerse, Translation } from "@/services/api";
 import { useRouter } from "next/navigation";
+import { useContext, useEffect, useState } from "react";
 import { TfiCommentAlt } from "react-icons/tfi";
 import { Skeleton } from "../ui/skeleton";
-import { bibleUtils } from "@/lib/bibleUtils";
 import { CommentDrawer } from "./CommentDrawer";
+import Verse from "./Verse";
 
 interface Props {
   translation: Translation;

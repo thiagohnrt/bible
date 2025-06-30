@@ -1,9 +1,12 @@
 "use client";
 
-import { BibleHistory } from "@/app/bible/[version]/[book]/[chapter]/page";
-import { getBibleHistory } from "@/lib/utils";
+import { ChapterRead } from "@/app/bible/[version]/[book]/[chapter]/page";
+import { cn } from "@/lib/shad";
+import { getLastChapterRead } from "@/lib/utils";
 import { useEffect, useState } from "react";
+import { Skeleton } from "../ui/skeleton";
 import { ContinueReading } from "./ContinueReading";
+import { HistoryReading } from "./HistoryReading";
 import { SuggestedReading } from "./SuggestedReading";
 
 interface Props {
@@ -11,17 +14,22 @@ interface Props {
 }
 
 export function DecisionReading({ className }: Props) {
-  const [bibleHistory, setBibleHistory] = useState<BibleHistory>({ url: "nothing" } as BibleHistory);
+  const [lastChapterRead, setLastChapterRead] = useState<ChapterRead>({ url: "nothing" } as ChapterRead);
 
   useEffect(() => {
-    setBibleHistory(getBibleHistory());
+    setLastChapterRead(getLastChapterRead());
   }, []);
 
-  if (bibleHistory.url === "nothing") {
-    return <div className="rounded-md bg-highlight h-[140px]"></div>;
-  } else if (!bibleHistory.url) {
-    return <SuggestedReading className={className}></SuggestedReading>;
-  } else {
-    return <ContinueReading history={bibleHistory} className={className}></ContinueReading>;
-  }
+  return (
+    <div className={cn(`grid grid-cols-1 sm:grid-cols-2 gap-4`, className)}>
+      {lastChapterRead.url === "nothing" ? <Skeleton className="rounded-md h-[140px]"></Skeleton> : <></>}
+      {!lastChapterRead.url ? <SuggestedReading></SuggestedReading> : <></>}
+      {lastChapterRead.url && lastChapterRead.url !== "nothing" ? (
+        <ContinueReading history={lastChapterRead}></ContinueReading>
+      ) : (
+        <></>
+      )}
+      <HistoryReading />
+    </div>
+  );
 }

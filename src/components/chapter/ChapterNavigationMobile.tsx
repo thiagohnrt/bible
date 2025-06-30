@@ -1,10 +1,12 @@
 "use client";
 
 import { cn } from "@/lib/shad";
-import { api, Book } from "@/services/api";
+import { BibleContext } from "@/providers/bibleProvider";
+import { Book } from "@/services/api";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useContext, useLayoutEffect, useRef, useState } from "react";
 import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
+import { StoriesNavigation } from "./StoriesNavigation";
 
 interface Props {
   version: string;
@@ -13,25 +15,37 @@ interface Props {
 }
 
 export function ChapterNavigationMobile({ version, book: bookId, chapter }: Props) {
-  const [book, setBook] = useState<Book>({} as Book);
+  const { getBook, translation } = useContext(BibleContext);
+  const [book, setBook] = useState<Book | null>(null);
+  const parentRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    api.getBook(version, bookId).then((data) => setBook(data));
-  }, [bookId, version]);
+  useLayoutEffect(() => {
+    getBook(version, bookId).then(setBook);
+  }, [bookId, getBook, version]);
 
   return (
     <div
       className={cn(
         "chapter-navigation",
         "fixed left-0 right-0 h-20 px-2 z-20",
-        "bg-background border-t flex justify-between items-center",
+        "bg-background border-t",
         "transition-all duration-500"
       )}
       style={{ bottom: "calc(4rem - 1px)" }}
+      ref={parentRef}
     >
-      <ChapterPrev version={version} book={book} chapter={chapter} />
-      <ChapterBook version={version} book={book} chapter={chapter} />
-      <ChapterNext version={version} book={book} chapter={chapter} />
+      {!book || !translation ? (
+        <></>
+      ) : (
+        <div className="flex justify-between items-center gap-2 h-full">
+          <div className="flex flex-1 justify-between items-center">
+            <ChapterPrev version={version} book={book} chapter={chapter} />
+            <ChapterBook version={version} book={book} chapter={chapter} />
+            <ChapterNext version={version} book={book} chapter={chapter} />
+          </div>
+          <StoriesNavigation translation={translation} parent={parentRef} />
+        </div>
+      )}
     </div>
   );
 }

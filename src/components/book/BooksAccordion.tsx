@@ -1,12 +1,12 @@
 "use client";
 
-import { api, Book } from "@/services/api";
-import { Accordion, AccordionContent, AccordionItemFocus, AccordionTrigger } from "../ui/accordion";
-import { Chapters } from "../chapter/Chapters";
-import { useEffect, useRef, useState } from "react";
-import { Skeleton } from "../ui/skeleton";
-import { usePathname } from "next/navigation";
 import { repeat } from "@/lib/utils";
+import { BibleContext } from "@/providers/bibleProvider";
+import { usePathname } from "next/navigation";
+import { useContext, useEffect, useRef, useState } from "react";
+import { Chapters } from "../chapter/Chapters";
+import { Accordion, AccordionContent, AccordionItemFocus, AccordionTrigger } from "../ui/accordion";
+import { Skeleton } from "../ui/skeleton";
 
 interface Props {
   version: string;
@@ -18,19 +18,17 @@ interface Props {
 }
 
 export function BooksAccordion({ version, device }: Props) {
-  const [books, setBooks] = useState<Book[]>([]);
+  const { books: booksContext } = useContext(BibleContext);
   const [data, setData] = useState<{ book: string; current: { book: number; chapter: number } }>({
     book: "",
     current: { book: 0, chapter: 0 },
   });
   const itemRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const pathname = usePathname();
+  const books = booksContext.filter((b) => b.translation === version);
 
   useEffect(() => {
-    api.getBooks(version).then((data) => setBooks(data));
-  }, [version]);
-
-  useEffect(() => {
+    const books = booksContext.filter((b) => b.translation === version);
     if (books.length) {
       const book = location.search.substring(1).split("-")[0];
       const chapter = +location.search.substring(1).split("-")[1];
@@ -39,14 +37,14 @@ export function BooksAccordion({ version, device }: Props) {
         itemRefs.current[`${book}`]?.click();
       }
     }
-  }, [books, pathname]);
+  }, [booksContext, pathname, version]);
 
   if (!books.length) {
     return (
       <>
         {repeat(66, (i) => {
           return (
-            <div className="py-4" key={i}>
+            <div className="py-4" key={`ba-skltn-${i}`}>
               <Skeleton className="h-6 bg-highlight" />
             </div>
           );
@@ -70,7 +68,7 @@ export function BooksAccordion({ version, device }: Props) {
               itemRefs.current[`${book.book}`] = el;
             }}
             value={`${book.book}`}
-            key={book.book}
+            key={`book-accordion-${book.book}`}
             className="border-none"
           >
             <AccordionTrigger className="text-left">{book.name}</AccordionTrigger>

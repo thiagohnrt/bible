@@ -1,8 +1,11 @@
 "use client";
 
+import { KEY_NEW_TRANSLATIONS_AVAILABLE } from "@/constants/bible";
+import { Available } from "@/interfaces/available";
+import { cn } from "@/lib/shad";
 import { sortTranslations } from "@/lib/utils";
 import { BibleContext } from "@/providers/bibleProvider";
-import { api, Language, Translation } from "@/services/api";
+import { Language, Translation } from "@/services/api";
 import { forwardRef, useContext, useEffect, useState } from "react";
 import { CgSpinner } from "react-icons/cg";
 import { HiCheck, HiDownload, HiOutlineMinusCircle } from "react-icons/hi";
@@ -20,9 +23,6 @@ import {
 } from "../ui/dialog";
 import { DeleteVersionConfirm } from "./DeleteVersionConfirm";
 import { LanguageChange } from "./LanguageChange";
-import { Available } from "@/interfaces/available";
-import { KEY_NEW_TRANSLATIONS_AVAILABLE } from "@/constants/bible";
-import { cn } from "@/lib/shad";
 
 interface Props {
   children: React.ReactNode;
@@ -42,6 +42,7 @@ interface Data {
 
 export const VersionChange = forwardRef<HTMLDivElement, Props>(
   ({ children, className, onTranslationSelected, onTranslationDeleted }: Props, ref) => {
+    const { languages } = useContext(BibleContext);
     const { translation: translationContext, translationsOffline } = useContext(BibleContext);
     const [newsAvailable, setNewsAvailable] = useState<Available>({ languages: [], translations: [] });
     const [data, setData] = useState<Data>({
@@ -54,37 +55,34 @@ export const VersionChange = forwardRef<HTMLDivElement, Props>(
     });
 
     useEffect(() => {
-      if (!translationContext) {
+      if (!translationContext || !languages.length) {
         return;
       }
-      (async () => {
-        const languages = await api.getLanguages();
 
-        const languageCurrent = languages.find(
-          (lang) =>
-            lang.translations.findIndex((translation) => translation.identifier === translationContext.identifier) > -1
-        );
+      const languageCurrent = languages.find(
+        (lang) =>
+          lang.translations.findIndex((translation) => translation.identifier === translationContext.identifier) > -1
+      );
 
-        const downloaded = languages
-          .map((language) =>
-            language.translations
-              .map<Translation | null>((translation) =>
-                translationsOffline[translation.identifier] === "downloaded" ? translation : null
-              )
-              .filter((translation) => translation != null)
-          )
-          .flat();
+      const downloaded = languages
+        .map((language) =>
+          language.translations
+            .map<Translation | null>((translation) =>
+              translationsOffline[translation.identifier] === "downloaded" ? translation : null
+            )
+            .filter((translation) => translation != null)
+        )
+        .flat();
 
-        setData({
-          current: {
-            language: languageCurrent,
-            translation: translationContext.identifier,
-          },
-          downloaded,
-          languages,
-        });
-      })();
-    }, [translationContext, translationsOffline]);
+      setData({
+        current: {
+          language: languageCurrent,
+          translation: translationContext.identifier,
+        },
+        downloaded,
+        languages,
+      });
+    }, [languages, translationContext, translationsOffline]);
 
     const setLanguage = (language: Language) => {
       setData({ ...data, current: { ...data.current, language } });

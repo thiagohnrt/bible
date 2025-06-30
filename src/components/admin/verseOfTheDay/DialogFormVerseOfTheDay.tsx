@@ -3,7 +3,7 @@ import { bibleUtils } from "@/lib/bibleUtils";
 import { repeat } from "@/lib/utils";
 import { IVerseOfTheDay } from "@/models/verseOfTheDayModel";
 import { api, Verse as IVerse } from "@/services/api";
-import { FormEvent, useCallback, useState } from "react";
+import { FormEvent, useCallback, useContext, useState } from "react";
 import Verse from "../../chapter/Verse";
 import { Button } from "../../ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../../ui/dialog";
@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/shad";
 import { DialogConfirm } from "../../root/DialogConfirm";
+import { BibleContext } from "@/providers/bibleProvider";
 
 interface NewVerseOfTheDayProps {
   children: React.ReactNode;
@@ -29,8 +30,7 @@ const initialFormaData = {
 };
 
 export function DialogFormVerseOfTheDay({ children, data, onSaved }: NewVerseOfTheDayProps) {
-  const { toast } = useToast();
-  const router = useRouter();
+  const { getBook } = useContext(BibleContext);
   const [isLoadingPreview, setIsLoadingPreview] = useState(false);
   const [isSendingForm, setIsSendingForm] = useState(false);
   const [isDeletingForm, setIsDeletingForm] = useState(false);
@@ -39,6 +39,8 @@ export function DialogFormVerseOfTheDay({ children, data, onSaved }: NewVerseOfT
     address: "",
     verses: [] as IVerse[],
   });
+  const { toast } = useToast();
+  const router = useRouter();
 
   const onOpen = () => {
     if (data && !formData.book) {
@@ -71,7 +73,7 @@ export function DialogFormVerseOfTheDay({ children, data, onSaved }: NewVerseOfT
       if (!formData) return;
       setIsLoadingPreview(true);
       const { book: bookId, chapter, verses } = formData;
-      api.getBook(TRANSLATION_DEFAULT, +bookId).then((book) => {
+      getBook(TRANSLATION_DEFAULT, +bookId).then((book) => {
         const address = bibleUtils.formatVerseAddress(
           book,
           +chapter,
@@ -88,7 +90,7 @@ export function DialogFormVerseOfTheDay({ children, data, onSaved }: NewVerseOfT
         });
       });
     },
-    [formData]
+    [formData, getBook]
   );
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {

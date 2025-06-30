@@ -1,15 +1,15 @@
 "use client";
 
-import { BibleHistory } from "@/app/bible/[version]/[book]/[chapter]/page";
+import { ChapterRead } from "@/app/bible/[version]/[book]/[chapter]/page";
+import { bibleUtils } from "@/lib/bibleUtils";
 import { cn } from "@/lib/shad";
+import { Verse as IVerse } from "@/services/api";
 import Link from "next/link";
 import { IoIosArrowDropright } from "react-icons/io";
 import Verse from "../chapter/Verse";
-import { bibleUtils } from "@/lib/bibleUtils";
-import { Verse as IVerse } from "@/services/api";
 
 interface Props {
-  history: BibleHistory;
+  history: ChapterRead;
   className?: string;
 }
 

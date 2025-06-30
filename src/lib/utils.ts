@@ -1,8 +1,9 @@
-import { BibleHistory } from "@/app/bible/[version]/[book]/[chapter]/page";
+import { ChapterRead } from "@/app/bible/[version]/[book]/[chapter]/page";
 import {
   EVENT_BIBLE_HISTORY,
   KEY_BIBLE_HISTORY,
   KEY_LANGUAGE_CURRENT,
+  KEY_LAST_CHAPTER_READ,
   KEY_TRANSLATION_CURRENT,
   LANGUAGE_DEFAULT,
   TRANSLATION_DEFAULT,
@@ -11,6 +12,7 @@ import {
 import * as bolls from "@/custom/bolls";
 import { Translation } from "@/services/api";
 import { ReactNode } from "react";
+import packageJson from "../../package.json";
 
 export function getTranslationPathname(pathname: string): Translation {
   if (pathname.startsWith("/bible")) {
@@ -30,12 +32,28 @@ export function getTranslationPathname(pathname: string): Translation {
   });
 }
 
-export const setBibleHistory = (data: BibleHistory): void => {
-  localStorage.setItem(KEY_BIBLE_HISTORY, JSON.stringify(data));
+export const setBibleHistory = (data: ChapterRead): void => {
+  data.date = new Date().toISOString();
+  // Last chapter read
+  localStorage.setItem(KEY_LAST_CHAPTER_READ, JSON.stringify(data));
   window.dispatchEvent(new Event(EVENT_BIBLE_HISTORY));
+  // Bible history
+  const history = JSON.parse(localStorage.getItem(KEY_BIBLE_HISTORY) ?? "[]");
+  if (history.length >= 50) {
+    history.shift();
+  }
+  history.push(data);
+  localStorage.setItem(KEY_BIBLE_HISTORY, JSON.stringify(history));
 };
-export const getBibleHistory = (): BibleHistory => {
-  return JSON.parse(localStorage.getItem(KEY_BIBLE_HISTORY) ?? "{}");
+export const getBibleHistory = (): ChapterRead[] => {
+  const history = localStorage.getItem(KEY_BIBLE_HISTORY);
+  if (history) {
+    return JSON.parse(history);
+  }
+  return [];
+};
+export const getLastChapterRead = (): ChapterRead => {
+  return JSON.parse(localStorage.getItem(KEY_LAST_CHAPTER_READ) ?? "{}");
 };
 
 export const setLanguageStorage = (language: string) => {
@@ -177,4 +195,14 @@ export const scrollToElement = (
 
 export const stringToNumber = (str: string): number => {
   return str.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
+};
+
+export const getVersion = () => {
+  const now = new Date(packageJson.datetime);
+  const year = String(now.getFullYear()).substring(2);
+  const month = String(now.getMonth() + 1).padStart(2, "0"); // Janeiro é 0!
+  const day = String(now.getDate()).padStart(2, "0");
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+  return `${packageJson.version}`;
 };

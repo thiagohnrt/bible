@@ -81,8 +81,12 @@
 }
 .window-scroll-down footer,
 .window-scroll-down .chapter-navigation,
-.window-scroll-down .chapter-top-navigation {
+.window-scroll-down .chapter-top-navigation,
+.window-scroll-down .chapter-stories-navigation {
   transform: translateY(4rem);
+}
+.window-scroll-down .chapter-stories-navigation {
+  opacity: 0;
 }
 
 .bg-highlight {
@@ -107,7 +111,8 @@
 .window-scroll-down .chapter-navigation .chapter-prev,
 .window-scroll-down .chapter-navigation .chapter-next,
 .window-scroll-down .chapter-navigation .chapter-prev-btn:not(:active),
-.window-scroll-down .chapter-navigation .chapter-next-btn:not(:active) {
+.window-scroll-down .chapter-navigation .chapter-next-btn:not(:active),
+.window-scroll-down .chapter-navigation .chapter-stories {
   @apply bg-transparent;
 }
 .verse {
