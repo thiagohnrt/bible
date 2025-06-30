@@ -1,36 +1,13 @@
 "use client";
 
 import { ChapterRead } from "@/app/bible/[version]/[book]/[chapter]/page";
+import { bibleUtils } from "@/lib/bibleUtils";
 import { cn } from "@/lib/shad";
 import { getBibleHistory } from "@/lib/utils";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { MdHistory } from "react-icons/md";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet";
-
-function formatHistoryDate(dateStr?: string) {
-  if (!dateStr) return "Data desconhecida";
-  const date = new Date(dateStr);
-  const now = new Date();
-
-  // Zera horas para comparar apenas datas
-  const dateOnly = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-  const nowOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-
-  const diffDays = Math.floor((nowOnly.getTime() - dateOnly.getTime()) / (1000 * 60 * 60 * 24));
-
-  if (diffDays === 0) return "Hoje";
-  if (diffDays === 1) return "Ontem";
-
-  const weekDays = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
-
-  if (diffDays < 7) {
-    return weekDays[date.getDay()];
-  }
-
-  // Ex: 23 de jun.
-  return `${date.getDate()} de ${date.toLocaleString("pt-BR", { month: "short" })}`;
-}
 
 export function HistorySheet({ className }: { className?: string }) {
   const [bibleHistory, setBibleHistory] = useState<ChapterRead[]>([]);
@@ -39,7 +16,7 @@ export function HistorySheet({ className }: { className?: string }) {
   const groupedHistory = useMemo(() => {
     const groups: { [label: string]: ChapterRead[] } = {};
     bibleHistory.forEach((history) => {
-      const label = formatHistoryDate(history.date);
+      const label = bibleUtils.formatHistoryDate(history.date);
       if (!groups[label]) groups[label] = [];
       groups[label].push(history);
     });

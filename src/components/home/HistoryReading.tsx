@@ -3,6 +3,7 @@ import { bibleUtils } from "@/lib/bibleUtils";
 import { cn } from "@/lib/shad";
 import { getBibleHistory } from "@/lib/utils";
 import { Verse as IVerse } from "@/services/api";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { MdHistory } from "react-icons/md";
 import Verse from "../chapter/Verse";
@@ -47,9 +48,9 @@ export function HistoryReading({ className }: Props) {
                   <p className="text-lg font-medium pb-3">... e mais {bibleHistory.length - 10} capítulos</p>
                   <p className="text-sm text-muted-foreground">
                     Você pode ver o histórico completo na página de{" "}
-                    <a href="/history" className="underline">
+                    <Link href="/history" className="underline">
                       histórico
-                    </a>
+                    </Link>
                     .
                   </p>
                 </div>
