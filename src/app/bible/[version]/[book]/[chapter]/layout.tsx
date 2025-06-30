@@ -1,6 +1,7 @@
 import { ChapterNavigationDesktop } from "@/components/chapter/ChapterNavigationDesktop";
 import { ChapterNavigationMobile } from "@/components/chapter/ChapterNavigationMobile";
 import { ChaptersSidebar } from "@/components/chapter/ChaptersSidebar";
+import { HistorySheet } from "@/components/chapter/HistorySheet";
 import { ScrollControl } from "@/components/chapter/ScrollControl";
 import { TopNavigation } from "@/components/chapter/TopNavigation";
 import { VersionsSidebar } from "@/components/chapter/VersionsSidebar";
@@ -48,6 +49,7 @@ export default function ChapterLayout({ children, params: { version, book, chapt
             <ChapterNavigationDesktop version={version} />
           </div>
           <ChaptersSidebar version={version} book={book} chapter={chapter} />
+          <HistorySheet className="right-10 bottom-28" />
           <TopNavigation className="chapter-top-navigation-desktop right-10 bottom-10" />
         </div>
       </ChapterProvider>
