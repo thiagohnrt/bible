@@ -1,16 +1,16 @@
-import { SendFeedback } from "@/components/more/SendFeedback";
 import { ItemMenu } from "@/components/more/ItemMenu";
 import { ItemSettings } from "@/components/more/ItemSettings";
 import { ItemShare } from "@/components/more/ItemShare";
 import { ItemTranslation } from "@/components/more/ItemTranslation";
 import { ItemVersion } from "@/components/more/ItemVersion";
+import { SendFeedback } from "@/components/more/SendFeedback";
 import { Container } from "@/components/root/Container";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import Link from "next/link";
-import { MdChatBubbleOutline, MdInfoOutline, MdOutlineWarningAmber } from "react-icons/md";
-import { RiBookLine, RiGithubFill } from "react-icons/ri";
-import { IoDocumentTextOutline } from "react-icons/io5";
 import { GoVideo } from "react-icons/go";
+import { IoDocumentTextOutline } from "react-icons/io5";
+import { MdChatBubbleOutline, MdHistory, MdInfoOutline, MdOutlineWarningAmber } from "react-icons/md";
+import { RiBookLine, RiGithubFill } from "react-icons/ri";
 
 export default function MorePage() {
   const iconSize = 20;
@@ -24,6 +24,9 @@ export default function MorePage() {
       <ItemMenu label="Vídeos" icon={<GoVideo size={iconSize} />}>
         <small className="opacity-50">(Em breve)</small>
       </ItemMenu>
+      <Link href="/history">
+        <ItemMenu label="Histórico de leitura" icon={<MdHistory size={iconSize + 2} />} />
+      </Link>
       <Separator />
       <ItemMenu label="Aparência" icon={<ThemeToggle />} />
       <Separator />

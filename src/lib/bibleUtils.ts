@@ -54,9 +54,34 @@ const formatVerseAddress = (book: Book, chapter: number, verses: Verse[], transl
   return `${book.name} ${chapter}:${formatVerseNumbers(verses ?? [])} ${translation?.short_name ?? ""}`;
 };
 
+const formatHistoryDate = (dateStr?: string) => {
+  if (!dateStr) return "Data desconhecida";
+  const date = new Date(dateStr);
+  const now = new Date();
+
+  // Zera horas para comparar apenas datas
+  const dateOnly = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const nowOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+  const diffDays = Math.floor((nowOnly.getTime() - dateOnly.getTime()) / (1000 * 60 * 60 * 24));
+
+  if (diffDays === 0) return "Hoje";
+  if (diffDays === 1) return "Ontem";
+
+  const weekDays = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
+
+  if (diffDays < 7) {
+    return weekDays[date.getDay()];
+  }
+
+  // Ex: 23 de jun.
+  return `${date.getDate()} de ${date.toLocaleString("pt-BR", { month: "short" })}`;
+};
+
 export const bibleUtils = {
   versesToString,
   splitVerse,
   formatVerseNumbers,
   formatVerseAddress,
+  formatHistoryDate,
 };
