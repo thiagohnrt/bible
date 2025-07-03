@@ -2,7 +2,10 @@
 
 import { Container } from "@/components/root/Container";
 import { bibleUtils } from "@/lib/bibleUtils";
+import { verseFont } from "@/lib/fonts";
+import { cn } from "@/lib/shad";
 import { getBibleHistory } from "@/lib/utils";
+import { Verse as IVerse } from "@/services/api";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ChapterRead } from "../bible/[version]/[book]/[chapter]/page";
@@ -28,13 +31,26 @@ export default function HistoryPage() {
         {Object.entries(bibleHistory).map(([label, items]) => (
           <div key={label} className="pb-4 px-3">
             <div className="text-sm font-bold px-3">{label}</div>
-            {items.map((history, index) => (
+            {items.map((item, index) => (
               <Link
-                href={`/bible/${history.translationId}/${history.book.id}/${history.chapter}`}
+                href={`/bible/${item.translationId}/${item.book.id}/${item.chapter}${
+                  item.verse?.verse ? `/${item.verse.verse}` : ""
+                }`}
                 key={index}
-                className="block py-2 px-3 rounded-md active:bg-neutral-200 hover:bg-neutral-200 dark:active:bg-neutral-800 dark:hover:bg-neutral-800 transition-colors"
+                className="flex items-center leading-10 px-3 rounded-md active:bg-neutral-200 hover:bg-neutral-200 dark:active:bg-neutral-800 dark:hover:bg-neutral-800 transition-colors"
               >
-                {history.book.name} {history.chapter}
+                <span className="whitespace-nowrap">
+                  {item.book.name} {item.chapter}:{item.verse?.verse ?? 1} {item.translation}
+                </span>
+                <span
+                  className={cn(
+                    "opacity-50 ml-2 align-middle overflow-hidden text-ellipsis whitespace-nowrap flex-1",
+                    verseFont.className
+                  )}
+                >
+                  {" - "}
+                  {bibleUtils.versesToString([{ text: item.verse.text } as IVerse], { withNumb: false })}
+                </span>
               </Link>
             ))}
           </div>

@@ -150,8 +150,8 @@ export default function Header({ className }: Props) {
       <Container className="flex px-6 items-center justify-between">
         <div className="content-left">
           <Link href="/" className="flex flex-nowrap items-center gap-2">
-            <Image src={imgLogo} alt="BibleHonor" width={28} />
-            <h1 className="text-xl">BibleHonor</h1>
+            <Image src={imgLogo} alt="BibleHonor" width={28} className="hidden sm:inline-block" />
+            <h1 className="text-xl font-semibold">BibleHonor</h1>
           </Link>
         </div>
         <div className="content-right flex">
