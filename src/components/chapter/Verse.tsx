@@ -1,7 +1,5 @@
+import { verseFont } from "@/lib/fonts";
 import { cn } from "@/lib/shad";
-import { Merriweather } from "next/font/google";
-
-const font = Merriweather({ subsets: ["latin"], weight: "300" });
 
 interface VerseProps {
   text: string;
@@ -25,7 +23,7 @@ export default function Verse({
   formatting = "html",
 }: VerseProps) {
   return (
-    <div id={`verse-${number}`} className={cn(font.className, className)} onClick={onClick} style={style}>
+    <div id={`verse-${number}`} className={cn(verseFont.className, className)} onClick={onClick} style={style}>
       {number && <span className="verse-num text-xs align-super opacity-70">{number}&nbsp;</span>}
       {formatting === "html" ? (
         <span
