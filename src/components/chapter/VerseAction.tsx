@@ -64,7 +64,7 @@ export default function VerseAction({ verse: verseObj, className }: VerseProps) 
       <div className="flex flex-grow-0 flex-shrink-0 basis-8">
         {comment ? (
           <CommentDrawer book={data[0].book} chapter={data[0].chapter} verse={verseObj}>
-            <div className="flex justify-center flex-1 pt-3 cursor-pointer">
+            <div className="verse-comment flex justify-center flex-1 pt-3 cursor-pointer">
               <TfiCommentAlt size={12} />
             </div>
           </CommentDrawer>
