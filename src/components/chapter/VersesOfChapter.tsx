@@ -20,7 +20,7 @@ export function VersesOfChapter({ translation, book, chapter, verses, stories }:
       .toSorted((a, b) => a.order_if_several - b.order_if_several);
   };
 
-  if (!data.length) return <>Carregando...1</>;
+  if (!data.length) return <>Carregando...</>;
 
   return (
     <div className={cn("pb-40 md:pb-4 flex-1")} dir={translation.dir}>
