@@ -109,7 +109,7 @@ export function SendFeedback({ id, title, type, children }: Props) {
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>
-        <div className="overflow-y-auto px-6 pb-6">
+        <div className="overflow-y-auto px-4 sm:px-6 pb-6">
           <form onSubmit={handleSubmit} className="flex flex-col gap-4 py-1">
             <Input
               type="text"

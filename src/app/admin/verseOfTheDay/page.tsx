@@ -71,9 +71,9 @@ export default function VerseOfTheDayPage() {
   }
 
   return (
-    <Container className="px-0">
+    <Container className="!px-0">
       <div className="flex flex-col h-[calc(100vh-10rem)]">
-        <div className="px-6 pb-4">
+        <div className="px-4 pb-4">
           <h1 className="text-xl pb-4">Versículo do Dia</h1>
           <Input
             type="text"
@@ -82,7 +82,7 @@ export default function VerseOfTheDayPage() {
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <div className="px-6 pb-24 overflow-y-auto">
+        <div className="px-4 pb-24 overflow-y-auto">
           <ul className="[&_li]:py-2">
             {isLoading
               ? repeat(20, (i) => (

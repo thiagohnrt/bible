@@ -50,7 +50,7 @@ interface ItemProps {
 
 export const Item = forwardRef<HTMLDivElement, ItemProps>(({ label, className, ...props }, ref) => {
   return (
-    <div className={cn("px-6 py-4 active:bg-neutral-100 dark:active:bg-neutral-900 transition-colors", className)}>
+    <div className={cn("px-4 py-4 active:bg-neutral-100 dark:active:bg-neutral-900 transition-colors", className)}>
       {label}
     </div>
   );

@@ -56,7 +56,7 @@ export function ClearLocalData({ children }: Props) {
           <DialogTitle>Limpar Dados Local</DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>
-        <div className="px-6 pb-6 overflow-y-auto">
+        <div className="px-4 sm:px-6 pb-6 overflow-y-auto">
           <h2 className="text-lg">Sessão</h2>
           <div className="grid grid-cols-2 [&>*]:border [&>*]:p-2">
             <div>Nome</div>

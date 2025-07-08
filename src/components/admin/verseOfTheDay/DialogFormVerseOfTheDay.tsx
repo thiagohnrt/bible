@@ -1,18 +1,18 @@
 import { BOOKS, TRANSLATION_DEFAULT } from "@/constants/bible";
+import { useToast } from "@/hooks/use-toast";
 import { bibleUtils } from "@/lib/bibleUtils";
+import { cn } from "@/lib/shad";
 import { repeat } from "@/lib/utils";
 import { IVerseOfTheDay } from "@/models/verseOfTheDayModel";
+import { BibleContext } from "@/providers/bibleProvider";
 import { api, Verse as IVerse } from "@/services/api";
+import { useRouter } from "next/navigation";
 import { FormEvent, useCallback, useContext, useState } from "react";
 import Verse from "../../chapter/Verse";
+import { DialogConfirm } from "../../root/DialogConfirm";
 import { Button } from "../../ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../../ui/dialog";
 import { Input } from "../../ui/input";
-import { useToast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
-import { cn } from "@/lib/shad";
-import { DialogConfirm } from "../../root/DialogConfirm";
-import { BibleContext } from "@/providers/bibleProvider";
 
 interface NewVerseOfTheDayProps {
   children: React.ReactNode;
@@ -166,7 +166,7 @@ export function DialogFormVerseOfTheDay({ children, data, onSaved }: NewVerseOfT
           <DialogTitle>{formData.id ? "Alterar" : "Novo"} Versículo do Dia</DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>
-        <div className="overflow-y-auto px-6 pb-6">
+        <div className="overflow-y-auto px-4 pb-6">
           <form id="form-verse-of-the-day" className="grid grid-cols-2 gap-4" onSubmit={preview}>
             <div className="col-span-2">
               <label htmlFor="book">Livro</label>

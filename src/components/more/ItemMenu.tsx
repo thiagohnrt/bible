@@ -11,7 +11,7 @@ export const ItemMenu = forwardRef<
 >(({ label, icon, children, ...props }, ref) => {
   return (
     <div
-      className="flex items-center justify-between gap-2 px-6 py-4 active:bg-neutral-100 dark:active:bg-neutral-900 transition-colors"
+      className="flex items-center justify-between gap-2 px-4 py-4 active:bg-neutral-100 dark:active:bg-neutral-900 transition-colors"
       ref={ref}
       {...props}
     >
