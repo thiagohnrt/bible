@@ -9,13 +9,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { CgSpinner } from "react-icons/cg";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { ToastAction } from "../ui/toast";
-import { useRouter } from "next/navigation";
 
 interface Props {
   id: string;
@@ -45,8 +45,14 @@ export function SendFeedback({ id, title, type, children }: Props) {
 
     setFormData(updatedFormData);
 
-    const allFieldsFilled = Object.values(updatedFormData).every((field) => field.trim() !== "");
-    setIsButtonDisabled(!allFieldsFilled);
+    const form = e.target.form as HTMLFormElement;
+    const requiredFields = Array.from(form.elements).filter(
+      (el) => (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) && el.required
+    ) as (HTMLInputElement | HTMLTextAreaElement)[];
+
+    const allRequiredFilled = requiredFields.every((field) => field.value !== "");
+
+    setIsButtonDisabled(!allRequiredFilled);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -120,8 +126,8 @@ export function SendFeedback({ id, title, type, children }: Props) {
               name="email"
               value={formData.email}
               onChange={handleInputChange}
-              placeholder="E-mail"
-              required={true}
+              placeholder="E-mail (opcional)"
+              required={false}
               maxLength={60}
               disabled={isSendingForm}
             />
