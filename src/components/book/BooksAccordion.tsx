@@ -66,7 +66,15 @@ export function BooksAccordion({ version, device }: Props) {
         className="fixed left-0 z-10 flex w-full items-center justify-between bg-background border-b px-4 py-2"
         style={{ top: "calc(4rem - 1px)" }}
       >
-        <Input type="text" placeholder="Pesquisar livro" value={search} onChange={(e) => setSearch(e.target.value)} />
+        <Input
+          type="text"
+          placeholder="Pesquisar livro"
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            window.scrollTo({ top: 0, behavior: "instant" });
+          }}
+        />
       </div>
       <Accordion
         type="single"
