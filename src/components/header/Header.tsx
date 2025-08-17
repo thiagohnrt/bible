@@ -147,7 +147,7 @@ export default function Header({ className }: Props) {
         className
       )}
     >
-      <Container className="flex px-6 items-center justify-between">
+      <Container className="flex items-center justify-between">
         <div className="content-left">
           <Link href="/" className="flex flex-nowrap items-center gap-2">
             <Image src={imgLogo} alt="BibleHonor" width={28} className="hidden sm:inline-block" />

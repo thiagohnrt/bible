@@ -89,11 +89,11 @@ function TranslationGroup({ label, data, icon, onTranslationClick }: Translation
   }
   return (
     <div className="mb-4">
-      <h2 className="px-6 text-lg font-bold mb-2">{label}</h2>
+      <h2 className="px-4 sm:px-6 text-lg font-bold mb-2">{label}</h2>
       {data.map((translation, i) => {
         return (
           <div
-            className="flex items-center px-6 py-2 active:bg-neutral-100 dark:active:bg-neutral-900 transition-colors"
+            className="flex items-center px-4 sm:px-6 py-2 active:bg-neutral-100 dark:active:bg-neutral-900 transition-colors"
             onClick={() => onTranslationClick(translation)}
             key={i}
           >

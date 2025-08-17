@@ -104,7 +104,7 @@ function Button({ version, book, chapter, chapterCurrent }: LinkProps) {
           </DialogTitle>
           <DialogDescription>Selecione o versículo</DialogDescription>
         </DialogHeader>
-        <div className="px-6 pb-6 overflow-y-auto grid grid-cols-6 gap-4">
+        <div className="px-4 pb-6 overflow-y-auto grid grid-cols-6 gap-4">
           <Verses version={version} book={book.book} chapter={chapter} />
         </div>
       </DialogContent>

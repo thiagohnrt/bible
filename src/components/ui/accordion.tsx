@@ -35,7 +35,7 @@ const AccordionItemFocus = React.forwardRef<
     setTimeout(
       (element) => {
         if (element) {
-          const headerHeight = 65; // Altura do header fixo
+          const headerHeight = 130; // Altura do header fixo + pesquisa
           scrollToElement(element, { behavior: "smooth", block: "start", offset: headerHeight }).then(() => {
             element.focus();
           });

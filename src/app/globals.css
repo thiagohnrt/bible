@@ -118,7 +118,9 @@
 .verse {
   @apply transition-opacity;
 }
-.highlight-verse .verse:not(.verse-to-highlight) {
+.highlight-verse .verse:not(.verse-to-highlight),
+.highlight-verse .verse-story,
+.highlight-verse .verse-comment {
   opacity: 0.3;
 }
 

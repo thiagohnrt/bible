@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 const FeedbackSchema = new Schema({
   name: { type: String, required: true },
-  email: { type: String, required: true },
+  email: { type: String, required: false },
   message: { type: String, required: true },
   typeMsg: { type: String, required: true },
   userAgent: { type: String, required: true },

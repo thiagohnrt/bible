@@ -25,19 +25,19 @@ export default function HistoryPage() {
   }, []);
 
   return (
-    <Container className="flex flex-col px-0">
-      <h1 className="text-2xl font-bold mb-4 px-6">Histórico de Leitura</h1>
+    <Container className="flex flex-col !px-0">
+      <h1 className="text-2xl font-bold mb-4 px-4 sm:px-6">Histórico de Leitura</h1>
       <div className="flex flex-col gap-2">
         {Object.entries(bibleHistory).map(([label, items]) => (
-          <div key={label} className="pb-4 px-3">
-            <div className="text-sm font-bold px-3">{label}</div>
+          <div key={label} className="pb-4 px-2 sm:px-3">
+            <div className="text-sm font-bold px-2 sm:px-3">{label}</div>
             {items.map((item, index) => (
               <Link
                 href={`/bible/${item.translationId}/${item.book.id}/${item.chapter}${
                   item.verse?.verse ? `/${item.verse.verse}` : ""
                 }`}
                 key={index}
-                className="flex items-center leading-10 px-3 rounded-md active:bg-neutral-200 hover:bg-neutral-200 dark:active:bg-neutral-800 dark:hover:bg-neutral-800 transition-colors"
+                className="flex items-center leading-10 px-2 sm:px-3 rounded-md active:bg-neutral-200 hover:bg-neutral-200 dark:active:bg-neutral-800 dark:hover:bg-neutral-800 transition-colors"
               >
                 <span className="whitespace-nowrap">
                   {item.book.name} {item.chapter}:{item.verse?.verse ?? 1} {item.translation}
