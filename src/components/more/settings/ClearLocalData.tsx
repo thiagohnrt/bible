@@ -1,3 +1,4 @@
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import {
   Dialog,
   DialogContent,
@@ -58,18 +59,18 @@ export function ClearLocalData({ children }: Props) {
         </DialogHeader>
         <div className="px-4 sm:px-6 pb-6 overflow-y-auto">
           <h2 className="text-lg">Sessão</h2>
-          <div className="grid grid-cols-2 [&>*]:border [&>*]:p-2">
-            <div>Nome</div>
-            <div>Valor</div>
+          <Accordion type="multiple" className="w-full">
             {getSession().map((data, i) => {
               return (
-                <React.Fragment key={i}>
-                  <div>{data.name}</div>
-                  <pre className="overflow-x-auto">{data.value}</pre>
-                </React.Fragment>
+                <AccordionItem value={data.name} key={i}>
+                  <AccordionTrigger className="w-full text-left">{data.name}</AccordionTrigger>
+                  <AccordionContent>
+                    <pre className="overflow-x-auto bg-primary/10 p-2 rounded-md">{data.value}</pre>
+                  </AccordionContent>
+                </AccordionItem>
               );
             })}
-          </div>
+          </Accordion>
           <div className="py-4"></div>
           <h2 className="text-lg">Banco de Dados</h2>
           {!database ? (
