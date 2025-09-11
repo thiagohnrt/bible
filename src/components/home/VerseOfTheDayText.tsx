@@ -48,7 +48,14 @@ export function VerseOfTheDayText({ className }: Props) {
       style={{ zIndex: 2 }}
     >
       {data?.verses.map((item, i) => {
-        return <Verse text={item.text} key={item.verse} className="votd-verse inline" />;
+        return (
+          <Verse
+            translationId={translation?.identifier ?? ""}
+            text={item.text}
+            key={item.verse}
+            className="votd-verse inline"
+          />
+        );
       })}
       <div className="votd-book mt-4">
         {data && bibleUtils.formatVerseAddress(data?.book, data?.chapter, data?.verses, translation!)}

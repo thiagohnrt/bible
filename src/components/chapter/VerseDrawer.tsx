@@ -1,5 +1,6 @@
 "use client";
 
+import { TRANSLATION_DEFAULT } from "@/constants/bible";
 import { CopyVerseOptions } from "@/interfaces/CopyVerseOptions";
 import { bibleUtils } from "@/lib/bibleUtils";
 import { clipboard } from "@/lib/clipboard";
@@ -270,6 +271,7 @@ export const CopyButton = forwardRef<
           <div className="border rounded-md p-2 mb-4">
             {versesFake.map((verse) => (
               <Verse
+                translationId={TRANSLATION_DEFAULT}
                 text={verse.text}
                 number={data.withNumb ? verse.verse : undefined}
                 key={verse.pk}

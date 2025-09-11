@@ -117,7 +117,17 @@ async function getVerses(translationId: string, book: number, chapter: number) {
   } else {
     verses = await apiBible<Verse[]>(`/get-chapter/${translationId}/${book}/${chapter}`);
   }
-  return verses.map((v) => ({ ...v, book, chapter }));
+  return verses.map((v) => {
+    // quando for a tradução MENS e o text não tiver a tag <sup> do número do versículo, adiciona-lo
+    if (translationId === "MENS") {
+      if (!v.text.trimStart().startsWith("<sup>")) {
+        v.text = `<sup>${v.verse}</sup> ${v.text}`;
+      }
+      // troque a tag <sup> por <span class="verse-num">
+      v.text = v.text.replace(/<sup>(.*?)<\/sup>/, '<span class="verse-num text-xs align-super opacity-70">$1</span>');
+    }
+    return { ...v, book, chapter };
+  });
 }
 async function getVerse(translationId: string, book: number, chapter: number, verse: number) {
   if (db.util.hasTranslationSaved(translationId)) {

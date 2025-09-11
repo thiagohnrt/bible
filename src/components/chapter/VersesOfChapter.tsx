@@ -47,7 +47,7 @@ export function VersesOfChapter({ translation, book, chapter, verses, stories }:
                 ></div>
               );
             })}
-            <VerseAction verse={verse} />
+            <VerseAction translationId={translation.identifier} verse={verse} />
           </React.Fragment>
         );
       })}

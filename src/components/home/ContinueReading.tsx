@@ -26,6 +26,7 @@ export function ContinueReading({ history: bibleHistory, className }: Props) {
           {bibleHistory.book.name} {bibleHistory.chapter}:{bibleHistory.verse?.verse ?? 1} {bibleHistory.translation}
         </p>
         <Verse
+          translationId={bibleHistory.translationId}
           text={bibleUtils.versesToString([{ text: verseText } as IVerse], { withNumb: false })}
           formatting="text"
           classNameVerse="line-clamp-2 text-base leading-7"

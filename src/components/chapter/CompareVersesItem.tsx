@@ -70,6 +70,7 @@ export function CompareVersesItem({ translation, book, chapter, verses }: Props)
             {data.verses.map((item, i) => {
               return (
                 <Verse
+                  translationId={translation.identifier}
                   number={data.verses.length > 1 ? item.verse : undefined}
                   text={item.text}
                   key={"verse-" + i}
@@ -81,7 +82,13 @@ export function CompareVersesItem({ translation, book, chapter, verses }: Props)
           </div>
           <div className="flex flex-col flex-grow-0 flex-shrink-0 basis-8">
             {data.comments.map((verse, i) => (
-              <CommentDrawer book={book} chapter={chapter} verse={verse} key={`comment-${verse.verse}`}>
+              <CommentDrawer
+                translationId={translation.identifier}
+                book={book}
+                chapter={chapter}
+                verse={verse}
+                key={`comment-${verse.verse}`}
+              >
                 <div className="flex flex-1 justify-center pt-3 cursor-pointer">
                   <TfiCommentAlt size={12} />
                 </div>

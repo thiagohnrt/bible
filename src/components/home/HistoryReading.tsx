@@ -41,6 +41,7 @@ export function HistoryReading({ className }: Props) {
                       {item.book.name} {item.chapter}:{item.verse?.verse ?? 1} {item.translation}
                     </p>
                     <Verse
+                      translationId={item.translationId}
                       text={bibleUtils.versesToString([{ text: item.verse.text } as IVerse], { withNumb: false })}
                       formatting="text"
                       classNameVerse="line-clamp-2 text-base leading-7"
