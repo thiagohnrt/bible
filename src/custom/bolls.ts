@@ -22,6 +22,18 @@ export const translation = (trns: Translation): Translation => {
   } else if (translation.short_name === "TB10") {
     translation.short_name = "TB";
     translation.full_name = "Tradução Brasileira";
+  } else if (translation.short_name === "ACF11") {
+    translation.short_name = "ACF";
+    translation.full_name = "Almeida Corrigida Fiel";
+  } else if (translation.short_name === "ARC09") {
+    translation.short_name = "ARC";
+    translation.full_name = "Almeida Revisada e Corrigida";
+  } else if (translation.short_name === "ALM21") {
+    translation.short_name = "A21";
+    translation.full_name = "Almeida Século 21";
+  } else if (translation.short_name === "MENS") {
+    translation.short_name = "MSG";
+    translation.full_name = "A Mensagem";
   }
   return translation;
 };

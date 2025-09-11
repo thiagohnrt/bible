@@ -1,7 +1,7 @@
 {
   "name": "biblehonor",
-  "version": "0.48.0",
-  "datetime": "2025-08-29T18:00:00",
+  "version": "0.48.1",
+  "datetime": "2025-09-11T09:00:00",
   "private": true,
   "scripts": {
     "dev": "next dev",
