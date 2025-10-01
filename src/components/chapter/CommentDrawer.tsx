@@ -1,7 +1,9 @@
 "use client";
 
+import { RootContext } from "@/providers/rootProvider";
 import { Book, Verse as IVerse } from "@/services/api";
 import { useContext } from "react";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import {
   Drawer,
   DrawerContent,
@@ -12,17 +14,16 @@ import {
   DrawerTrigger,
 } from "../ui/drawer";
 import Verse from "./Verse";
-import { RootContext } from "@/providers/rootProvider";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 
 interface Props {
+  translationId: string;
   book: Book;
   chapter: number;
   verse: IVerse;
   children: React.ReactNode;
 }
 
-export function CommentDrawer({ book, chapter, verse, children }: Props) {
+export function CommentDrawer({ translationId, book, chapter, verse, children }: Props) {
   const { device } = useContext(RootContext);
 
   if (device.type !== "mobile") {
@@ -36,7 +37,9 @@ export function CommentDrawer({ book, chapter, verse, children }: Props) {
             </DialogTitle>
             <DialogDescription>Comentário</DialogDescription>
           </DialogHeader>
-          <div className="p-6 pt-0 overflow-y-auto">{verse && <Comment verse={verse} />}</div>
+          <div className="p-6 pt-0 overflow-y-auto">
+            {verse && <Comment translationId={translationId} verse={verse} />}
+          </div>
         </DialogContent>
       </Dialog>
     );
@@ -52,13 +55,13 @@ export function CommentDrawer({ book, chapter, verse, children }: Props) {
           </DrawerTitle>
           <DrawerDescription></DrawerDescription>
         </DrawerHeader>
-        <DrawerFooter>{verse && <Comment verse={verse} />}</DrawerFooter>
+        <DrawerFooter>{verse && <Comment translationId={translationId} verse={verse} />}</DrawerFooter>
       </DrawerContent>
     </Drawer>
   );
 }
 
-function Comment({ verse }: { verse: IVerse }) {
+function Comment({ translationId, verse }: { translationId: string; verse: IVerse }) {
   const addPrefixToLinks = (htmlString: string, prefix: string): string => {
     // Expressão regular para encontrar as tags <a> com o atributo href
     const regex = /(<a\s+href=['"])([^'"]*)(['"][^>]*>)/g;
@@ -71,7 +74,11 @@ function Comment({ verse }: { verse: IVerse }) {
 
   return (
     <>
-      {verse?.text ? <Verse text={verse?.text} comment={true} formatting="text" /> : <></>}
+      {verse?.text ? (
+        <Verse translationId={translationId} text={verse?.text} comment={true} formatting="text" />
+      ) : (
+        <></>
+      )}
       <div className="py-1"></div>
       {verse?.comment ? (
         <div

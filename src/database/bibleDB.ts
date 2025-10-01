@@ -114,7 +114,7 @@ const saveTranslation = async (
 
 const deleteTranslation = async (
   translationId: string,
-  setTranslationsStatus: (translations: TranslationsOffline) => void
+  setTranslationsStatus: (translations: TranslationsOffline) => void = (translations: TranslationsOffline) => {}
 ) => {
   const translationsInitial = getTranslationsOffline();
   if (["downloaded", "downloadFailed", "deleteFailed"].includes(translationsInitial[translationId])) {
@@ -174,6 +174,10 @@ const updateLanguages = async (): Promise<{ hasNew: boolean; languages?: Languag
 
   Cookies.set(KEY_TRANSLATIONS_AVAILABLE_VERIFIED, "true", { expires: 1 });
   return { hasNew: true, languages: languagesNew };
+};
+const deleteLanguages = async () => {
+  await idb.deleteAll("languages");
+  localStorage.removeItem(KEY_LANGUAGES_SAVED);
 };
 
 const hasNewTranslationsAvailable = (oldData: Language[], newData: Language[]): boolean => {
@@ -274,6 +278,7 @@ export const db = {
   deleteTranslation,
   saveLanguages,
   updateLanguages,
+  deleteLanguages,
   getVerses,
   getVerse,
   getBooks,

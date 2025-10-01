@@ -12,11 +12,12 @@ import Verse from "./Verse";
 const font = Merriweather({ subsets: ["latin"], weight: "300" });
 
 interface VerseProps {
+  translationId: string;
   verse: IVerse;
   className?: string;
 }
 
-export default function VerseAction({ verse: verseObj, className }: VerseProps) {
+export default function VerseAction({ translationId, verse: verseObj, className }: VerseProps) {
   const { data, versesSelected, setVersesSelected } = useContext(ChapterContext);
   const [isSelected, setIsSelected] = useState(false);
   const { verse, text, comment } = verseObj;
@@ -52,6 +53,7 @@ export default function VerseAction({ verse: verseObj, className }: VerseProps) 
   return (
     <div className="flex gap-2 justify-between">
       <Verse
+        translationId={translationId}
         number={verse}
         text={text}
         className={cn(
@@ -63,7 +65,7 @@ export default function VerseAction({ verse: verseObj, className }: VerseProps) 
       />
       <div className="flex flex-grow-0 flex-shrink-0 basis-8">
         {comment ? (
-          <CommentDrawer book={data[0].book} chapter={data[0].chapter} verse={verseObj}>
+          <CommentDrawer translationId={translationId} book={data[0].book} chapter={data[0].chapter} verse={verseObj}>
             <div className="verse-comment flex justify-center flex-1 pt-3 cursor-pointer">
               <TfiCommentAlt size={12} />
             </div>

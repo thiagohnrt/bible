@@ -276,7 +276,12 @@ export function DialogFormVerseOfTheDay({ children, data, onSaved }: NewVerseOfT
                 <h2 className="pb-2">{previewData.address}</h2>
                 <div className="pb-3">
                   {previewData.verses.map((verse) => (
-                    <Verse key={verse.verse} number={verse.verse} text={verse.text} />
+                    <Verse
+                      translationId={TRANSLATION_DEFAULT}
+                      key={verse.verse}
+                      number={verse.verse}
+                      text={verse.text}
+                    />
                   ))}
                 </div>
                 <Button onClick={onSave} disabled={isSendingForm || isDeletingForm} className="w-full">

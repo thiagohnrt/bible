@@ -2,6 +2,7 @@ import { verseFont } from "@/lib/fonts";
 import { cn } from "@/lib/shad";
 
 interface VerseProps {
+  translationId: string;
   text: string;
   number?: number;
   comment?: boolean;
@@ -13,6 +14,7 @@ interface VerseProps {
 }
 
 export default function Verse({
+  translationId,
   number,
   text,
   comment = false,
@@ -24,10 +26,16 @@ export default function Verse({
 }: VerseProps) {
   return (
     <div id={`verse-${number}`} className={cn(verseFont.className, className)} onClick={onClick} style={style}>
-      {number && <span className="verse-num text-xs align-super opacity-70">{number}&nbsp;</span>}
+      {number && translationId !== "MENS" && (
+        <span className="verse-num text-xs align-super opacity-70">{number}&nbsp;</span>
+      )}
       {formatting === "html" ? (
         <span
-          className={cn("verse-txt text-lg leading-9 [&>s]:hidden", !comment && "[&>sup]:hidden", classNameVerse)}
+          className={cn(
+            "verse-txt text-lg leading-9 [&>s]:hidden",
+            !comment && translationId !== "MENS" && "[&>sup]:hidden",
+            classNameVerse
+          )}
           dangerouslySetInnerHTML={{ __html: text }}
         ></span>
       ) : (
