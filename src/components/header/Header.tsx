@@ -6,13 +6,11 @@ import { Available } from "@/interfaces/available";
 import { cn } from "@/lib/shad";
 import { BibleContext } from "@/providers/bibleProvider";
 import { Translation } from "@/services/api";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { FiPlus } from "react-icons/fi";
 import { RiCloseCircleLine } from "react-icons/ri";
-import imgLogo from "../../../public/biblehonor_logo.png";
 import { Container } from "../root/Container";
 import { DialogConfirm } from "../root/DialogConfirm";
 import { VersionChange } from "./VersionChange";
@@ -150,8 +148,7 @@ export default function Header({ className }: Props) {
       <Container className="flex items-center justify-between">
         <div className="content-left">
           <Link href="/" className="flex flex-nowrap items-center gap-2">
-            <Image src={imgLogo} alt="BibleHonor" width={28} className="hidden sm:inline-block" />
-            <h1 className="text-xl font-semibold">BibleHonor</h1>
+            <h1 className="text-xl font-semibold">Bíblia</h1>
           </Link>
         </div>
         <div className="content-right flex">
