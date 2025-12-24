@@ -8,7 +8,7 @@ import { Translation } from "@/services/api";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ReactNode, useContext, useEffect, useState } from "react";
-import { RiBookFill, RiBookLine, RiHome5Fill, RiHome5Line } from "react-icons/ri";
+import { RiBookFill, RiBookLine, RiBookMarkedFill, RiBookMarkedLine, RiHome5Fill, RiHome5Line } from "react-icons/ri";
 import { TbMenuDeep } from "react-icons/tb";
 
 export default function BottomNavigator() {
@@ -57,6 +57,9 @@ export default function BottomNavigator() {
       </MenuItem>
       <MenuItem url={bibleLink} label="Bíblia">
         {pathname.startsWith("/bible") ? <RiBookFill size={20} /> : <RiBookLine size={20} />}
+      </MenuItem>
+      <MenuItem url="/plans" label="Planos">
+        {pathname.startsWith("/plans") ? <RiBookMarkedFill size={20} /> : <RiBookMarkedLine size={20} />}
       </MenuItem>
       <MenuItem url="/more" label="Mais">
         <TbMenuDeep size={20} />
