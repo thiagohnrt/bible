@@ -261,7 +261,7 @@ const CarouselDotButtons = React.forwardRef<HTMLDivElement, React.HTMLAttributes
         {Array.from({ length: count }).map((_, index) => (
           <Button
             key={index}
-            variant={selectedIndex === index ? "default" : "outline-solid"}
+            variant={selectedIndex === index ? "default" : "outline"}
             size="icon"
             className={cn("h-4 w-4 rounded-full")}
             onClick={() => handleClick(index)}
