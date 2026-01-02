@@ -34,7 +34,7 @@ export function HistorySheet({ className }: { className?: string }) {
         >
           <div
             className={cn(
-              "flex h-full w-full rounded-full items-center justify-center bg-highlight-active shadow-sm shadow-black "
+              "flex h-full w-full rounded-full items-center justify-center bg-highlight-active shadow-xs shadow-black "
             )}
           >
             <MdHistory size={24} />

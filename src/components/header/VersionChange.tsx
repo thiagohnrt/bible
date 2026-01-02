@@ -126,7 +126,7 @@ export const VersionChange = forwardRef<HTMLDivElement, Props>(
             <DialogDescription></DialogDescription>
             <LanguageChange languages={data.languages} current={data.current.language} onLanguageSelected={setLanguage}>
               <div className="pt-4">
-                <div className="rounded-full flex justify-between gap-4 px-4 py-3 items-center bg-highlight-active cursor-pointer [&>*]:cursor-pointer">
+                <div className="rounded-full flex justify-between gap-4 px-4 py-3 items-center bg-highlight-active cursor-pointer *:cursor-pointer">
                   <IoLanguage />
                   <div className="flex-auto">
                     <label
@@ -156,7 +156,7 @@ export const VersionChange = forwardRef<HTMLDivElement, Props>(
                         <button
                           type="button"
                           onClick={() => onTranslationSelected(translation)}
-                          className="py-2 mb-1 flex items-center w-full outline-none"
+                          className="py-2 mb-1 flex items-center w-full outline-hidden"
                         >
                           <div className="flex-auto flex flex-col text-left">
                             <span>{translation.short_name}</span>
@@ -198,7 +198,7 @@ export const VersionChange = forwardRef<HTMLDivElement, Props>(
                             <button
                               type="button"
                               onClick={() => onTranslationSelected(translation)}
-                              className="py-2 mb-1 flex flex-col w-full text-left outline-none"
+                              className="py-2 mb-1 flex flex-col w-full text-left outline-hidden"
                             >
                               <div className="w-full flex justify-between items-end">
                                 <span className={cn("pr-3", isTranslationAvailable(translation) && "there-is-news")}>

@@ -71,7 +71,7 @@ export default function VerseOfTheDayPage() {
   }
 
   return (
-    <Container className="!px-0">
+    <Container className="px-0!">
       <div className="flex flex-col h-[calc(100vh-10rem)]">
         <div className="px-4 pb-4">
           <h1 className="text-xl pb-4">Versículo do Dia</h1>

@@ -64,7 +64,7 @@ export function CompareVersesItem({ translation, book, chapter, verses }: Props)
         <small className="opacity-50">{translation.full_name}</small>
       </div>
       <div className="flex gap-4">
-        <div className="flex-shrink-0 w-[4px] bg-black dark:bg-white rounded-full"></div>
+        <div className="shrink-0 w-[4px] bg-black dark:bg-white rounded-full"></div>
         <div className="flex gap-2 justify-between">
           <div className="flex-auto cursor-pointer" onClick={onVersesSelected}>
             {data.verses.map((item, i) => {
@@ -80,7 +80,7 @@ export function CompareVersesItem({ translation, book, chapter, verses }: Props)
               );
             })}
           </div>
-          <div className="flex flex-col flex-grow-0 flex-shrink-0 basis-8">
+          <div className="flex flex-col grow-0 shrink-0 basis-8">
             {data.comments.map((verse, i) => (
               <CommentDrawer
                 translationId={translation.identifier}

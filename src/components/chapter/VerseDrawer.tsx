@@ -85,7 +85,7 @@ export function VerseDrawer() {
           </div>
           <ToastClose />
         </Toast>
-        <ToastViewport className="md:max-w-[500px] z-[49]" />
+        <ToastViewport className="md:max-w-[500px] z-49" />
       </ToastProvider>
     );
   }
@@ -235,7 +235,7 @@ export const CopyButton = forwardRef<
     <div
       className={cn(
         "inline-flex rounded-full cursor-pointer text-sm",
-        "mr-[10px] [&>*]:px-3 [&>*]:py-2",
+        "mr-[10px] *:px-3 *:py-2",
         "bg-neutral-200 dark:bg-neutral-800 transition-colors"
       )}
     >

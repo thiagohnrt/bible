@@ -34,7 +34,7 @@ const MomentOfBible = forwardRef<HTMLDivElement, MomentOfBibleProps>(({position,
             className="
               w-20 h-20
               rounded-full
-              bg-gradient-to-b from-emerald-300 to-emerald-500
+              bg-linear-to-b from-emerald-300 to-emerald-500
               shadow-[0_12px_0_#3fa37c,0_18px_25px_rgba(0,0,0,0.4)]
               active:shadow-[0_6px_0_#3fa37c,0_10px_15px_rgba(0,0,0,0.3)]
               transition-all

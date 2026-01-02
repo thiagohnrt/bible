@@ -38,7 +38,7 @@ export async function VerseOfTheDay({ className }: Props) {
             <VerseOfTheDayText className="[&>.votd-verse>.verse-txt]:text-xl" />
           </div>
         </DialogTrigger>
-        <DialogContent className="h-svh w-lvw p-0 md:w-96 md:h-[48rem] md:max-h-svh">
+        <DialogContent className="h-svh w-lvw p-0 md:w-96 md:h-192 md:max-h-svh">
           <DialogHeader className="hidden">
             <DialogTitle></DialogTitle>
             <DialogDescription></DialogDescription>

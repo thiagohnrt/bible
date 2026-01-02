@@ -90,7 +90,7 @@ export function ClearLocalData({ children }: Props) {
             {!database ? (
               <div>Calculando...</div>
             ) : (
-              <div className="grid grid-cols-3 [&>*]:border [&>*]:p-2">
+              <div className="grid grid-cols-3 *:border *:p-2">
                 <div>Tabela</div>
                 <div>Registros</div>
                 <div>Tamanho</div>

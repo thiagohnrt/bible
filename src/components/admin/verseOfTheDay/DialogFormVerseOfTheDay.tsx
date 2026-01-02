@@ -176,7 +176,7 @@ export function DialogFormVerseOfTheDay({ children, data, onSaved }: NewVerseOfT
                 value={formData?.book}
                 onChange={handleInputChange}
                 required={true}
-                className="h-9 w-full rounded-md border border-input px-3 py-2 shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                className="h-9 w-full rounded-md border border-input px-3 py-2 shadow-xs ring-offset-background placeholder:text-muted-foreground focus:outline-hidden focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <option value="" className="hidden">
                   Selecione um livro

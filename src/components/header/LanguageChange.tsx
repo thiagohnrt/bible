@@ -50,7 +50,7 @@ export function LanguageChange({ children, languages, current, onLanguageSelecte
                 <DialogClose asChild key={language.language}>
                   <button
                     type="button"
-                    className="py-3 w-full text-left outline-none"
+                    className="py-3 w-full text-left outline-hidden"
                     onClick={() => onLanguageSelected(language)}
                   >
                     <div className="w-full flex justify-between items-center">

@@ -25,7 +25,7 @@ export default function HistoryPage() {
   }, []);
 
   return (
-    <Container className="flex flex-col !px-0">
+    <Container className="flex flex-col px-0!">
       <h1 className="text-2xl font-bold mb-4 px-4 sm:px-6">Histórico de Leitura</h1>
       <div className="flex flex-col gap-2">
         {Object.entries(bibleHistory).map(([label, items]) => (

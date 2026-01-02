@@ -63,7 +63,7 @@ export default function VerseAction({ translationId, verse: verseObj, className 
         )}
         onClick={handleVerseSelection}
       />
-      <div className="flex flex-grow-0 flex-shrink-0 basis-8">
+      <div className="flex grow-0 shrink-0 basis-8">
         {comment ? (
           <CommentDrawer translationId={translationId} book={data[0].book} chapter={data[0].chapter} verse={verseObj}>
             <div className="verse-comment flex justify-center flex-1 pt-3 cursor-pointer">

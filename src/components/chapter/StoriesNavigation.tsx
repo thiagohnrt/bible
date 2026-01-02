@@ -59,7 +59,7 @@ export function StoriesNavigation({ translation, parent }: Props) {
             <PopoverClose
               onClick={navigateToStory(story)}
               key={`story-link-${story.translation}-${story.book}-${story.chapter}-${story.verse}-${story.order_if_several}`}
-              className="w-full text-left outline-none p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 cursor-pointer"
+              className="w-full text-left outline-hidden p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 cursor-pointer"
               dangerouslySetInnerHTML={{ __html: story.title }}
             ></PopoverClose>
           ))}
