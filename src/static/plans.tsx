@@ -232,5 +232,186 @@ export const plans: { plan365: (PlanOfDay | string)[] } = {
         { book: 2, chapter: 13 },
       ],
     },
+    // day 22
+    {
+      icon: <GiDoorway size={size} />,
+      position: 3,
+      read: [
+        { book: 2, chapter: 14 },
+        { book: 2, chapter: 15 },
+        { book: 2, chapter: 16 },
+      ],
+    },
+    // day 23
+    {
+      icon: <GiDoorway size={size} />,
+      position: 4,
+      read: [
+        { book: 2, chapter: 17 },
+        { book: 2, chapter: 18 },
+        { book: 2, chapter: 19 },
+      ],
+    },
+    // day 24
+    {
+      icon: <GiDoorway size={size} />,
+      position: 5,
+      read: [
+        { book: 2, chapter: 20 },
+        { book: 2, chapter: 21 },
+        { book: 2, chapter: 22 },
+      ],
+    },
+    // day 25
+    {
+      icon: <GiDoorway size={size} />,
+      position: 4,
+      read: [
+        { book: 2, chapter: 23 },
+        { book: 2, chapter: 24 },
+        { book: 2, chapter: 25 },
+      ],
+    },
+    // day 26
+    {
+      icon: <GiDoorway size={size} />,
+      position: 3,
+      read: [
+        { book: 2, chapter: 26 },
+        { book: 2, chapter: 27 },
+        { book: 2, chapter: 28 },
+      ],
+    },
+    // day 27
+    {
+      icon: <GiDoorway size={size} />,
+      position: 2,
+      read: [
+        { book: 2, chapter: 29 },
+        { book: 2, chapter: 30 },
+        { book: 2, chapter: 31 },
+      ],
+    },
+    // day 28
+    {
+      icon: <GiDoorway size={size} />,
+      position: 1,
+      read: [
+        { book: 2, chapter: 32 },
+        { book: 2, chapter: 33 },
+        { book: 2, chapter: 34 },
+      ],
+    },
+    // day 29
+    {
+      icon: <GiDoorway size={size} />,
+      position: 2,
+      read: [
+        { book: 2, chapter: 35 },
+        { book: 2, chapter: 36 },
+        { book: 2, chapter: 37 },
+      ],
+    },
+    // day 30
+    {
+      icon: <GiDoorway size={size} />,
+      position: 3,
+      read: [
+        { book: 2, chapter: 38 },
+        { book: 2, chapter: 39 },
+        { book: 2, chapter: 40 },
+      ],
+    },
+    "Levítico",
+    // day 31
+    {
+      icon: <GiDoorway size={size} />,
+      position: 3,
+      read: [
+        { book: 3, chapter: 1 },
+        { book: 3, chapter: 2 },
+        { book: 3, chapter: 3 },
+      ],
+    },
+    // day 32
+    {
+      icon: <GiDoorway size={size} />,
+      position: 4,
+      read: [
+        { book: 3, chapter: 4 },
+        { book: 3, chapter: 5 },
+        { book: 3, chapter: 6 },
+      ],
+    },
+    // day 33
+    {
+      icon: <GiDoorway size={size} />,
+      position: 5,
+      read: [
+        { book: 3, chapter: 7 },
+        { book: 3, chapter: 8 },
+        { book: 3, chapter: 9 },
+      ],
+    },
+    // day 34
+    {
+      icon: <GiDoorway size={size} />,
+      position: 4,
+      read: [
+        { book: 3, chapter: 10 },
+        { book: 3, chapter: 11 },
+        { book: 3, chapter: 12 },
+      ],
+    },
+    // day 35
+    {
+      icon: <GiDoorway size={size} />,
+      position: 3,
+      read: [
+        { book: 3, chapter: 13 },
+        { book: 3, chapter: 14 },
+        { book: 3, chapter: 15 },
+        { book: 3, chapter: 16 },
+      ],
+    },
+    // day 36
+    {
+      icon: <GiDoorway size={size} />,
+      position: 2,
+      read: [
+        { book: 3, chapter: 17 },
+        { book: 3, chapter: 18 },
+        { book: 3, chapter: 19 },
+      ],
+    },
+    // day 37
+    {
+      icon: <GiDoorway size={size} />,
+      position: 1,
+      read: [
+        { book: 3, chapter: 20 },
+        { book: 3, chapter: 21 },
+        { book: 3, chapter: 22 },
+      ],
+    },
+    // day 38
+    {
+      icon: <GiDoorway size={size} />,
+      position: 2,
+      read: [
+        { book: 3, chapter: 23 },
+        { book: 3, chapter: 24 },
+        { book: 3, chapter: 25 },
+      ],
+    },
+    // day 39
+    {
+      icon: <GiDoorway size={size} />,
+      position: 3,
+      read: [
+        { book: 3, chapter: 26 },
+        { book: 3, chapter: 27 },
+      ],
+    },
   ],
 };
